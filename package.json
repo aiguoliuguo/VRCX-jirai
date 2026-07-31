@@ -119,7 +119,7 @@
         "npm": ">=11.5.0"
     },
     "build": {
-        "appId": "app.vrcx",
+        "appId": "app.vrcx.jirai",
         "productName": "VRCX-Jirai",
         "icon": "images/VRCX.png",
         "files": [
@@ -171,18 +171,18 @@
             "output": "build"
         },
         "linux": {
-            "artifactName": "VRCX_Version.${ext}",
+            "artifactName": "VRCX-Jirai_Version.${ext}",
             "target": [
                 "AppImage"
             ],
             "icon": "images/VRCX.png",
             "category": "Utility",
-            "executableName": "vrcx",
+            "executableName": "vrcx-jirai",
             "desktop": {
                 "entry": {
-                    "Name": "VRCX",
+                    "Name": "VRCX-Jirai",
                     "Comment": "Friendship management tool for VRChat",
-                    "Icon": "VRCX",
+                    "Icon": "VRCX-Jirai",
                     "Terminal": "false",
                     "Type": "Application",
                     "Categories": "Utility;Application;"
@@ -192,13 +192,13 @@
             "description": "Friendship management tool for VRChat"
         },
         "mac": {
-            "artifactName": "VRCX_Version.${ext}",
+            "artifactName": "VRCX-Jirai_Version.${ext}",
             "target": [
                 "dmg"
             ],
             "icon": "images/VRCX.png",
             "category": "public.app-category.utilities",
-            "executableName": "VRCX"
+            "executableName": "VRCX-Jirai"
         }
     }
 }

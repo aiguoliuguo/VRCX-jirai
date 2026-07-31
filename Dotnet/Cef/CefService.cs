@@ -81,9 +81,9 @@ namespace VRCX
             {
                 // chrome://inspect/#devices
                 // Discover network targets, Configure...
-                // Add Remote Target: localhost:8089
+                // Add Remote Target: localhost:8189
                 logger.Info("Debug mode enabled");
-                cefSettings.RemoteDebuggingPort = !isOverlay ? 8089 : 8090;
+                cefSettings.RemoteDebuggingPort = !isOverlay ? 8189 : 8190;
                 cefSettings.CefCommandLineArgs["remote-allow-origins"] = "*";
             }
 

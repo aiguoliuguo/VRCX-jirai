@@ -14,7 +14,7 @@ public static class OverlayClient
 {
     private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly Uri WebsocketUri = new("ws://127.0.0.1:34582");
+    private static readonly Uri WebsocketUri = new("ws://127.0.0.1:34583");
     private static WebsocketClient? _websocketClient;
 
     public static bool Connected =>

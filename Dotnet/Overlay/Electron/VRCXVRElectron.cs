@@ -40,7 +40,7 @@ namespace VRCX
         private bool _wristOverlayActive;
         private bool _wristOverlayWasActive;
 
-        private const string OVERLAY_SHM_PATH = "/dev/shm/vrcx_overlay";
+        private const string OVERLAY_SHM_PATH = "/dev/shm/vrcx_jirai_overlay";
         private const int WRIST_FRAME_WIDTH = 512;
         private const int WRIST_FRAME_HEIGHT = 512;
         private const int WRIST_FRAME_SIZE = WRIST_FRAME_WIDTH * WRIST_FRAME_HEIGHT * 4; // RGBA

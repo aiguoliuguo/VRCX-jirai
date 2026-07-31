@@ -39,7 +39,7 @@ public class OverlayServer
         try
         {
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:34582/");
+            listener.Prefixes.Add("http://127.0.0.1:34583/");
             listener.Start();
             logger.Info("Overlay IPC server started");
             while (_cancellationToken != null && !_cancellationToken.IsCancellationRequested)

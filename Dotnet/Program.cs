@@ -27,7 +27,7 @@ namespace VRCX
         {
             if (string.IsNullOrEmpty(AppDataDirectory))
                 AppDataDirectory = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "VRCX");
+                    "VRCX-Jirai");
 
             BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             ConfigLocation = Path.Join(AppDataDirectory, "VRCX.sqlite3");

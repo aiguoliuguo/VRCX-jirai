@@ -44,7 +44,7 @@ if (!isDotNetInstalled()) {
     });
 }
 
-const VRCX_URI_PREFIX = 'vrcx';
+const VRCX_URI_PREFIX = 'vrcx-jirai';
 let isOverlayActive = false;
 let appIsQuitting = false;
 const rootDir = app.getAppPath();
@@ -77,7 +77,6 @@ if (process.defaultApp && process.platform !== 'win32') {
 const version = getVersion();
 const homePath = getHomePath();
 tryRelaunchWithArgs(args);
-tryCopyFromWinePrefix();
 const userDataPath = getElectronUserDataPath();
 console.log('Electron userData path:', userDataPath);
 if (!fs.existsSync(userDataPath)) {
@@ -106,7 +105,7 @@ const OVERLAY_SHARED_WIDTH = Math.max(
     OVERLAY_HMD_FRAME_WIDTH
 );
 const OVERLAY_FRAME_SIZE = OVERLAY_SHARED_WIDTH * OVERLAY_SHARED_HEIGHT * 4;
-const OVERLAY_SHM_PATH = '/dev/shm/vrcx_overlay';
+const OVERLAY_SHM_PATH = '/dev/shm/vrcx_jirai_overlay';
 const overlayFrameBuffer = Buffer.alloc(OVERLAY_FRAME_SIZE + 1);
 let activeNotification = null;
 
@@ -459,7 +458,7 @@ function createOverlayWindowOffscreen() {
         frame: false,
         show: false,
         webPreferences: {
-            partition: 'vrcx-vr-overlay',
+            partition: 'vrcx-jirai-vr-overlay',
             offscreen: true,
             preload: path.join(__dirname, 'preload.js')
         }
@@ -496,7 +495,6 @@ function writeOverlayFrame(imageBuffer) {
         }
     }
 }
-
 
 function destroyTray() {
     if (tray) {
@@ -581,13 +579,13 @@ async function installVRCX() {
         return;
     }
 
-    // rename AppImage to VRCX.AppImage
+    // Keep the Jirai AppImage separate from the upstream installation.
     const currentName = path.basename(appImagePath);
-    const expectedName = 'VRCX.AppImage';
+    const expectedName = 'VRCX-Jirai.AppImage';
     if (currentName !== expectedName) {
         const newPath = path.join(path.dirname(appImagePath), expectedName);
         try {
-            // remove existing VRCX.AppImage
+            // remove existing VRCX-Jirai.AppImage
             if (fs.existsSync(newPath)) {
                 fs.unlinkSync(newPath);
             }
@@ -602,7 +600,7 @@ async function installVRCX() {
     }
 
     // ask to move AppImage to ~/Applications
-    const appImageHomePath = `${homePath}/Applications/VRCX.AppImage`;
+    const appImageHomePath = `${homePath}/Applications/VRCX-Jirai.AppImage`;
     if (!hasAskedToMoveAppImage && appImagePath !== appImageHomePath) {
         const result = dialog.showMessageBoxSync(mainWindow, {
             type: 'question',
@@ -625,7 +623,7 @@ async function installVRCX() {
                 if (!fs.existsSync(applicationsPath)) {
                     fs.mkdirSync(applicationsPath);
                 }
-                // remove existing VRCX.AppImage
+                // remove existing VRCX-Jirai.AppImage
                 if (fs.existsSync(appImageHomePath)) {
                     fs.unlinkSync(appImageHomePath);
                 }
@@ -655,7 +653,7 @@ async function createDesktopFile() {
     }
 
     // Download the icon and save it to the target directory
-    const iconPath = path.join(homePath, '.local/share/icons/VRCX.png');
+    const iconPath = path.join(homePath, '.local/share/icons/VRCX-Jirai.png');
     if (!fs.existsSync(iconPath) || fs.statSync(iconPath).size === 0) {
         const iconDir = path.dirname(iconPath);
         if (!fs.existsSync(iconDir)) {
@@ -676,20 +674,20 @@ async function createDesktopFile() {
     // Create the desktop file
     const desktopFilePath = path.join(
         homePath,
-        '.local/share/applications/VRCX.desktop'
+        '.local/share/applications/VRCX-Jirai.desktop'
     );
 
     const dotDesktop = {
-        Name: 'VRCX',
+        Name: 'VRCX-Jirai',
         Version: version,
         Comment: 'Friendship management tool for VRChat',
         Exec: `${appImagePath} --ozone-platform-hint=auto %U`,
-        Icon: 'VRCX',
+        Icon: 'VRCX-Jirai',
         Type: 'Application',
         Categories: 'Network;InstantMessaging;Game;',
         Terminal: 'false',
-        StartupWMClass: 'VRCX',
-        MimeType: 'x-scheme-handler/vrcx;'
+        StartupWMClass: 'VRCX-Jirai',
+        MimeType: 'x-scheme-handler/vrcx-jirai;'
     };
     const desktopFile =
         '[Desktop Entry]\n' +
@@ -714,7 +712,7 @@ async function createDesktopFile() {
 
             const result = spawnSync(
                 'xdg-mime',
-                ['default', 'VRCX.desktop', 'x-scheme-handler/vrcx'],
+                ['default', 'VRCX-Jirai.desktop', 'x-scheme-handler/vrcx-jirai'],
                 {
                     encoding: 'utf-8'
                 }
@@ -722,7 +720,7 @@ async function createDesktopFile() {
             if (result.error) {
                 console.error('Error setting MIME type:', result.error);
             } else {
-                console.log('MIME type set x-scheme-handler/vrcx');
+                console.log('MIME type set x-scheme-handler/vrcx-jirai');
             }
         }
     } catch (err) {
@@ -764,7 +762,7 @@ function getElectronUserDataPath() {
     if (process.platform === 'darwin') {
         return path.join(
             process.env.HOME,
-            'Library/Caches/VRCX',
+            'Library/Caches/VRCX-Jirai',
             electronUserData
         );
     }
@@ -773,21 +771,21 @@ function getElectronUserDataPath() {
     if (!cacheHome) {
         cacheHome = path.join(process.env.HOME, '.cache');
     }
-    return path.join(cacheHome, 'VRCX', electronUserData);
+    return path.join(cacheHome, 'VRCX-Jirai', electronUserData);
 }
 
 function getVRCXPath() {
     if (process.platform === 'win32') {
-        return path.join(process.env.APPDATA, 'VRCX');
+        return path.join(process.env.APPDATA, 'VRCX-Jirai');
     } else if (process.platform === 'darwin') {
-        return path.join(process.env.HOME, 'Library/Application Support/VRCX');
+        return path.join(process.env.HOME, 'Library/Application Support/VRCX-Jirai');
     }
     // Linux or other
     let configHome = process.env.XDG_CONFIG_HOME;
     if (!configHome) {
         configHome = path.join(process.env.HOME, '.config');
     }
-    return path.join(configHome, 'VRCX');
+    return path.join(configHome, 'VRCX-Jirai');
 }
 
 function getHomePath() {
@@ -846,40 +844,6 @@ function isDotNetInstalled() {
         return false;
     }
     return result.stdout?.includes('.NETCore.App 9.0');
-}
-
-function tryCopyFromWinePrefix() {
-    try {
-        if (!fs.existsSync(getVRCXPath())) {
-            // try copy from old wine path
-            const userName = process.env.USER || process.env.USERNAME;
-            const oldPath = path.join(
-                homePath,
-                '.local/share/vrcx/drive_c/users',
-                userName,
-                'AppData/Roaming/VRCX'
-            );
-            const newPath = getVRCXPath();
-            if (fs.existsSync(oldPath)) {
-                fs.mkdirSync(newPath, { recursive: true });
-                const files = fs.readdirSync(oldPath);
-                for (const file of files) {
-                    const oldFilePath = path.join(oldPath, file);
-                    const newFilePath = path.join(newPath, file);
-                    if (fs.lstatSync(oldFilePath).isDirectory()) {
-                        continue;
-                    }
-                    fs.copyFileSync(oldFilePath, newFilePath);
-                }
-            }
-        }
-    } catch (err) {
-        console.error('Error copying from wine prefix:', err);
-        dialog.showErrorBox(
-            'VRCX',
-            'Failed to copy database from wine prefix.'
-        );
-    }
 }
 
 function applyWindowState() {

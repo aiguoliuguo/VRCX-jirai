@@ -106,8 +106,8 @@ namespace VRCX
             public const string Overlay = "--overlay";
             public bool IsOverlay { get; set; } = false;
 
-            public const string LaunchCommandPrefix = "/uri=vrcx://";
-            public const string LinuxLaunchCommandPrefix = "vrcx://";
+            public const string LaunchCommandPrefix = "/uri=vrcx-jirai://";
+            public const string LinuxLaunchCommandPrefix = "vrcx-jirai://";
             public string LaunchCommand { get; set; } = null;
 
             public const string ConfigDirectoryPrefix = "--config";

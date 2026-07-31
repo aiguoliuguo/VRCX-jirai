@@ -436,7 +436,7 @@
                     "disable_gpu_acceleration_tooltip": "Zmieniaj to ustawienie tylko, jeżeli wiesz co robisz. Może pomóc z błędami UI. Wymaga restartu VRCX",
                     "disable_vr_overlay_gpu_acceleration": "Wyłącz akcelerację GPU nakładki VR",
                     "proxy": "Ustawienia proxy",
-                    "startup_linux": "Dodaj argument \"--startup\" dop pliku VRCX.desktop, aby uruchamiać VRCX po starcie systemu"
+                    "startup_linux": "Dodaj argument \"--startup\" dop pliku VRCX-Jirai.desktop, aby uruchamiać VRCX-Jirai po starcie systemu"
                 },
                 "favorites": {
                     "header": "Ulubieni znajomi VRCX",

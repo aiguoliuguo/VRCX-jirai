@@ -105,7 +105,7 @@ describe('appActions utils', () => {
 
     test('openExternalLink returns early when direct access parse succeeds', async () => {
         mocks.searchStore.directAccessParse.mockReturnValue(true);
-        openExternalLink('vrcx://user/usr_1');
+        openExternalLink('vrcx-jirai://user/usr_1');
         await flushPromises();
         expect(mocks.modalStore.confirm).not.toHaveBeenCalled();
         expect(AppApi.OpenLink).not.toHaveBeenCalled();

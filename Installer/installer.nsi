@@ -173,9 +173,9 @@ Section "Install" SecInstall
     WriteUninstaller "$INSTDIR\Uninstall.exe"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "DisplayName" "VRCX-Jirai"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "Publisher" "FuLuTang"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX" "DisplayVersion" "${VERSION}"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX" "DisplayArch" "x64"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX" "InstallLocation" "$INSTDIR"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "DisplayVersion" "${VERSION}"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "DisplayArch" "x64"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "InstallLocation" "$INSTDIR"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai" "DisplayIcon" "$\"$INSTDIR\VRCX.ico$\""
 
@@ -187,14 +187,14 @@ Section "Install" SecInstall
     ${GetOptions} $R2 /SKIP_SHORTCUT= $3
     StrCmp $3 "true" noShortcut
         CreateShortCut "$SMPROGRAMS\VRCX-Jirai.lnk" "$INSTDIR\VRCX-Jirai.exe"
-        ApplicationID::Set "$SMPROGRAMS\VRCX-Jirai.lnk" "VRCX-Jirai"
+        ApplicationID::Set "$SMPROGRAMS\VRCX-Jirai.lnk" "app.vrcx.jirai"
     noShortcut:
 
     WriteRegStr HKCU "Software\Classes\vrcx-jirai" "" "URL:vrcx-jirai"
     WriteRegStr HKCU "Software\Classes\vrcx-jirai" "FriendlyTypeName" "VRCX-Jirai"
-    WriteRegStr HKCU "Software\Classes\vrcx" "URL Protocol" ""
-    WriteRegExpandStr HKCU "Software\Classes\vrcx\DefaultIcon" "" "$INSTDIR\VRCX.ico"
-    WriteRegStr HKCU "Software\Classes\vrcx\shell" "" "open"
+    WriteRegStr HKCU "Software\Classes\vrcx-jirai" "URL Protocol" ""
+    WriteRegExpandStr HKCU "Software\Classes\vrcx-jirai\DefaultIcon" "" "$INSTDIR\VRCX.ico"
+    WriteRegStr HKCU "Software\Classes\vrcx-jirai\shell" "" "open"
     WriteRegStr HKCU "Software\Classes\vrcx-jirai\shell\open" "FriendlyAppName" "VRCX-Jirai"
     WriteRegStr HKCU "Software\Classes\vrcx-jirai\shell\open\command" "" '"$INSTDIR\VRCX-Jirai.exe" /uri="%1" /params="%2 %3 %4"'
 SectionEnd
@@ -217,9 +217,10 @@ Section "Uninstall"
     DeleteRegKey HKLM "Software\VRCX-Jirai"
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VRCX-Jirai"
     DeleteRegKey HKCU "Software\Classes\vrcx-jirai"
+    DeleteRegValue HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "VRCX-Jirai"
 
     ${IfNot} ${Silent}
-        Delete "$SMPROGRAMS\VRCX.lnk"
+        Delete "$SMPROGRAMS\VRCX-Jirai.lnk"
         Delete "$DESKTOP\VRCX-Jirai.lnk"
     ${EndIf}
 SectionEnd

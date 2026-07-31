@@ -784,7 +784,7 @@
                     "disable_gpu_acceleration_tooltip": "僅在你確切知道自己在做什麼的情況下變更此選項，可能會導致 SteamVR 嵌入介面無法正常運作，但可能可以解決 UI 問題，需要重新啟動 VRCX",
                     "disable_vr_overlay_gpu_acceleration": "停用 VR 嵌入介面 GPU 加速",
                     "proxy": "代理設定",
-                    "startup_linux": "在啟動 VRCX.desktop 檔案中加入「--startup/」命令，以在系統啟動時最小化啟動 VRCX"
+                    "startup_linux": "在啟動 VRCX-Jirai.desktop 檔案中加入「--startup/」命令，以在系統啟動時最小化啟動 VRCX-Jirai"
                 },
                 "favorites": {
                     "header": "VRCX 最愛好友",
