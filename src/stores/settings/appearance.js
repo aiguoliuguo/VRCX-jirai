@@ -118,7 +118,6 @@ export const useAppearanceSettingsStore = defineStore(
 
         const isDataTableStriped = ref(false);
         const accessibleStatusIndicators = ref(false);
-        const useOfficialStatusColors = ref(true);
         const showNewDashboardButton = ref(true);
         const tableLimitsDialog = ref({
             visible: false,
@@ -180,7 +179,6 @@ export const useAppearanceSettingsStore = defineStore(
                 navIsCollapsedConfig,
                 dataTableStripedConfig,
                 accessibleStatusIndicatorsConfig,
-                useOfficialStatusColorsConfig,
                 showNewDashboardButtonConfig,
                 appFontFamilyConfig,
                 customFontFamilyConfig,
@@ -255,7 +253,6 @@ export const useAppearanceSettingsStore = defineStore(
                     'VRCX_accessibleStatusIndicators',
                     false
                 ),
-                configRepository.getBool('VRCX_useOfficialStatusColors', true),
                 configRepository.getBool('VRCX_showNewDashboardButton', true),
                 configRepository.getString(
                     'VRCX_fontFamily',
@@ -375,11 +372,9 @@ export const useAppearanceSettingsStore = defineStore(
             isNavCollapsed.value = navIsCollapsedConfig;
             isDataTableStriped.value = dataTableStripedConfig;
             accessibleStatusIndicators.value = accessibleStatusIndicatorsConfig;
-            useOfficialStatusColors.value = useOfficialStatusColorsConfig;
             showNewDashboardButton.value = showNewDashboardButtonConfig;
 
             applyAccessibleStatusClass();
-            applyOfficialStatusColorsClass();
 
             await configRepository.remove('VRCX_navWidth');
 
@@ -962,30 +957,6 @@ export const useAppearanceSettingsStore = defineStore(
         /**
          *
          */
-        function applyOfficialStatusColorsClass() {
-            const classList = document.documentElement.classList;
-            classList.remove('vrcx-status-colors');
-
-            if (!useOfficialStatusColors.value) {
-                classList.add('vrcx-status-colors');
-            }
-        }
-
-        /**
-         *
-         */
-        function toggleOfficialStatusColors() {
-            useOfficialStatusColors.value = !useOfficialStatusColors.value;
-            configRepository.setBool(
-                'VRCX_useOfficialStatusColors',
-                useOfficialStatusColors.value
-            );
-            applyOfficialStatusColorsClass();
-        }
-
-        /**
-         *
-         */
         function setShowNewDashboardButton() {
             showNewDashboardButton.value = !showNewDashboardButton.value;
             configRepository.setBool(
@@ -1229,7 +1200,6 @@ export const useAppearanceSettingsStore = defineStore(
             isNavCollapsed,
             isDataTableStriped,
             accessibleStatusIndicators,
-            useOfficialStatusColors,
             showNewDashboardButton,
             tableLimitsDialog,
             TABLE_MAX_SIZE_MIN,
@@ -1266,7 +1236,6 @@ export const useAppearanceSettingsStore = defineStore(
             setRandomUserColours,
             toggleStripedDataTable,
             toggleAccessibleStatusIndicators,
-            toggleOfficialStatusColors,
             setShowNewDashboardButton,
             setTableDensity,
             setTrustColor,

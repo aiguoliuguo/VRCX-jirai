@@ -890,8 +890,6 @@
                     "toggle_pointer_on_hover_description": "對所有可點擊的元素始終顯示指標游標。",
                     "accessible_status_indicators": "無障礙狀態指示器",
                     "accessible_status_indicators_description": "除了顏色外，也使用形狀來區分不同狀態。",
-                    "use_official_status_colors": "使用官方狀態顏色",
-                    "use_official_status_colors_description": "與 VRChat 官方的狀態顏色保持一致。",
                     "table_density": "表格密度",
                     "table_density_standard": "標準",
                     "table_density_comfortable": "舒適",
@@ -3075,7 +3073,7 @@
                 "support": "支援 VRCX"
             },
             "releases": {
-                "2026_04_05": {
+                "2026_05_03": {
                     "title": "探索新功能",
                     "subtitle": "一些你可能沒有注意到的有用功能",
                     "items": {

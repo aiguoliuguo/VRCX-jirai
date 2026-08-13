@@ -20,13 +20,15 @@
                                         variant="outline"
                                         size="sm"
                                         :model-value="friendsListSearchFilterVIP"
+                                        :ariaLabel="t('view.friend_list.favorites_only_tooltip')"
                                         @update:modelValue="
                                             (v) => {
                                                 friendsListSearchFilterVIP = v;
                                                 friendsListSearchChange();
                                             }
                                         ">
-                                        <Star />
+                                        <Star fill="currentColor" v-if="friendsListSearchFilterVIP" />
+                                        <Star v-else />
                                     </Toggle>
                                 </div>
                             </TooltipWrapper>
@@ -75,6 +77,7 @@
                                 <span class="name mr-2 text-xs">{{ t('view.friend_list.bulk_unfriend') }}</span>
                                 <Switch
                                     v-model="friendsListBulkUnfriendMode"
+                                    :ariaLabel="t('view.friend_list.bulk_unfriend')"
                                     @update:modelValue="toggleFriendsListBulkUnfriendMode" />
                             </div>
                             <div class="flex items-center">

@@ -14,7 +14,8 @@
                             <ToggleGroupItem
                                 value="sessions"
                                 class="px-2"
-                                :class="sessionsViewMode === 'sessions' && 'bg-accent text-accent-foreground'">
+                                :class="sessionsViewMode === 'sessions' && 'bg-accent text-accent-foreground'"
+                                :ariaLabel="t('view.game_log.sessions.switch_to_sessions')">
                                 <Logs class="size-4" />
                             </ToggleGroupItem>
                         </TooltipWrapper>
@@ -22,7 +23,8 @@
                             <ToggleGroupItem
                                 value="table"
                                 class="px-2"
-                                :class="sessionsViewMode === 'table' && 'bg-accent text-accent-foreground'">
+                                :class="sessionsViewMode === 'table' && 'bg-accent text-accent-foreground'"
+                                :ariaLabel="t('view.game_log.sessions.switch_to_table')">
                                 <Table2 class="size-4" />
                             </ToggleGroupItem>
                         </TooltipWrapper>
@@ -53,7 +55,8 @@
                                     <ToggleGroupItem
                                         value="sessions"
                                         class="px-2"
-                                        :class="sessionsViewMode === 'sessions' && 'bg-accent text-accent-foreground'">
+                                        :class="sessionsViewMode === 'sessions' && 'bg-accent text-accent-foreground'"
+                                        :ariaLabel="t('view.game_log.sessions.switch_to_sessions')">
                                         <Logs class="size-4" />
                                     </ToggleGroupItem>
                                 </TooltipWrapper>
@@ -61,7 +64,8 @@
                                     <ToggleGroupItem
                                         value="table"
                                         class="px-2"
-                                        :class="sessionsViewMode === 'table' && 'bg-accent text-accent-foreground'">
+                                        :class="sessionsViewMode === 'table' && 'bg-accent text-accent-foreground'"
+                                        :ariaLabel="t('view.game_log.sessions.switch_to_table')">
                                         <Table2 class="size-4" />
                                     </ToggleGroupItem>
                                 </TooltipWrapper>
@@ -72,13 +76,15 @@
                                         variant="outline"
                                         size="sm"
                                         :model-value="gameLogTable.vip"
+                                        :ariaLabel="t('view.feed.favorites_only_tooltip')"
                                         @update:modelValue="
                                             (v) => {
                                                 gameLogTable.vip = v;
                                                 gameLogTableLookup();
                                             }
                                         ">
-                                        <Star />
+                                        <Star fill="currentColor" v-if="gameLogTable.vip" />
+                                        <Star v-else />
                                     </Toggle>
                                 </div>
                             </TooltipWrapper>
@@ -216,7 +222,7 @@
      * @param row
      */
     function getGameLogRowId(row) {
-        if (row?.rowId != null) return `row:${row.rowId}`;
+        if (row?.rowId != null) return `row:${row.rowId}:${row?.type ?? ''}`;
 
         const type = row?.type ?? '';
         const createdAt = row?.created_at ?? row?.createdAt ?? row?.dt ?? '';
@@ -224,7 +230,7 @@
         const displayName = row?.displayName ?? '';
         const location = row?.location ?? '';
 
-        return `${type}:${createdAt}:${userId}:${displayName}:${location}`;
+        return `${type}:${createdAt}:${userId}:${displayName}:${location}:${Date.now()}`;
     }
 
     const { table, pagination } = useVrcxVueTable({

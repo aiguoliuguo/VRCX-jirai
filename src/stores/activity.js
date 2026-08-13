@@ -131,6 +131,13 @@ export const useActivityStore = defineStore('Activity', () => {
     let fullCacheBuildRunning = false;
     let fullCacheBuildAborted = false;
 
+    const userActivity = ref({
+        lastLoadedUserId: '',
+        activeRequestId: 0,
+        activeOverlapRequestId: 0,
+        activeTopWorldsRequestId: 0
+    });
+
     async function getCache(userId, isSelf = false) {
         const snapshot = await hydrateSnapshot(userId, isSelf);
         return {
@@ -262,27 +269,29 @@ export const useActivityStore = defineStore('Activity', () => {
         );
 
         let view = targetSnapshot.overlapViews.get(cacheKey);
-        if (view?.builtFromCursor === cursor) {
+        if (!forceRefresh && view?.builtFromCursor === cursor) {
             return view;
         }
 
-        const persisted = await database.getActivityBucketCacheV2({
-            ownerUserId: currentUserId,
-            targetUserId,
-            rangeDays,
-            viewKind: database.ACTIVITY_VIEW_KIND.OVERLAP,
-            excludeKey
-        });
-        if (persisted?.builtFromCursor === cursor) {
-            view = {
-                ...persisted.summary,
-                rawBuckets: persisted.rawBuckets,
-                normalizedBuckets: persisted.normalizedBuckets,
-                builtFromCursor: persisted.builtFromCursor,
-                builtAt: persisted.builtAt
-            };
-            targetSnapshot.overlapViews.set(cacheKey, view);
-            return view;
+        if (!forceRefresh) {
+            const persisted = await database.getActivityBucketCacheV2({
+                ownerUserId: currentUserId,
+                targetUserId,
+                rangeDays,
+                viewKind: database.ACTIVITY_VIEW_KIND.OVERLAP,
+                excludeKey
+            });
+            if (persisted?.builtFromCursor === cursor) {
+                view = {
+                    ...persisted.summary,
+                    rawBuckets: persisted.rawBuckets,
+                    normalizedBuckets: persisted.normalizedBuckets,
+                    builtFromCursor: persisted.builtFromCursor,
+                    builtAt: persisted.builtAt
+                };
+                targetSnapshot.overlapViews.set(cacheKey, view);
+                return view;
+            }
         }
 
         view = await workerCall('computeOverlapView', {
@@ -509,6 +518,7 @@ export const useActivityStore = defineStore('Activity', () => {
         getCache,
         getCachedDays,
         isRefreshing,
+        userActivity,
         loadActivity,
         loadActivityView,
         loadOverlap,

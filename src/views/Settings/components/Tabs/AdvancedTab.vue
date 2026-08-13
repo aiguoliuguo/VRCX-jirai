@@ -4,27 +4,39 @@
             <SettingsItem
                 :label="t('view.settings.advanced.advanced.relaunch_vrchat.header')"
                 :description="t('view.settings.advanced.advanced.relaunch_vrchat.description')">
-                <Switch :model-value="relaunchVRChatAfterCrash" @update:modelValue="setRelaunchVRChatAfterCrash" />
+                <Switch
+                    :model-value="relaunchVRChatAfterCrash"
+                    :ariaLabel="t('view.settings.advanced.advanced.relaunch_vrchat.header')"
+                    @update:modelValue="setRelaunchVRChatAfterCrash" />
             </SettingsItem>
 
             <SettingsItem
                 :label="t('view.settings.advanced.advanced.vrchat_quit_fix.header')"
                 :description="t('view.settings.advanced.advanced.vrchat_quit_fix.description')">
-                <Switch :model-value="vrcQuitFix" @update:modelValue="setVrcQuitFix" />
+                <Switch
+                    :model-value="vrcQuitFix"
+                    :ariaLabel="t('view.settings.advanced.advanced.vrchat_quit_fix.header')"
+                    @update:modelValue="setVrcQuitFix" />
             </SettingsItem>
 
             <SettingsItem
                 :label="t('view.settings.advanced.advanced.auto_cache_management.header')"
                 :description="t('view.settings.advanced.advanced.auto_cache_management.description')">
-                <Switch :model-value="autoSweepVRChatCache" @update:modelValue="setAutoSweepVRChatCache" />
+                <Switch
+                    :model-value="autoSweepVRChatCache"
+                    :ariaLabel="t('view.settings.advanced.advanced.auto_cache_management.header')"
+                    @update:modelValue="setAutoSweepVRChatCache" />
             </SettingsItem>
 
             <SettingsItem
                 :label="t('view.settings.advanced.advanced.self_invite.header')"
                 :description="t('view.settings.advanced.advanced.self_invite.description')">
-                <Switch :model-value="selfInviteOverride" @update:modelValue="setSelfInviteOverride" />
+                <Switch
+                    :model-value="selfInviteOverride"
+                    :ariaLabel="t('view.settings.advanced.advanced.self_invite.header')"
+                    @update:modelValue="setSelfInviteOverride" />
             </SettingsItem>
-            
+
             <SettingsItem :label="t('view.settings.advanced.advanced.auto_join_group_certification.header')">
                 <Switch :model-value="autoJoinGroupCertification" @update:modelValue="setAutoJoinGroupCertification" />
             </SettingsItem>
@@ -37,25 +49,38 @@
                 <Switch
                     :model-value="enablePrimaryPassword"
                     :disabled="!enablePrimaryPassword"
+                    :ariaLabel="t('view.settings.advanced.advanced.primary_password.header')"
                     @update:modelValue="enablePrimaryPasswordChange" />
             </SettingsItem>
         </SettingsGroup>
 
         <SettingsGroup :title="t('view.settings.general.logging.header')">
             <SettingsItem :label="t('view.settings.advanced.advanced.cache_debug.udon_exception_logging')">
-                <Switch :model-value="udonExceptionLogging" @update:modelValue="setUdonExceptionLogging" />
+                <Switch
+                    :model-value="udonExceptionLogging"
+                    :ariaLabel="t('view.settings.advanced.advanced.cache_debug.udon_exception_logging')"
+                    @update:modelValue="setUdonExceptionLogging" />
             </SettingsItem>
 
             <SettingsItem :label="t('view.settings.general.logging.resource_load')">
-                <Switch :model-value="logResourceLoad" @update:modelValue="setLogResourceLoad" />
+                <Switch
+                    :model-value="logResourceLoad"
+                    :ariaLabel="t('view.settings.general.logging.resource_load')"
+                    @update:modelValue="setLogResourceLoad" />
             </SettingsItem>
 
             <SettingsItem :label="t('view.settings.general.logging.empty_avatar')">
-                <Switch :model-value="logEmptyAvatars" @update:modelValue="setLogEmptyAvatars" />
+                <Switch
+                    :model-value="logEmptyAvatars"
+                    :ariaLabel="t('view.settings.general.logging.empty_avatar')"
+                    @update:modelValue="setLogEmptyAvatars" />
             </SettingsItem>
 
             <SettingsItem :label="t('view.settings.general.logging.auto_login_delay')">
-                <Switch :model-value="autoLoginDelayEnabled" @update:modelValue="setAutoLoginDelayEnabled" />
+                <Switch
+                    :model-value="autoLoginDelayEnabled"
+                    :ariaLabel="t('view.settings.general.logging.auto_login_delay')"
+                    @update:modelValue="setAutoLoginDelayEnabled" />
             </SettingsItem>
 
             <SettingsItem
@@ -78,18 +103,23 @@
                 <SettingsItem
                     :label="t('view.settings.advanced.advanced.remote_database.enable')"
                     :description="t('view.settings.advanced.advanced.app_launcher.folder_tooltip')">
-                    <Switch :model-value="enableAppLauncher" @update:modelValue="setEnableAppLauncher" />
+                    <Switch
+                        :model-value="enableAppLauncher"
+                        :ariaLabel="t('view.settings.advanced.advanced.remote_database.enable')"
+                        @update:modelValue="setEnableAppLauncher" />
                 </SettingsItem>
 
                 <SettingsItem :label="t('view.settings.advanced.advanced.app_launcher.auto_close')">
                     <Switch
                         :model-value="enableAppLauncherAutoClose"
+                        :ariaLabel="t('view.settings.advanced.advanced.app_launcher.auto_close')"
                         @update:modelValue="setEnableAppLauncherAutoClose" />
                 </SettingsItem>
 
                 <SettingsItem :label="t('view.settings.advanced.advanced.app_launcher.run_process_once')">
                     <Switch
                         :model-value="enableAppLauncherRunProcessOnce"
+                        :ariaLabel="t('view.settings.advanced.advanced.app_launcher.run_process_once')"
                         @update:modelValue="setEnableAppLauncherRunProcessOnce" />
                 </SettingsItem>
             </SettingsGroup>
@@ -103,6 +133,9 @@
                 ">
                 <Switch
                     :model-value="showConfirmationOnSwitchAvatar"
+                    :ariaLabel="
+                        t('view.settings.advanced.advanced.launch_commands.show_confirmation_on_switch_avatar_enable')
+                    "
                     @update:modelValue="setShowConfirmationOnSwitchAvatar" />
             </SettingsItem>
 
@@ -110,7 +143,7 @@
                 <Button
                     size="sm"
                     variant="outline"
-                    @click="openExternalLink('https://github.com/FuLuTang/VRCX-jirai/wiki/Launch-parameters-&-VRCX.json')"
+                    @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/wiki/Launch-parameters-&-VRCX.json')"
                     >{{ t('view.settings.advanced.advanced.launch_commands.docs') }}</Button
                 >
                 <Button
@@ -137,7 +170,10 @@
 
             <SettingsItem
                 :label="`${t('view.settings.advanced.advanced.cache_debug.disable_gamelog')} ${t('view.settings.advanced.advanced.cache_debug.disable_gamelog_notice')}`">
-                <Switch :model-value="gameLogDisabled" @update:modelValue="disableGameLogDialog()" />
+                <Switch
+                    :model-value="gameLogDisabled"
+                    :ariaLabel="t('view.settings.advanced.advanced.cache_debug.disable_gamelog')"
+                    @update:modelValue="disableGameLogDialog()" />
             </SettingsItem>
 
             <div class="flex flex-col gap-1 text-sm">

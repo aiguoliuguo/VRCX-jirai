@@ -31,6 +31,13 @@
         }
     }
 
+    async function syncVisibleResults() {
+        if (!filterState.search) return;
+
+        await nextTick();
+        overrideFilter();
+    }
+
     watch(
         () => filterState.search,
         async (value) => {
@@ -39,11 +46,13 @@
             // Override the built-in Command filter for all queries.
             // The Worker already handles confusable-character normalization
             // and locale-aware matching; the Command's built-in useFilter
-            // would otherwise hide results that the Worker correctly matched via confusables.
-            if (value) {
-                await nextTick();
-                overrideFilter();
-            }
+            // (which uses a plain Intl.Collator) would otherwise hide
+            // results that the Worker correctly matched via confusables.
+            await syncVisibleResults();
         }
     );
+
+    watch([() => allItems.value.size, () => allGroups.value.size], async () => {
+        await syncVisibleResults();
+    });
 </script>

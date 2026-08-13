@@ -31,6 +31,7 @@ import { useGeneralSettingsStore } from './settings/general';
 import { useGroupStore } from './group';
 import { useLocationStore } from './location';
 import { useUserStore } from './user';
+import { useDashboardStore } from './dashboard';
 import { watchState } from '../services/watchState';
 import { accountHub } from '../services/accountHub';
 
@@ -44,6 +45,7 @@ export const useFriendStore = defineStore('Friend', () => {
     const userStore = useUserStore();
     const groupStore = useGroupStore();
     const locationStore = useLocationStore();
+    const dashboardStore = useDashboardStore();
 
     const router = useRouter();
     const t = i18n.global.t;
@@ -292,15 +294,18 @@ export const useFriendStore = defineStore('Friend', () => {
     });
 
     watch(
-        router.currentRoute,
-        (value) => {
-            if (value.name === 'friend-log') {
+        [router.currentRoute, () => dashboardStore.dashboards],
+        ([value]) => {
+            const isDashboardPanel =
+                value.name === 'dashboard' &&
+                dashboardStore.getDashboard(value.params.id, 'friend-log');
+            if (value.name === 'friend-log' || isDashboardPanel) {
                 initFriendLogHistoryTable();
             } else {
                 friendLogTable.value.data = [];
             }
         },
-        { immediate: true }
+        { immediate: true, deep: true }
     );
 
     const vipFriends = computed(() => {

@@ -10,7 +10,7 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-0.5 px-1 py-1 cursor-pointer" @click="openExternalLink('https://github.com/FuLuTang/VRCX-jirai/releases')">
+            <div class="flex flex-col gap-0.5 px-1 py-1 cursor-pointer" @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')">
                 <div class="flex-1">
                     <span class="block truncate font-medium text-sm leading-[18px]">{{
                         t('view.settings.general.general.latest_app_version')
@@ -47,7 +47,7 @@
                 <Button size="sm" variant="outline" @click="showChangeLogDialog">{{
                     t('view.settings.general.vrcx_updater.change_log')
                 }}</Button>
-                <Button v-if="!noUpdater" size="sm" variant="outline" @click="openExternalLink('https://github.com/FuLuTang/VRCX-jirai/releases')">{{
+                <Button v-if="!noUpdater" size="sm" variant="outline" @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')">{{
                     t('view.settings.general.vrcx_updater.change_build')
                 }}</Button>
             </div>
@@ -79,28 +79,43 @@
 
         <SettingsGroup :title="t('view.settings.general.application.header')">
             <SettingsItem v-if="!isLinux" :label="t('view.settings.general.application.startup')">
-                <Switch :model-value="isStartAtWindowsStartup" @update:modelValue="setIsStartAtWindowsStartup" />
+                <Switch
+                    :model-value="isStartAtWindowsStartup"
+                    :ariaLabel="t('view.settings.general.application.startup')"
+                    @update:modelValue="setIsStartAtWindowsStartup" />
             </SettingsItem>
 
             <SettingsItem v-if="!isLinux" :label="t('view.settings.general.application.minimized')">
-                <Switch :model-value="isStartAsMinimizedState" @update:modelValue="setIsStartAsMinimizedState" />
+                <Switch
+                    :model-value="isStartAsMinimizedState"
+                    :ariaLabel="t('view.settings.general.application.minimized')"
+                    @update:modelValue="setIsStartAsMinimizedState" />
             </SettingsItem>
             <SettingsItem
                 v-else
                 :label="t('view.settings.general.application.minimized')"
                 :description="t('view.settings.general.application.startup_linux')">
-                <Switch :model-value="isStartAsMinimizedState" @update:modelValue="setIsStartAsMinimizedState" />
+                <Switch
+                    :model-value="isStartAsMinimizedState"
+                    :ariaLabel="t('view.settings.general.application.minimized')"
+                    @update:modelValue="setIsStartAsMinimizedState" />
             </SettingsItem>
 
             <SettingsItem v-if="!isMacOS" :label="t('view.settings.general.application.tray')">
-                <Switch :model-value="isCloseToTray" @update:modelValue="setIsCloseToTray" />
+                <Switch
+                    :model-value="isCloseToTray"
+                    :ariaLabel="t('view.settings.general.application.tray')"
+                    @update:modelValue="setIsCloseToTray" />
             </SettingsItem>
 
             <SettingsItem
                 v-if="!isLinux"
                 :label="t('view.settings.general.application.disable_gpu_acceleration')"
                 :description="t('view.settings.general.application.disable_gpu_acceleration_tooltip')">
-                <Switch :model-value="disableGpuAcceleration" @update:modelValue="setDisableGpuAcceleration" />
+                <Switch
+                    :model-value="disableGpuAcceleration"
+                    :ariaLabel="t('view.settings.general.application.disable_gpu_acceleration')"
+                    @update:modelValue="setDisableGpuAcceleration" />
             </SettingsItem>
 
             <SettingsItem
@@ -122,10 +137,10 @@
         <SettingsGroup :title="t('view.settings.general.contributors.header')">
             <div>
                 <img
-                    src="https://contrib.rocks/image?repo=FuLuTang/VRCX-jirai"
+                    src="https://contrib.rocks/image?repo=aiguoliuguo/VRCX-jirai"
                     alt="Contributors"
                     class="cursor-pointer"
-                    @click="openExternalLink('https://github.com/FuLuTang/VRCX-jirai/graphs/contributors')" />
+                    @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/graphs/contributors')" />
             </div>
         </SettingsGroup>
 

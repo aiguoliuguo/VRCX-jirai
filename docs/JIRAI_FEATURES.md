@@ -303,7 +303,7 @@ watch(friendStore.friends, (friends) => {
 
 **文件**: `src/stores/vrcxUpdater.js` (修改)
 
-将更新检测 URL 改为指向 `FuLuTang/VRCX-jirai`。CI 配置 `.github/workflows/` 也相应调整。
+将更新检测 URL 改为指向 `aiguoliuguo/VRCX-jirai`。CI 配置 `.github/workflows/` 也相应调整。
 
 ---
 

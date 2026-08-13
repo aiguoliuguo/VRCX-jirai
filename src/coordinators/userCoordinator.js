@@ -657,14 +657,14 @@ export function showUserDialog(userId) {
                     });
                 D.visible = true;
                 userStore.applyUserDialogLocation(true);
-                
+
                 const manualRelationsStore = useManualRelationsStore();
                 const suggestions = manualRelationsStore.cachedSuggestions || [];
                 const ignoredKeys = manualRelationsStore.ignoredSuggestionKeys || new Set();
-                
-                const suggestionForThisUser = suggestions.find(s => 
-                    (s.userIdA === userId || s.userIdB === userId) && 
-                    !ignoredKeys.has(s.key) && 
+
+                const suggestionForThisUser = suggestions.find(s =>
+                    (s.userIdA === userId || s.userIdB === userId) &&
+                    !ignoredKeys.has(s.key) &&
                     !manualRelationsStore.isManualRelation(s.userIdA, s.userIdB)
                 );
 
@@ -698,7 +698,7 @@ export function showUserDialog(userId) {
                                     pb.style.backgroundColor = '#9ca3af';
                                     pb.style.opacity = '0.8';
                                 }
-                                
+
                                 const yesBtn = this.barDom.querySelector('.noty-btn-yes');
                                 if(yesBtn) {
                                     yesBtn.addEventListener('click', () => {
@@ -777,8 +777,6 @@ export async function refreshUserDialogAvatars(fileId) {
     if (fileId) {
         D.loading = true;
     }
-    D.avatarSorting = 'update';
-    D.avatarReleaseStatus = 'all';
     const params = {
         n: 50,
         offset: 0,

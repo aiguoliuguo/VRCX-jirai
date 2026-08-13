@@ -40,6 +40,8 @@
                                         'group.joinRequest',
                                         'group.transfer',
                                         'group.queueReady',
+                                        'group.event.created',
+                                        'group.event.starting',
                                         'moderation.warning.group',
                                         'moderation.report.closed',
                                         'moderation.contentrestriction',
@@ -65,6 +67,7 @@
                             size="icon-sm"
                             :disabled="isNotificationsLoading"
                             style="flex: none"
+                            :ariaLabel="t('view.notification.refresh_tooltip')"
                             @click="refreshNotifications()">
                             <Spinner v-if="isNotificationsLoading" />
                             <RefreshCw v-else />

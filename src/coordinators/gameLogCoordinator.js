@@ -276,7 +276,7 @@ export function addGameLogEntry(gameLog, location) {
 
             // 检查当前进房玩家是否与房间内的某人存在推荐关系
             if (manualRelationsStore.cachedSuggestions && manualRelationsStore.cachedSuggestions.length > 0) {
-                const suggestions = manualRelationsStore.cachedSuggestions.filter(s => 
+                const suggestions = manualRelationsStore.cachedSuggestions.filter(s =>
                     !manualRelationsStore.ignoredSuggestionKeys.has(s.key) &&
                     (s.userIdA === userId || s.userIdB === userId)
                 );
@@ -552,7 +552,6 @@ export function addGameLogEvent(json) {
  * Starts game log processing from the database tail.
  */
 export async function getGameLogTable() {
-    await database.initTables();
     const dateTill = await database.getLastDateGameLogDatabase();
     await updateGameLog(dateTill);
 }

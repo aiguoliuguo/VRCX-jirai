@@ -69,13 +69,15 @@
                                     variant="outline"
                                     size="sm"
                                     :model-value="feedTable.vip"
+                                    :ariaLabel="t('view.feed.favorites_only_tooltip')"
                                     @update:modelValue="
                                         (v) => {
                                             feedTable.vip = v;
                                             feedTableLookup();
                                         }
                                     ">
-                                    <Star />
+                                    <Star fill="currentColor" v-if="feedTable.vip" />
+                                    <Star v-else />
                                 </Toggle>
                             </div>
                         </TooltipWrapper>
@@ -259,8 +261,8 @@
      * @param row
      */
     function getFeedRowId(row) {
-        if (row?.id != null) return `id:${row.id}`;
-        if (row?.rowId != null) return `row:${row.rowId}`;
+        if (row?.id != null) return `id:${row.id}:${row?.type ?? ''}`;
+        if (row?.rowId != null) return `row:${row.rowId}:${row?.type ?? ''}`;
 
         const type = row?.type ?? '';
         const createdAt = row?.created_at ?? row?.createdAt ?? '';
@@ -268,7 +270,7 @@
         const location = row?.location ?? row?.details?.location ?? '';
         const message = row?.message ?? '';
 
-        return `${type}:${createdAt}:${userId}:${location}:${message}`;
+        return `${type}:${createdAt}:${userId}:${location}:${message}:${Date.now()}`;
     }
 
     const { table, pagination } = useVrcxVueTable({
@@ -355,4 +357,3 @@
         pointer-events: none;
     }
 </style>
-

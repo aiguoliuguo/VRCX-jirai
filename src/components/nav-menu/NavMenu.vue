@@ -283,7 +283,10 @@
     const customNavDialogVisible = ref(false);
 
     const hasNotifications = computed(() => notifiedMenus.value.length > 0);
-    const version = computed(() => appVersion.value?.split('VRCX ')?.[1] || '-');
+    const version = computed(
+        () =>
+            appVersion.value?.replace(/^VRCX(?:-Jirai)?(?: Nightly)?\s+/, '') || '-'
+    );
     const vrcxLogo = new URL('../../../images/VRCX.png', import.meta.url).href;
 
     const isEntryNotified = (entry) => checkEntryNotified(entry, notifiedMenus.value);
@@ -323,7 +326,7 @@
     };
 
     const openGithub = () => {
-        openExternalLink('https://github.com/FuLuTang/VRCX-jirai');
+        openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai');
     };
 
     const handleSupportLink = (id) => {
@@ -382,20 +385,20 @@
         navLayout.value = sanitized;
         navHiddenKeys.value = nextHiddenKeys;
         await saveNavLayout(sanitized, nextHiddenKeys);
+        await router.push({ name: 'dashboard', params: { id: dashboard.id } });
         dashboardStore.setEditingDashboardId(dashboard.id);
-        router.push({ name: 'dashboard', params: { id: dashboard.id } });
     };
 
-    const handleEditDashboard = (item) => {
+    const handleEditDashboard = async (item) => {
         if (!isDashboardItem(item)) {
             return;
         }
         const dashboardId = item.index.replace(DASHBOARD_NAV_KEY_PREFIX, '');
-        dashboardStore.setEditingDashboardId(dashboardId);
         const currentRoute = router.currentRoute.value;
         if (currentRoute?.name !== 'dashboard' || String(currentRoute?.params?.id || '') !== dashboardId) {
-            router.push({ name: 'dashboard', params: { id: dashboardId } });
+            await router.push({ name: 'dashboard', params: { id: dashboardId } });
         }
+        dashboardStore.setEditingDashboardId(dashboardId);
     };
 
     const handleDeleteDashboard = async (item) => {
@@ -425,7 +428,8 @@
 
     const handleDashboardCreated = async (dashboardId, layout, hiddenKeys) => {
         await handleCustomNavSave(layout, hiddenKeys);
-        router.push({ name: 'dashboard', params: { id: dashboardId } });
+        await router.push({ name: 'dashboard', params: { id: dashboardId } });
+        dashboardStore.setEditingDashboardId(dashboardId);
     };
 
     const handleSubmenuClick = (entry) => {

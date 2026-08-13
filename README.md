@@ -2,7 +2,7 @@
 
 # <img src="./images/VRCX.png" width="64" height="64"> VRCX - 地雷Edition
 
-[![GitHub Workflow Status](https://github.com/FuLuTang/VRCX-jirai/actions/workflows/github_actions.yml/badge.svg)](https://github.com/FuLuTang/VRCX-jirai/actions/workflows/github_actions.yml)
+[![GitHub Workflow Status](https://github.com/aiguoliuguo/VRCX-jirai/actions/workflows/github_actions.yml/badge.svg)](https://github.com/aiguoliuguo/VRCX-jirai/actions/workflows/github_actions.yml)
 
 </div>
 
@@ -13,7 +13,7 @@
 
 | 目标平台 | 下载链接 / 安装说明 |
 | :--- | :--- |
-| **Windows** | [最新发布版本 (Releases)](https://github.com/FuLuTang/VRCX-jirai/releases/latest) |
+| **Windows** | [最新发布版本 (Releases)](https://github.com/aiguoliuguo/VRCX-jirai/releases/latest) |
 | 💡 **避坑指路** | **若启动后看不到新功能**，请在侧边栏 `右键 - 自定义导航栏 - 恢复默认` |
 | **MacOS / Linux** | 需要手动构建，请参考下文 [从源码构建](#从源码构建) |
 
@@ -118,4 +118,4 @@
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/image?repos=FuLuTang/VRCX-jirai&type=date&legend=top-left)](https://www.star-history.com/?repos=FuLuTang%2FVRCX-jirai&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/image?repos=aiguoliuguo/VRCX-jirai&type=date&legend=top-left)](https://www.star-history.com/?repos=aiguoliuguo%2FVRCX-jirai&type=date&legend=top-left)

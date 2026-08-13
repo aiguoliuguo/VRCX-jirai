@@ -5,7 +5,7 @@ import { useModalStore } from '../stores';
 // requires binding of SQLite
 class SQLiteService {
     handleSQLiteError(e) {
-        if (typeof e.message === 'string') {
+        if (typeof e.message === 'string' && !window.isVrOverlay) {
             const modalStore = useModalStore();
             if (e.message.includes('database disk image is malformed')) {
                 modalStore
@@ -17,7 +17,7 @@ class SQLiteService {
                     .then(({ ok }) => {
                         if (!ok) return;
                         openExternalLink(
-                            'https://github.com/FuLuTang/VRCX-jirai/wiki#how-to-repair-vrcx-database'
+                            'https://github.com/aiguoliuguo/VRCX-jirai/wiki#how-to-repair-vrcx-database'
                         );
                     })
                     .catch(() => {});
