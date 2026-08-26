@@ -109,15 +109,8 @@
 
     const supporters = [
         {
-            name: 'Map1en',
-            links: [
-                { label: 'Ko-fi', url: 'https://ko-fi.com/map1en_' },
-                { label: '爱发电', url: 'https://ifdian.net/a/map1en_' }
-            ]
-        },
-        {
-            name: 'Natsumi',
-            links: [{ label: 'Ko-fi', url: 'https://ko-fi.com/natsumi_sama' }]
+            name: 'aiguoliuguo',
+            links: [{ label: '爱发电', url: 'https://ifdian.net/a/svcfusion' }]
         }
     ];
 
