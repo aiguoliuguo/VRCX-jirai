@@ -37,8 +37,8 @@ if (fs.existsSync(bundledDotNetPath)) {
 if (!isDotNetInstalled()) {
     app.whenReady().then(() => {
         dialog.showErrorBox(
-            'VRCX',
-            'Please install .NET 9.0 Runtime "dotnet-runtime-9.0" to run VRCX.'
+            'VRCX-Jirai',
+            'Please install .NET 9.0 Runtime "dotnet-runtime-9.0" to run VRCX-Jirai.'
         );
         app.quit();
     });
@@ -180,6 +180,18 @@ ipcMain.handle('dialog:openFile', async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openFile'],
         filters: [{ name: 'Images', extensions: ['png'] }]
+    });
+
+    if (!result.canceled && result.filePaths.length > 0) {
+        return result.filePaths[0];
+    }
+    return null;
+});
+
+ipcMain.handle('dialog:openDatabase', async () => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        filters: [{ name: 'VRCX Database', extensions: ['sqlite3', 'db'] }]
     });
 
     if (!result.canceled && result.filePaths.length > 0) {
@@ -544,7 +556,7 @@ function createTray() {
             }
         },
         {
-            label: 'Quit VRCX',
+            label: 'Quit VRCX-Jirai',
             type: 'normal',
             click: function () {
                 appIsQuitting = true;
@@ -552,7 +564,7 @@ function createTray() {
             }
         }
     ]);
-    tray.setToolTip('VRCX');
+    tray.setToolTip('VRCX-Jirai');
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
@@ -594,7 +606,10 @@ async function installVRCX() {
             appImagePath = newPath;
         } catch (err) {
             console.error(`Error renaming AppImage ${newPath}`, err);
-            dialog.showErrorBox('VRCX', `Failed to rename AppImage ${newPath}`);
+            dialog.showErrorBox(
+                'VRCX-Jirai',
+                `Failed to rename AppImage ${newPath}`
+            );
             return;
         }
     }
@@ -604,9 +619,9 @@ async function installVRCX() {
     if (!hasAskedToMoveAppImage && appImagePath !== appImageHomePath) {
         const result = dialog.showMessageBoxSync(mainWindow, {
             type: 'question',
-            title: 'VRCX',
-            message: 'Do you want to install VRCX?',
-            detail: 'VRCX will be moved to your ~/Applications folder.',
+            title: 'VRCX-Jirai',
+            message: 'Do you want to install VRCX-Jirai?',
+            detail: 'VRCX-Jirai will be moved to your ~/Applications folder.',
             buttons: ['No', 'Yes']
         });
         if (result === 0) {
@@ -634,7 +649,7 @@ async function installVRCX() {
             } catch (err) {
                 console.error(`Error moving AppImage ${appImageHomePath}`, err);
                 dialog.showErrorBox(
-                    'VRCX',
+                    'VRCX-Jirai',
                     `Failed to move AppImage ${appImageHomePath}`
                 );
                 return;
@@ -667,7 +682,10 @@ async function createDesktopFile() {
             })
             .catch((err) => {
                 console.error('Error downloading icon:', err);
-                dialog.showErrorBox('VRCX', 'Failed to download the icon.');
+                dialog.showErrorBox(
+                    'VRCX-Jirai',
+                    'Failed to download the icon.'
+                );
             });
     }
 
@@ -712,7 +730,11 @@ async function createDesktopFile() {
 
             const result = spawnSync(
                 'xdg-mime',
-                ['default', 'VRCX-Jirai.desktop', 'x-scheme-handler/vrcx-jirai'],
+                [
+                    'default',
+                    'VRCX-Jirai.desktop',
+                    'x-scheme-handler/vrcx-jirai'
+                ],
                 {
                     encoding: 'utf-8'
                 }
@@ -725,7 +747,7 @@ async function createDesktopFile() {
         }
     } catch (err) {
         console.error('Error creating desktop file:', err);
-        dialog.showErrorBox('VRCX', 'Failed to create desktop entry.');
+        dialog.showErrorBox('VRCX-Jirai', 'Failed to create desktop entry.');
         return;
     }
 }
@@ -778,7 +800,10 @@ function getVRCXPath() {
     if (process.platform === 'win32') {
         return path.join(process.env.APPDATA, 'VRCX-Jirai');
     } else if (process.platform === 'darwin') {
-        return path.join(process.env.HOME, 'Library/Application Support/VRCX-Jirai');
+        return path.join(
+            process.env.HOME,
+            'Library/Application Support/VRCX-Jirai'
+        );
     }
     // Linux or other
     let configHome = process.env.XDG_CONFIG_HOME;
@@ -809,13 +834,13 @@ function getVersion() {
         const version = versionFile.split('-');
         console.log('Version:', versionFile);
         if (version.length > 0 && version[version.length - 1].length == 7) {
-            return `VRCX (Linux) Nightly ${versionFile}`;
+            return `VRCX-Jirai Nightly ${versionFile}`;
         } else {
-            return `VRCX (Linux) ${versionFile}`;
+            return `VRCX-Jirai ${versionFile}`;
         }
     } catch (err) {
         console.error('Error reading Version:', err);
-        return 'VRCX (Linux) Nightly Build';
+        return 'VRCX-Jirai Nightly Build';
     }
 }
 

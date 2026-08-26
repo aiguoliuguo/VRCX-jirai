@@ -106,6 +106,14 @@
                         @click="openExternalLink('https://vrchat.com/register')"
                         >{{ t('view.login.register') }}</Button
                     >
+                    <span class="mt-2.5 block text-center">
+                        <button
+                            type="button"
+                            class="cursor-pointer text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                            @click="isImportDbOpen = true">
+                            {{ t('view.login.import_database') }}
+                        </button>
+                    </span>
                 </div>
 
                 <hr v-if="Object.keys(savedCredentials).length !== 0" class="x-vertical-divider" />
@@ -125,12 +133,16 @@
                                     <div class="flex items-center cursor-pointer" @click.stop>
                                         <button
                                             class="relative flex items-center justify-center size-5 mr-2 rounded-full border text-[10px] font-bold transition-all shrink-0"
-                                            :class="getAccountOrderIndex(user.user.id) >= 0
-                                                ? 'border-transparent text-white'
-                                                : 'border-muted-foreground/40 text-muted-foreground hover:border-foreground'"
-                                            :style="getAccountOrderIndex(user.user.id) >= 0
-                                                ? { background: getAccountBadgeColor(user.user.id) }
-                                                : {}"
+                                            :class="
+                                                getAccountOrderIndex(user.user.id) >= 0
+                                                    ? 'border-transparent text-white'
+                                                    : 'border-muted-foreground/40 text-muted-foreground hover:border-foreground'
+                                            "
+                                            :style="
+                                                getAccountOrderIndex(user.user.id) >= 0
+                                                    ? { background: getAccountBadgeColor(user.user.id) }
+                                                    : {}
+                                            "
                                             @click="toggleAccountSelection(user.user.id)">
                                             {{ getAccountBadgeLabel(user.user.id) }}
                                         </button>
@@ -197,6 +209,8 @@
                     <p>{{ t('view.settings.general.legal_notice.disclaimer2') }}</p>
                 </div>
             </div>
+
+            <ImportDatabaseDialog v-model:open="isImportDbOpen" />
         </div>
     </div>
 </template>
@@ -241,6 +255,7 @@
     import { accountHub } from '../../services/accountHub.js';
 
     import LoginSettingsDialog from './Dialog/LoginSettingsDialog.vue';
+    import ImportDatabaseDialog from '../../components/dialogs/ImportDatabaseDialog.vue';
 
     const { userImage } = useUserDisplay();
     const { showVRCXUpdateDialog } = useVRCXUpdaterStore();
@@ -260,6 +275,7 @@
     const { t } = useI18n();
 
     const savedCredentials = ref({});
+    const isImportDbOpen = ref(false);
     const requiredMessage = 'Required';
     /** Ordered list of selected account user IDs. Index 0 = primary. */
     const selectedAccountOrder = ref([]);
@@ -304,10 +320,7 @@
 
     // ── Multi-account ordered selection ──────────────────────────────────────────
 
-    const BADGE_COLOURS = [
-        '#4ade80', '#60a5fa', '#fb923c', '#f472b6',
-        '#a78bfa', '#34d399', '#fbbf24', '#f87171'
-    ];
+    const BADGE_COLOURS = ['#4ade80', '#60a5fa', '#fb923c', '#f472b6', '#a78bfa', '#34d399', '#fbbf24', '#f87171'];
 
     /**
      * Toggle selection of an account for multi-login.

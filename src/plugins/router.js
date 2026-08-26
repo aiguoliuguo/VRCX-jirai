@@ -127,6 +127,12 @@ const routes = [
                 component: () =>
                     import('./../views/Charts/components/RelationshipTimeline.vue')
             },
+            {
+                path: 'charts/affinity',
+                name: 'charts-affinity',
+                component: () =>
+                    import('./../views/Charts/components/FriendAffinity.vue')
+            },
             { path: 'tools', name: 'tools', component: Tools },
             {
                 path: 'tools/gallery',

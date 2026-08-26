@@ -383,7 +383,7 @@ export const useVrcxStore = defineStore('Vrcx', () => {
         if (advancedSettingsStore.screenshotHelper) {
             const location = parseLocation(locationStore.lastLocation.location);
             const metadata = {
-                application: 'VRCX',
+                application: 'VRCX-Jirai',
                 version: 1,
                 author: {
                     id: userStore.currentUser.id,
@@ -413,7 +413,7 @@ export const useVrcxStore = defineStore('Vrcx', () => {
                 console.error('Failed to add screenshot metadata', e);
                 if (e.message?.includes('UnauthorizedAccessException')) {
                     toast.error(
-                        'Failed to add screenshot metadata, access denied. Make sure VRCX has permission to access the screenshot folder.',
+                        'Failed to add screenshot metadata, access denied. Make sure VRCX-Jirai has permission to access the screenshot folder.',
                         { duration: 10000 }
                     );
                 }

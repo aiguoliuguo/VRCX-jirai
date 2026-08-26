@@ -49,7 +49,8 @@ export function sanitizeLayout(
         'charts-mutual',
         'charts-hot-worlds',
         'charts-two-person',
-        'charts-timeline'
+        'charts-timeline',
+        'charts-affinity'
     ];
 
     const appendItemEntry = (key, target = normalized) => {

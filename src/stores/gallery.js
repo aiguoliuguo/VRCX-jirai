@@ -594,7 +594,7 @@ export const useGalleryStore = defineStore('Gallery', () => {
                 modalStore
                     .confirm({
                         description:
-                            'Windows has blocked VRCX from creating files on your system. Please allow VRCX to create files to save emojis, would you like to see instructions on how to fix this?',
+                            'Windows has blocked VRCX-Jirai from creating files on your system. Please allow VRCX-Jirai to create files to save emojis, would you like to see instructions on how to fix this?',
                         title: 'Failed to create emoji folder',
                         cancelText: 'Ignore'
                     })

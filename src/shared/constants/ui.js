@@ -128,6 +128,13 @@ const navDefinitions = [
         routeName: 'charts-timeline'
     },
     {
+        key: 'charts-affinity',
+        icon: 'ri-heart-2-line',
+        tooltip: 'view.charts.friend_affinity.tab_label',
+        labelKey: 'view.charts.friend_affinity.tab_label',
+        routeName: 'charts-affinity'
+    },
+    {
         key: 'tools',
         icon: 'ri-tools-line',
         tooltip: 'nav_tooltip.tools',

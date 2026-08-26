@@ -1802,6 +1802,155 @@ const gameLog = {
     },
 
     /**
+     * Compute aggregated coexistence stats between a center user and a set of
+     * target users (friends + tracked non-friends), used to build affinity
+     * rankings.
+     *
+     * Returns one aggregated row per target user:
+     * { userId, displayName, coexistenceMs, encounterCount, lastEncounterAt, firstEncounterAt }
+     * where coexistenceMs is the total overlapping time in the same room,
+     * encounterCount is the number of distinct co-located locations,
+     * and last/firstEncounterAt are the most recent/earliest overlap boundaries.
+     *
+     * @param {string} centerUserId - Reference user id (must exist in gamelog)
+     * @param {string[]} targetUserIds - Target user ids to score
+     * @param {string[]} targetDisplayNames - Target display names to score (rows missing user_id)
+     * @param {string|null} fromDateIso - Optional lower bound (ISO 8601). null = all history
+     * @returns {Promise<Array<object>>} One aggregated row per target user
+     */
+    async getCoInstanceScoresForUsers(
+        centerUserId,
+        targetUserIds = [],
+        targetDisplayNames = [],
+        fromDateIso = null
+    ) {
+        const targetIds = [];
+        for (const id of targetUserIds) {
+            if (id && id !== centerUserId && !targetIds.includes(id)) {
+                targetIds.push(id);
+            }
+        }
+        const targetNames = [];
+        for (const name of targetDisplayNames) {
+            if (name && !targetNames.includes(name)) {
+                targetNames.push(name);
+            }
+        }
+        if (targetIds.length === 0 && targetNames.length === 0) {
+            return [];
+        }
+
+        const whereClauses = [];
+        if (targetIds.length > 0) {
+            whereClauses.push(
+                `b.user_id IN (${targetIds
+                    .map((id) => `'${id.replaceAll("'", "''")}'`)
+                    .join(', ')})`
+            );
+        }
+        if (targetNames.length > 0) {
+            whereClauses.push(
+                `b.display_name IN (${targetNames
+                    .map((name) => `'${name.replaceAll("'", "''")}'`)
+                    .join(', ')})`
+            );
+        }
+        const conditions = [
+            "a.type = 'OnPlayerLeft'",
+            "b.type = 'OnPlayerLeft'",
+            'a.user_id = @centerUserId',
+            'a.user_id != b.user_id',
+            "a.location NOT IN ('', 'traveling', 'private', 'private:private')",
+            "b.location NOT IN ('', 'traveling', 'private', 'private:private')",
+            'a.time > 0',
+            'b.time > 0',
+            `(${whereClauses.join('\n                OR ')})`
+        ];
+        const params = { '@centerUserId': centerUserId };
+        if (fromDateIso) {
+            conditions.push(
+                'a.created_at >= @fromDate',
+                'b.created_at >= @fromDate'
+            );
+            params['@fromDate'] = fromDateIso;
+        }
+
+        const rows = [];
+        await sqliteService.execute(
+            (row) => {
+                rows.push({
+                    userId: row[0],
+                    displayName: row[1],
+                    location: row[2],
+                    centerLeave: row[3],
+                    centerTime: row[4],
+                    targetLeave: row[5],
+                    targetTime: row[6]
+                });
+            },
+            `SELECT
+                b.user_id,
+                b.display_name,
+                a.location,
+                a.created_at,
+                a.time,
+                b.created_at,
+                b.time
+            FROM gamelog_join_leave a
+            INNER JOIN gamelog_join_leave b
+                ON a.location = b.location
+            WHERE ${conditions.join('\n                AND ')}
+            ORDER BY b.user_id, a.created_at DESC`,
+            params
+        );
+
+        const aggregate = new Map();
+        for (const row of rows) {
+            const key = row.userId || row.displayName;
+            const aLeaveMs = Date.parse(row.centerLeave);
+            const aJoinMs = aLeaveMs - Math.max(0, row.centerTime);
+            const bLeaveMs = Date.parse(row.targetLeave);
+            const bJoinMs = bLeaveMs - Math.max(0, row.targetTime);
+            const overlapStart = Math.max(aJoinMs, bJoinMs);
+            const overlapEnd = Math.min(aLeaveMs, bLeaveMs);
+            const overlapMs = Math.max(0, overlapEnd - overlapStart);
+            if (overlapMs <= 0) {
+                continue;
+            }
+
+            let entry = aggregate.get(key);
+            if (!entry) {
+                entry = {
+                    userId: row.userId,
+                    displayName: row.displayName,
+                    coexistenceMs: 0,
+                    locations: new Set(),
+                    lastMs: 0,
+                    firstMs: Number.POSITIVE_INFINITY
+                };
+                aggregate.set(key, entry);
+            }
+            entry.coexistenceMs += overlapMs;
+            entry.locations.add(row.location);
+            if (overlapEnd > entry.lastMs) {
+                entry.lastMs = overlapEnd;
+            }
+            if (overlapStart < entry.firstMs) {
+                entry.firstMs = overlapStart;
+            }
+        }
+
+        return Array.from(aggregate.values()).map((entry) => ({
+            userId: entry.userId,
+            displayName: entry.displayName,
+            coexistenceMs: entry.coexistenceMs,
+            encounterCount: entry.locations.size,
+            lastEncounterAt: new Date(entry.lastMs).toISOString(),
+            firstEncounterAt: new Date(entry.firstMs).toISOString()
+        }));
+    },
+
+    /**
      * Get self (current user) presence records for a list of locations.
      * Returns a map from location → array of { selfLeave: string, selfTime: number }.
      * @param {string} userId - The current user's ID
@@ -1820,7 +1969,9 @@ const gameLog = {
             (row) => {
                 const loc = row[0];
                 if (!result.has(loc)) result.set(loc, []);
-                result.get(loc).push({ selfLeave: row[1], selfTime: row[2] || 0 });
+                result
+                    .get(loc)
+                    .push({ selfLeave: row[1], selfTime: row[2] || 0 });
             },
             `SELECT location, created_at, time
              FROM gamelog_join_leave
@@ -1849,7 +2000,11 @@ const gameLog = {
         });
         await sqliteService.execute(
             (row) => {
-                entries.push({ location: row[0], createdAt: row[1], time: row[2] || 0 });
+                entries.push({
+                    location: row[0],
+                    createdAt: row[1],
+                    time: row[2] || 0
+                });
             },
             `SELECT location, created_at, time
              FROM gamelog_join_leave
@@ -1863,7 +2018,8 @@ const gameLog = {
         // Group by location
         const byLocation = new Map();
         for (const entry of entries) {
-            if (!byLocation.has(entry.location)) byLocation.set(entry.location, []);
+            if (!byLocation.has(entry.location))
+                byLocation.set(entry.location, []);
             byLocation.get(entry.location).push(entry);
         }
 
@@ -1874,7 +2030,7 @@ const gameLog = {
             for (const entry of playerEntries) {
                 const leaveMs = new Date(entry.createdAt).getTime();
                 const joinMs = leaveMs - entry.time;
-                events.push([joinMs, 1]);   // player joins
+                events.push([joinMs, 1]); // player joins
                 events.push([leaveMs, -1]); // player leaves
             }
             // Sort by time ascending; ties: joins (+1) before leaves (-1) so that
@@ -1990,7 +2146,6 @@ const gameLog = {
             }
         );
     },
-
 
     /**
      * Get per-friend per-day relationship data for the relationship timeline chart.
@@ -2173,7 +2328,6 @@ const gameLog = {
             }
         );
         return data;
-
     }
 };
 
