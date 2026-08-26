@@ -75,7 +75,9 @@
                             </CommandItem>
                         </CommandGroup>
 
-                        <CommandGroup v-if="recentlyMetResults.length === 0 && recentBeenResults.length === 0" :heading="t('side_panel.search_categories')">
+                        <CommandGroup
+                            v-if="recentlyMetResults.length === 0 && recentBeenResults.length === 0"
+                            :heading="t('side_panel.search_categories')">
                             <CommandItem :value="'hint-friends'" disabled class="gap-3 opacity-70">
                                 <Users class="size-4" />
                                 <span class="flex-1">{{ t('side_panel.search_friends') }}</span>

@@ -43,17 +43,14 @@ const manualRelations = {
     async getManualRelations() {
         const results = [];
         if (!dbVars.userPrefix) return results;
-        await sqliteService.execute(
-            (row) => {
-                results.push({
-                    userIdA: row[0],
-                    userIdB: row[1],
-                    relationType: row[2],
-                    addedAt: row[3]
-                });
-            },
-            `SELECT user_id_a, user_id_b, relation_type, added_at FROM ${dbVars.userPrefix}_manual_relations_MANUEL ORDER BY added_at DESC`
-        );
+        await sqliteService.execute((row) => {
+            results.push({
+                userIdA: row[0],
+                userIdB: row[1],
+                relationType: row[2],
+                addedAt: row[3]
+            });
+        }, `SELECT user_id_a, user_id_b, relation_type, added_at FROM ${dbVars.userPrefix}_manual_relations_MANUEL ORDER BY added_at DESC`);
         return results;
     },
 
@@ -106,11 +103,18 @@ const manualRelations = {
         const mySessions = new Map();
 
         // 1. Get my sessions
-        await sqliteService.execute((row) => {
-             const loc = row[0];
-             if (!mySessions.has(loc)) mySessions.set(loc, []);
-             mySessions.get(loc).push({ leaveAt: new Date(row[1]).getTime(), time: row[2] });
-        }, `SELECT location, created_at, time FROM gamelog_join_leave WHERE type = 'OnPlayerLeft' AND user_id = @myId AND time > 0 AND location NOT IN ('', 'traveling')`, { '@myId': myUserId });
+        await sqliteService.execute(
+            (row) => {
+                const loc = row[0];
+                if (!mySessions.has(loc)) mySessions.set(loc, []);
+                mySessions.get(loc).push({
+                    leaveAt: new Date(row[1]).getTime(),
+                    time: row[2]
+                });
+            },
+            `SELECT location, created_at, time FROM gamelog_join_leave WHERE type = 'OnPlayerLeft' AND user_id = @myId AND time > 0 AND location NOT IN ('', 'traveling')`,
+            { '@myId': myUserId }
+        );
 
         // 2. Get everybody else's (local gamelog AND API feed tracking)
         const sessionsQuery = `
@@ -127,24 +131,30 @@ const manualRelations = {
             WHERE type = 'Offline' AND location NOT IN ('', 'offline', 'traveling', 'private', 'private:private') AND time > 0
         `;
 
-        await sqliteService.execute((row) => {
-             const loc = row[0];
-             if (!eventsByLocation.has(loc)) eventsByLocation.set(loc, []);
-             eventsByLocation.get(loc).push({
-                 userId: row[1],
-                 leaveAt: new Date(row[2]).getTime(),
-                 time: row[3]
-             });
-        }, sessionsQuery, { '@myId': myUserId });
+        await sqliteService.execute(
+            (row) => {
+                const loc = row[0];
+                if (!eventsByLocation.has(loc)) eventsByLocation.set(loc, []);
+                eventsByLocation.get(loc).push({
+                    userId: row[1],
+                    leaveAt: new Date(row[2]).getTime(),
+                    time: row[3]
+                });
+            },
+            sessionsQuery,
+            { '@myId': myUserId }
+        );
 
         // 3. Get first seen and last seen dates
         const firstSeen = new Map();
         const lastSeen = new Map();
-        
-        await sqliteService.execute((row) => {
-             firstSeen.set(row[0], new Date(row[1]).getTime());
-             lastSeen.set(row[0], new Date(row[2] || row[3]).getTime());
-        }, `
+
+        await sqliteService.execute(
+            (row) => {
+                firstSeen.set(row[0], new Date(row[1]).getTime());
+                lastSeen.set(row[0], new Date(row[2] || row[3]).getTime());
+            },
+            `
             SELECT user_id, MIN(created_at), 
                    MAX(CASE WHEN src = 3 THEN created_at END),
                    MAX(created_at)
@@ -157,7 +167,8 @@ const manualRelations = {
             )
             WHERE user_id != ''
             GROUP BY user_id
-        `);
+        `
+        );
 
         // 4. Get mutual friend snapshots
         const oldMutualSnapshot = new Map();
@@ -165,11 +176,18 @@ const manualRelations = {
         await sqliteService.execute((row) => {
             const friendId = row[0];
             const mutualId = row[1];
-            if (!oldMutualSnapshot.has(friendId)) oldMutualSnapshot.set(friendId, new Set());
+            if (!oldMutualSnapshot.has(friendId))
+                oldMutualSnapshot.set(friendId, new Set());
             oldMutualSnapshot.get(friendId).add(mutualId);
         }, `SELECT friend_id, mutual_id FROM ${dbVars.userPrefix}_mutual_graph_links_old`);
 
-        return { eventsByLocation, mySessions, firstSeen, lastSeen, oldMutualSnapshot };
+        return {
+            eventsByLocation,
+            mySessions,
+            firstSeen,
+            lastSeen,
+            oldMutualSnapshot
+        };
     }
 };
 

@@ -219,7 +219,6 @@ function searchFriends(query, cleanQuery, comparer, limit = 10) {
     return results;
 }
 
-
 function searchItems(
     cleanQuery,
     items,
@@ -291,7 +290,10 @@ function handleSearch(payload) {
     if (query.startsWith('!')) {
         const q = query.slice(1);
         const cq = removeWhitespace(q);
-        const friends = !q && !cq ? Array.from(indexedFriends) : searchFriends(q, cq, comparer);
+        const friends =
+            !q && !cq
+                ? Array.from(indexedFriends)
+                : searchFriends(q, cq, comparer);
         self.postMessage({
             type: 'searchResult',
             payload: {
@@ -311,7 +313,10 @@ function handleSearch(payload) {
     if (query.startsWith('@')) {
         const q = query.slice(1);
         const cq = removeWhitespace(q);
-        const worlds = !q && !cq ? Array.from(indexedWorlds) : searchItems(cq, indexedWorlds, 'world', comparer);
+        const worlds =
+            !q && !cq
+                ? Array.from(indexedWorlds)
+                : searchItems(cq, indexedWorlds, 'world', comparer);
         self.postMessage({
             type: 'searchResult',
             payload: {
@@ -331,7 +336,10 @@ function handleSearch(payload) {
     if (query.startsWith('#')) {
         const q = query.slice(1);
         const cq = removeWhitespace(q);
-        const users = !q && !cq ? Array.from(indexedGroups) : searchItems(cq, indexedGroups, 'group', comparer);
+        const users =
+            !q && !cq
+                ? Array.from(indexedGroups)
+                : searchItems(cq, indexedGroups, 'group', comparer);
         self.postMessage({
             type: 'searchResult',
             payload: {

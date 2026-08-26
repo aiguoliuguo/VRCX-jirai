@@ -22,7 +22,7 @@ const ACCOUNT_COLOURS = [
     '#a78bfa', // purple
     '#34d399', // teal
     '#fbbf24', // yellow
-    '#f87171'  // red
+    '#f87171' // red
 ];
 
 // ── Hub state ──────────────────────────────────────────────────────────────────
@@ -68,12 +68,22 @@ let _primarySnapshot = null;
 export const accountHub = {
     // --- reactive state (read-only from outside) ---
 
-    get sessions() { return _state.sessions; },
-    get primaryId() { return _state.primaryId; },
-    get viewMode() { return _state.viewMode; },
-    get accountColors() { return _state.accountColors; },
+    get sessions() {
+        return _state.sessions;
+    },
+    get primaryId() {
+        return _state.primaryId;
+    },
+    get viewMode() {
+        return _state.viewMode;
+    },
+    get accountColors() {
+        return _state.accountColors;
+    },
 
-    get isMergedView() { return _state.viewMode === 'merged'; },
+    get isMergedView() {
+        return _state.viewMode === 'merged';
+    },
 
     /** All secondary sessions (excludes primary) */
     get secondarySessions() {
@@ -208,7 +218,10 @@ export const accountHub = {
 
         const session = _state.sessions.get(userId);
         if (!session || !(session instanceof AccountSession)) {
-            console.warn('[accountHub] switchToAccount: session not found', userId);
+            console.warn(
+                '[accountHub] switchToAccount: session not found',
+                userId
+            );
             return;
         }
 
@@ -246,10 +259,15 @@ export const accountHub = {
             }
 
             try {
-                const { useTrackedNonFriendsStore } = require('../stores/trackedNonFriends.js');
+                const {
+                    useTrackedNonFriendsStore
+                } = require('../stores/trackedNonFriends.js');
                 useTrackedNonFriendsStore().loadTrackedNonFriends();
             } catch (e) {
-                console.error('[accountHub] failed to swap trackedNonFriends', e);
+                console.error(
+                    '[accountHub] failed to swap trackedNonFriends',
+                    e
+                );
             }
         } catch (e) {
             console.error('[accountHub] switchToAccount: store swap failed', e);
@@ -322,7 +340,9 @@ function _snapshotPrimary() {
         _primarySnapshot = {
             dbUserId: dbVars.userId,
             dbUserPrefix: dbVars.userPrefix,
-            currentUser: JSON.parse(JSON.stringify(toRaw(userStore.currentUser))),
+            currentUser: JSON.parse(
+                JSON.stringify(toRaw(userStore.currentUser))
+            ),
             friends: new Map(),
             sortedFriends: friendStore.sortedFriends.slice()
         };
@@ -369,10 +389,15 @@ function _restorePrimary() {
         }
 
         try {
-            const { useTrackedNonFriendsStore } = require('../stores/trackedNonFriends.js');
+            const {
+                useTrackedNonFriendsStore
+            } = require('../stores/trackedNonFriends.js');
             useTrackedNonFriendsStore().loadTrackedNonFriends();
         } catch (e) {
-            console.error('[accountHub] failed to restore trackedNonFriends', e);
+            console.error(
+                '[accountHub] failed to restore trackedNonFriends',
+                e
+            );
         }
     } catch (e) {
         console.error('[accountHub] _restorePrimary failed', e);
@@ -397,7 +422,10 @@ export function initAccountHubWatcher() {
                         const userStore = useUserStore();
                         const userId = userStore.currentUser?.id;
                         if (userId) {
-                            accountHub.setPrimary(userId, _computeUserPrefix(userId));
+                            accountHub.setPrimary(
+                                userId,
+                                _computeUserPrefix(userId)
+                            );
                             accountHub.updatePrimaryInfo(userStore.currentUser);
                         }
                     } catch {

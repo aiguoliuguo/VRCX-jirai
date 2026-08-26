@@ -448,7 +448,8 @@ export function formatDifference(
 
     // Unicode regex for individual CJK characters: covers Hiragana, Katakana,
     // CJK Unified Ideographs + Extension A, Hangul, CJK Compatibility Ideographs.
-    const CJK_CHAR_RE = /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7a3\uf900-\ufaff]/;
+    const CJK_CHAR_RE =
+        /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7a3\uf900-\ufaff]/;
 
     // Returns true when ch is a CJK character.  Handles undefined / empty strings.
     function isCJKChar(ch) {
@@ -463,7 +464,9 @@ export function formatDifference(
             .flatMap((chunk) => chunk.split(/(<br>)/))
             .flatMap((chunk) => {
                 if (!chunk || chunk === '<br>') return chunk ? [chunk] : [];
-                return chunk.split(new RegExp(`(${CJK_CHAR_RE.source})`)).filter(Boolean);
+                return chunk
+                    .split(new RegExp(`(${CJK_CHAR_RE.source})`))
+                    .filter(Boolean);
             });
     }
 
@@ -548,7 +551,9 @@ export function formatDifference(
 
             // Add the matched words
             result.push(
-                joinTokens(oldWords.slice(match.oldStart, match.oldStart + match.size))
+                joinTokens(
+                    oldWords.slice(match.oldStart, match.oldStart + match.size)
+                )
             );
 
             // Handle differences after the match
@@ -568,7 +573,9 @@ export function formatDifference(
         } else {
             function build(words, start, end, pattern) {
                 let r = [];
-                const slice = words.slice(start, end).filter((w) => w.length > 0);
+                const slice = words
+                    .slice(start, end)
+                    .filter((w) => w.length > 0);
                 // Split on <br> boundaries, then join each segment with CJK-aware spacing
                 const segments = [];
                 let current = [];
@@ -627,7 +634,8 @@ export function formatDifference(
         } else {
             const prevText = prev.replace(/<[^>]*>/g, '');
             const currText = curr.replace(/<[^>]*>/g, '');
-            const prevLastCh = prevText.length > 0 ? prevText[prevText.length - 1] : '';
+            const prevLastCh =
+                prevText.length > 0 ? prevText[prevText.length - 1] : '';
             const currFirstCh = currText.length > 0 ? currText[0] : '';
             if (isCJKChar(prevLastCh) || isCJKChar(currFirstCh)) {
                 output += curr;

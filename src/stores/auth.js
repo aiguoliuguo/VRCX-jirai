@@ -94,7 +94,11 @@ export const useAuthStore = defineStore('Auth', () => {
             if (isLoggedIn) {
                 // Ignore watcher if we are in a hot-swapped secondary account context.
                 const { accountHub } = require('../services/accountHub.js');
-                if (accountHub.primaryId && currentUser.id && currentUser.id !== accountHub.primaryId) {
+                if (
+                    accountHub.primaryId &&
+                    currentUser.id &&
+                    currentUser.id !== accountHub.primaryId
+                ) {
                     return;
                 }
 
@@ -610,8 +614,14 @@ export const useAuthStore = defineStore('Auth', () => {
             await webApiService.setCookies(user.cookies);
             try {
                 const checkUser = await request('auth/user');
-                if (checkUser && !checkUser.error && checkUser.id !== user.user.id) {
-                    console.warn(`[auth] Corrupted cookie for ${user.user.id}, clearing.`);
+                if (
+                    checkUser &&
+                    !checkUser.error &&
+                    checkUser.id !== user.user.id
+                ) {
+                    console.warn(
+                        `[auth] Corrupted cookie for ${user.user.id}, clearing.`
+                    );
                     await webApiService.clearCookies();
                 }
             } catch (e) {

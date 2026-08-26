@@ -358,8 +358,15 @@ export const useVRCXUpdaterStore = defineStore('VRCXUpdater', () => {
             }
         }
         D.releases = releases;
-        const latestRelease = releases.length > 0 ? releases[0] : (json.length > 0 ? json[0] : null);
-        D.release = latestRelease ? (latestRelease.tag_name || latestRelease.name) : '';
+        const latestRelease =
+            releases.length > 0
+                ? releases[0]
+                : json.length > 0
+                  ? json[0]
+                  : null;
+        D.release = latestRelease
+            ? latestRelease.tag_name || latestRelease.name
+            : '';
         VRCXUpdateDialog.value.updatePendingIsLatest = false;
         if (D.release === pendingVRCXInstall.value) {
             // update already downloaded and latest version
@@ -397,7 +404,10 @@ export const useVRCXUpdaterStore = defineStore('VRCXUpdater', () => {
     }
     function installVRCXUpdate() {
         for (const release of VRCXUpdateDialog.value.releases) {
-            if ((release.tag_name || release.name) !== VRCXUpdateDialog.value.release) {
+            if (
+                (release.tag_name || release.name) !==
+                VRCXUpdateDialog.value.release
+            ) {
                 continue;
             }
             const { downloadUrl, hashString, size } = getAssetOfInterest(

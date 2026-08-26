@@ -58,7 +58,11 @@
                 <span
                     v-if="mutualDateMap.get(user.id)"
                     class="block truncate text-[11px] leading-[15px] rounded px-1"
-                    :class="isLinkStale(mutualDateMap.get(user.id)) ? 'bg-gray-400/30 text-gray-500' : 'bg-green-500/20 text-green-700 dark:text-green-400'">
+                    :class="
+                        isLinkStale(mutualDateMap.get(user.id))
+                            ? 'bg-gray-400/30 text-gray-500'
+                            : 'bg-green-500/20 text-green-700 dark:text-green-400'
+                    ">
                     {{ formatDateFilter(mutualDateMap.get(user.id), 'date') }}
                 </span>
             </div>
@@ -77,7 +81,12 @@
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
 
-    import { compareByDisplayName, compareByFriendOrder, compareByLastActiveRef, formatDateFilter } from '../../../shared/utils';
+    import {
+        compareByDisplayName,
+        compareByFriendOrder,
+        compareByLastActiveRef,
+        formatDateFilter
+    } from '../../../shared/utils';
     import { useUserDisplay } from '../../../composables/useUserDisplay';
     import { database } from '../../../services/database';
     import { processBulk } from '../../../services/request';
@@ -134,7 +143,7 @@
         if (isNaN(lastUpdatedMs) || isNaN(linkDateMs)) {
             return false;
         }
-        return (lastUpdatedMs - linkDateMs) > ONE_DAY_MS;
+        return lastUpdatedMs - linkDateMs > ONE_DAY_MS;
     }
 
     /**

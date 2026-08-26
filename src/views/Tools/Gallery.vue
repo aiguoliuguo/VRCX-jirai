@@ -92,7 +92,9 @@
                                 {{ t('dialog.gallery_icons.clear') }}
                             </Button>
                         </ButtonGroup>
-                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{ t('dialog.gallery_icons.drop_to_upload_hint') }}</span>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
                     </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
@@ -175,7 +177,9 @@
                                 {{ t('dialog.gallery_icons.clear') }}
                             </Button>
                         </ButtonGroup>
-                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{ t('dialog.gallery_icons.drop_to_upload_hint') }}</span>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
                     </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
@@ -277,7 +281,9 @@
                                 <Checkbox v-model="emojiAnimType" />
                                 <span>{{ t('dialog.gallery_icons.emoji_animation_type') }}</span>
                             </label>
-                            <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{ t('dialog.gallery_icons.drop_to_upload_hint') }}</span>
+                            <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                                t('dialog.gallery_icons.drop_to_upload_hint')
+                            }}</span>
                         </div>
                         <div v-if="emojiAnimType" class="flex items-center gap-2">
                             <Button size="sm" variant="outline" @click="openExternalLink('https://vrcemoji.com')">
@@ -397,7 +403,9 @@
                                 {{ t('dialog.gallery_icons.upload') }}
                             </Button>
                         </ButtonGroup>
-                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{ t('dialog.gallery_icons.drop_to_upload_hint') }}</span>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
                     </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
@@ -475,7 +483,9 @@
                             <Checkbox v-model="printCropBorder" />
                             <span>{{ t('dialog.gallery_icons.crop_print_border') }}</span>
                         </label>
-                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{ t('dialog.gallery_icons.drop_to_upload_hint') }}</span>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
                     </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
@@ -742,21 +752,25 @@
 
     // Process pending drop from Feed page drag-and-drop
     // Using watch instead of onMounted so it also works when already on the Gallery page
-    watch(pendingDrop, (drop) => {
-        if (!drop) return;
-        const { file, tab } = drop;
-        pendingDrop.value = null;
-        currentTab.value = tab;
-        nextTick(() => {
-            const handler = tabUploadHandlers[tab];
-            if (handler) {
-                const syntheticEvent = {
-                    dataTransfer: { files: [file] }
-                };
-                handler(syntheticEvent);
-            }
-        });
-    }, { immediate: true });
+    watch(
+        pendingDrop,
+        (drop) => {
+            if (!drop) return;
+            const { file, tab } = drop;
+            pendingDrop.value = null;
+            currentTab.value = tab;
+            nextTick(() => {
+                const handler = tabUploadHandlers[tab];
+                if (handler) {
+                    const syntheticEvent = {
+                        dataTransfer: { files: [file] }
+                    };
+                    handler(syntheticEvent);
+                }
+            });
+        },
+        { immediate: true }
+    );
 
     onBeforeUnmount(() => {
         galleryDialogVisible.value = false;

@@ -11,9 +11,7 @@
                     </AvatarFallback>
                 </Avatar>
                 <!-- Account badges: shown in multi-account merged view -->
-                <div
-                    v-if="hasAccountBadge"
-                    class="absolute -top-1 -left-1 flex gap-px">
+                <div v-if="hasAccountBadge" class="absolute -top-1 -left-1 flex gap-px">
                     <span
                         v-for="accountId in friend.$accountIds"
                         :key="accountId"
@@ -109,7 +107,10 @@
     const { t } = useI18n();
 
     const hasAccountBadge = computed(
-        () => accountHub.hasSecondarySessions && Array.isArray(props.friend.$accountIds) && props.friend.$accountIds.length > 0
+        () =>
+            accountHub.hasSecondarySessions &&
+            Array.isArray(props.friend.$accountIds) &&
+            props.friend.$accountIds.length > 0
     );
 
     function getAccountColor(userId) {

@@ -178,8 +178,7 @@
                     v-if="bioDiffEnabled && bioDiffHtml"
                     class="text-xs leading-5.5 font-[inherit]"
                     style="white-space: pre-wrap; margin: 0 0.5em 0 0; max-height: 210px; overflow-y: auto"
-                    v-html="bioDiffHtml"
-                ></pre>
+                    v-html="bioDiffHtml"></pre>
                 <pre
                     v-else
                     class="text-xs truncate font-[inherit]"

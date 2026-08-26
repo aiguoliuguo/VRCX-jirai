@@ -231,7 +231,8 @@ export const useQuickSearchStore = defineStore('QuickSearch', () => {
                     id: bio.userId,
                     name: friendCtx.name || bio.displayName,
                     type: 'friend',
-                    imageUrl: friendCtx.ref?.currentAvatarThumbnailImageUrl || '',
+                    imageUrl:
+                        friendCtx.ref?.currentAvatarThumbnailImageUrl || '',
                     memo: friendCtx.memo || '',
                     note: friendCtx.ref?.note || '',
                     bio: bio.bio || '',

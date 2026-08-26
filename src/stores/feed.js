@@ -159,7 +159,10 @@ export const useFeedStore = defineStore('Feed', () => {
             const { dateFrom, dateTo } = feedTable.value;
 
             let rows;
-            if (accountHub.isMergedView && accountHub.allUserPrefixes.length > 1) {
+            if (
+                accountHub.isMergedView &&
+                accountHub.allUserPrefixes.length > 1
+            ) {
                 // Merged mode: aggregate across all account prefixes
                 rows = await lookupAggregatedFeed(
                     accountHub.allUserPrefixes,

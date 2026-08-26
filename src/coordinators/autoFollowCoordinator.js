@@ -9,4 +9,3 @@ export function openAutoFollowDialog() {
 export function closeAutoFollowDialog() {
     isAutoFollowDialogOpen.value = false;
 }
-

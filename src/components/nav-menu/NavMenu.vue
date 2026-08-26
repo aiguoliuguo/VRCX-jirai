@@ -283,10 +283,7 @@
     const customNavDialogVisible = ref(false);
 
     const hasNotifications = computed(() => notifiedMenus.value.length > 0);
-    const version = computed(
-        () =>
-            appVersion.value?.replace(/^VRCX(?:-Jirai)?(?: Nightly)?\s+/, '') || '-'
-    );
+    const version = computed(() => appVersion.value?.replace(/^VRCX(?:-Jirai)?(?: Nightly)?\s+/, '') || '-');
     const vrcxLogo = new URL('../../../images/VRCX.png', import.meta.url).href;
 
     const isEntryNotified = (entry) => checkEntryNotified(entry, notifiedMenus.value);

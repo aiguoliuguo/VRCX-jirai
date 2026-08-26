@@ -10,7 +10,9 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-0.5 px-1 py-1 cursor-pointer" @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')">
+            <div
+                class="flex flex-col gap-0.5 px-1 py-1 cursor-pointer"
+                @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')">
                 <div class="flex-1">
                     <span class="block truncate font-medium text-sm leading-[18px]">{{
                         t('view.settings.general.general.latest_app_version')
@@ -47,9 +49,13 @@
                 <Button size="sm" variant="outline" @click="showChangeLogDialog">{{
                     t('view.settings.general.vrcx_updater.change_log')
                 }}</Button>
-                <Button v-if="!noUpdater" size="sm" variant="outline" @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')">{{
-                    t('view.settings.general.vrcx_updater.change_build')
-                }}</Button>
+                <Button
+                    v-if="!noUpdater"
+                    size="sm"
+                    variant="outline"
+                    @click="openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/releases')"
+                    >{{ t('view.settings.general.vrcx_updater.change_build') }}</Button
+                >
             </div>
 
             <template v-if="!noUpdater">
