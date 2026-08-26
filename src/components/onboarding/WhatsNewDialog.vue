@@ -92,7 +92,7 @@
 
 <script setup>
     import { markRaw } from 'vue';
-    import { Search, FolderHeart, RefreshCw, MousePointerClick } from 'lucide-vue-next';
+    import { Search, FolderHeart, RefreshCw, MousePointerClick, BarChart3, Database, Users, Sparkles } from 'lucide-vue-next';
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
 
@@ -125,14 +125,22 @@
         search: markRaw(Search),
         'folder-heart': markRaw(FolderHeart),
         'refresh-cw': markRaw(RefreshCw),
-        'mouse-pointer-click': markRaw(MousePointerClick)
+        'mouse-pointer-click': markRaw(MousePointerClick),
+        'bar-chart': markRaw(BarChart3),
+        database: markRaw(Database),
+        users: markRaw(Users),
+        sparkles: markRaw(Sparkles)
     };
 
     const hueMap = {
         search: '142',
         'folder-heart': '340',
         'refresh-cw': '200',
-        'mouse-pointer-click': '45'
+        'mouse-pointer-click': '45',
+        'bar-chart': '210',
+        database: '250',
+        users: '160',
+        sparkles: '45'
     };
 
     function resolveIcon(iconName) {

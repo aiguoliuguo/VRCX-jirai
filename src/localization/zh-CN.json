@@ -3368,6 +3368,28 @@
                             "description": "在好友、表格头以及标题上右键可以执行快速操作。"
                         }
                     }
+                },
+                "2026_07_18": {
+                    "title": "VRCX-Jirai 2026.07.18",
+                    "subtitle": "好友亲和度、多账号 v4、数据库导入等多项新功能",
+                    "items": {
+                        "friend_affinity": {
+                            "title": "好友亲和度图表",
+                            "description": "以任意用户为中心，基于共处实例数据计算亲和度评分并以柱状图可视化。"
+                        },
+                        "db_import": {
+                            "title": "数据库导入",
+                            "description": "选择并导入其他 VRCX 数据库文件，引导式校验与导入。"
+                        },
+                        "multi_account": {
+                            "title": "多账号 v4",
+                            "description": "重构账号中心与聚合视图，好友、收藏、动态等均支持账号维度切换。"
+                        },
+                        "relation_recommendation": {
+                            "title": "关系推荐优化",
+                            "description": "移除共处时间去抖、按评分过滤推荐，并支持注入模拟记录进行测试。"
+                        }
+                    }
                 }
             }
         }

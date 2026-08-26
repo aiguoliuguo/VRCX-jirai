@@ -18,6 +18,26 @@ const whatsNewReleases = Object.freeze({
                 icon: 'mouse-pointer-click'
             }
         ]
+    },
+    '2026.07.18': {
+        items: [
+            {
+                key: 'friend_affinity',
+                icon: 'bar-chart'
+            },
+            {
+                key: 'db_import',
+                icon: 'database'
+            },
+            {
+                key: 'multi_account',
+                icon: 'users'
+            },
+            {
+                key: 'relation_recommendation',
+                icon: 'sparkles'
+            }
+        ]
     }
 });
 

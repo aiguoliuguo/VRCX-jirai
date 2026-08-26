@@ -3352,6 +3352,28 @@
                             "description": "Right-click on friends, tables, and headers for quick actions."
                         }
                     }
+                },
+                "2026_07_18": {
+                    "title": "VRCX-Jirai 2026.07.18",
+                    "subtitle": "Friend Affinity, multi-account v4, database import and more",
+                    "items": {
+                        "friend_affinity": {
+                            "title": "Friend Affinity",
+                            "description": "Visualize affinity scores based on co-presence data, centered on any user."
+                        },
+                        "db_import": {
+                            "title": "Database Import",
+                            "description": "Import another VRCX database file with guided validation."
+                        },
+                        "multi_account": {
+                            "title": "Multi-Account v4",
+                            "description": "Revamped account hub and aggregated view; friends, favorites and feeds across accounts."
+                        },
+                        "relation_recommendation": {
+                            "title": "Better Recommendations",
+                            "description": "Real-time relation scores, filter by threshold, and inject mock records for testing."
+                        }
+                    }
                 }
             }
         }

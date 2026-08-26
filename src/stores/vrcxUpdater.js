@@ -367,6 +367,12 @@ export const useVRCXUpdaterStore = defineStore('VRCXUpdater', () => {
         D.release = latestRelease
             ? latestRelease.tag_name || latestRelease.name
             : '';
+        changeLogDialog.value.buildName = latestRelease
+            ? latestRelease.name || latestRelease.tag_name
+            : '';
+        changeLogDialog.value.changeLog = latestRelease
+            ? changeLogRemoveLinks(latestRelease.body || '')
+            : '';
         VRCXUpdateDialog.value.updatePendingIsLatest = false;
         if (D.release === pendingVRCXInstall.value) {
             // update already downloaded and latest version
