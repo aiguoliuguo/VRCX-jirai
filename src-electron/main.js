@@ -188,9 +188,10 @@ ipcMain.handle('dialog:openFile', async () => {
     return null;
 });
 
-ipcMain.handle('dialog:openDatabase', async () => {
+ipcMain.handle('dialog:openDatabase', async (event, defaultPath) => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openFile'],
+        defaultPath: defaultPath || undefined,
         filters: [{ name: 'VRCX Database', extensions: ['sqlite3', 'db'] }]
     });
 

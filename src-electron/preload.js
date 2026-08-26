@@ -49,7 +49,8 @@ contextBridge.exposeInMainWorld('electron', {
     setTrayIconNotification: (notify) =>
         ipcRenderer.invoke('app:setTrayIconNotification', notify),
     openFileDialog: () => ipcRenderer.invoke('dialog:openFile'),
-    openDatabaseDialog: () => ipcRenderer.invoke('dialog:openDatabase'),
+    openDatabaseDialog: (defaultPath) =>
+        ipcRenderer.invoke('dialog:openDatabase', defaultPath),
     openDirectoryDialog: () => ipcRenderer.invoke('dialog:openDirectory'),
     onWindowPositionChanged: (callback) =>
         registerManagedListener('setWindowPosition', callback),

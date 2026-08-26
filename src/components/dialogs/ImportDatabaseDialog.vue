@@ -241,8 +241,31 @@
         }
     }
 
+    async function getOriginalDbPath() {
+        try {
+            const info = JSON.parse(await window.SQLite.CheckOriginalDatabase(''));
+            return info?.exists ? info.path : null;
+        } catch (e) {
+            console.error('[ImportDatabase] failed to check original database:', e);
+            return null;
+        }
+    }
+
     async function pickFile() {
-        const path = await window.electron.openDatabaseDialog();
+        const originalPath = await getOriginalDbPath();
+        let path = null;
+        if (window.electron?.openDatabaseDialog) {
+            path = await window.electron.openDatabaseDialog(originalPath);
+        } else if (typeof AppApi?.OpenFileSelectorDialog === 'function') {
+            const defaultDir = originalPath
+                ? originalPath.replace(/\\[^\\]+$/, '')
+                : '';
+            path = await AppApi.OpenFileSelectorDialog(
+                defaultDir,
+                'sqlite3',
+                'VRCX Database (*.sqlite3;*.db)|*.sqlite3;*.db|All files (*.*)|*.*'
+            );
+        }
         if (!path) return;
         selectedPath.value = path;
         await validateSelectedPath();
@@ -269,7 +292,11 @@
     }
 
     function restartApp() {
-        window.electron.restartApp();
+        if (window.electron?.restartApp) {
+            window.electron.restartApp();
+        } else if (typeof AppApi?.RestartApplication === 'function') {
+            AppApi.RestartApplication(false);
+        }
     }
 
     function handleOpenChange(open) {

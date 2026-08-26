@@ -1460,7 +1460,7 @@
                 "source_label": "Database to Import",
                 "warning": {
                     "title": "Please confirm before importing",
-                    "backup": "The current database will be backed up automatically before importing, so you can restore it at any time.",
+                    "backup": "The current database will be backed up automatically before importing (the backup location is shown on the completion page).",
                     "restart": "A restart is required for the import to take effect."
                 }
             },
