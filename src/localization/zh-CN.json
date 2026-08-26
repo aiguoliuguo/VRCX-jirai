@@ -1453,6 +1453,56 @@
         }
     },
     "dialog": {
+        "import_database": {
+            "header": "导入数据库",
+            "cancel": "取消",
+            "next": "下一步",
+            "import": "开始导入",
+            "restart": "重启应用",
+            "later": "稍后",
+            "select": {
+                "description": "选择要导入的 VRCX 数据库文件（通常是原版 VRCX 的 VRCX.sqlite3）。导入前会自动备份当前数据库，然后替换。",
+                "path_placeholder": "选择 sqlite3 数据库文件",
+                "choose": "选择文件",
+                "validating": "正在校验数据库...",
+                "valid": "有效的 VRCX 数据库",
+                "invalid": "所选文件不是有效的 VRCX 数据库"
+            },
+            "stats": {
+                "rows": "{count} 条游戏记录",
+                "friends": "{count} 位好友",
+                "size": "文件大小"
+            },
+            "confirm": {
+                "current_label": "当前数据库",
+                "source_label": "将导入的数据库",
+                "warning": {
+                    "title": "导入前请确认",
+                    "backup": "导入前会自动备份当前数据库，可随时用备份恢复。",
+                    "restart": "导入完成后需要重启应用才能生效。"
+                }
+            },
+            "done": {
+                "message": "数据库导入完成",
+                "backup_path": "备份位置：{path}"
+            },
+            "error": {
+                "title": "无法导入",
+                "empty_path": "未选择数据库文件",
+                "same_path": "所选文件与当前数据库相同，无需导入",
+                "not_found": "文件不存在",
+                "not_vrcx_db": "所选文件不是有效的 VRCX 数据库（缺少 gamelog_join_leave 表）",
+                "invalid_sqlite": "无法读取该数据库文件",
+                "invalid": "数据库校验未通过",
+                "failed": "导入失败，请重试"
+            }
+        },
+        "import_db_prompt": {
+            "title": "检测到原版 VRCX 数据库",
+            "description": "发现原版 VRCX 数据库（{rows} 条游戏记录、{friends} 位好友）。是否导入到 VRCX-Jirai？导入前会自动备份当前数据库。",
+            "confirm": "导入",
+            "cancel": "稍后再说"
+        },
         "alertdialog": {
             "ok": "确定",
             "cancel": "取消",
@@ -2910,56 +2960,6 @@
             "upgrade_failed_description": "数据库升级失败，请查看调试控制台以获取详细信息。",
             "disk_space": "请释放一些磁盘空间。",
             "disk_error": "请检查你的磁盘是否有错误。"
-        },
-        "import_database": {
-            "header": "导入数据库",
-            "cancel": "取消",
-            "next": "下一步",
-            "import": "开始导入",
-            "restart": "重启应用",
-            "later": "稍后",
-            "select": {
-                "description": "选择要导入的 VRCX 数据库文件（通常是原版 VRCX 的 VRCX.sqlite3）。导入前会自动备份当前数据库，然后替换。",
-                "path_placeholder": "选择 sqlite3 数据库文件",
-                "choose": "选择文件",
-                "validating": "正在校验数据库...",
-                "valid": "有效的 VRCX 数据库",
-                "invalid": "所选文件不是有效的 VRCX 数据库"
-            },
-            "stats": {
-                "rows": "{count} 条游戏记录",
-                "friends": "{count} 位好友",
-                "size": "文件大小"
-            },
-            "confirm": {
-                "current_label": "当前数据库",
-                "source_label": "将导入的数据库",
-                "warning": {
-                    "title": "导入前请确认",
-                    "backup": "导入前会自动备份当前数据库，可随时用备份恢复。",
-                    "restart": "导入完成后需要重启应用才能生效。"
-                }
-            },
-            "done": {
-                "message": "数据库导入完成",
-                "backup_path": "备份位置：{path}"
-            },
-            "error": {
-                "title": "无法导入",
-                "empty_path": "未选择数据库文件",
-                "same_path": "所选文件与当前数据库相同，无需导入",
-                "not_found": "文件不存在",
-                "not_vrcx_db": "所选文件不是有效的 VRCX 数据库（缺少 gamelog_join_leave 表）",
-                "invalid_sqlite": "无法读取该数据库文件",
-                "invalid": "数据库校验未通过",
-                "failed": "导入失败，请重试"
-            }
-        },
-        "import_db_prompt": {
-            "title": "检测到原版 VRCX 数据库",
-            "description": "发现原版 VRCX 数据库（{rows} 条游戏记录、{friends} 位好友）。是否导入到 VRCX-Jirai？导入前会自动备份当前数据库。",
-            "confirm": "导入",
-            "cancel": "稍后再说"
         },
         "file": {
             "not_image": "文件不是有效的图片格式",

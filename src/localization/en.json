@@ -1435,6 +1435,56 @@
         }
     },
     "dialog": {
+        "import_database": {
+            "header": "Import Database",
+            "cancel": "Cancel",
+            "next": "Next",
+            "import": "Start Import",
+            "restart": "Restart App",
+            "later": "Later",
+            "select": {
+                "description": "Choose a VRCX database file to import (usually the original VRCX's VRCX.sqlite3). The current database will be replaced after an automatic backup.",
+                "path_placeholder": "Pick a sqlite3 database file",
+                "choose": "Choose File",
+                "validating": "Validating database...",
+                "valid": "Valid VRCX database",
+                "invalid": "The selected file is not a valid VRCX database"
+            },
+            "stats": {
+                "rows": "{count} game records",
+                "friends": "{count} friends",
+                "size": "File size"
+            },
+            "confirm": {
+                "current_label": "Current Database",
+                "source_label": "Database to Import",
+                "warning": {
+                    "title": "Please confirm before importing",
+                    "backup": "The current database will be backed up automatically before importing, so you can restore it at any time.",
+                    "restart": "A restart is required for the import to take effect."
+                }
+            },
+            "done": {
+                "message": "Database imported successfully",
+                "backup_path": "Backup saved to: {path}"
+            },
+            "error": {
+                "title": "Cannot import",
+                "empty_path": "No database file selected",
+                "same_path": "The selected file is identical to the current database, no import needed",
+                "not_found": "File not found",
+                "not_vrcx_db": "The selected file is not a valid VRCX database (missing gamelog_join_leave table)",
+                "invalid_sqlite": "Could not read the database file",
+                "invalid": "Database validation failed",
+                "failed": "Import failed, please try again"
+            }
+        },
+        "import_db_prompt": {
+            "title": "Original VRCX database detected",
+            "description": "Found the original VRCX database with {rows} game records and {friends} friends. Import it into VRCX-Jirai? The current database will be backed up automatically before importing.",
+            "confirm": "Import",
+            "cancel": "Later"
+        },
         "alertdialog": {
             "ok": "OK",
             "cancel": "Cancel",
@@ -2892,56 +2942,6 @@
             "upgrade_failed_description": "Database upgrade failed. Check the console for details.",
             "disk_space": "Please free up some disk space.",
             "disk_error": "Please check your disk for errors."
-        },
-        "import_database": {
-            "header": "Import Database",
-            "cancel": "Cancel",
-            "next": "Next",
-            "import": "Start Import",
-            "restart": "Restart App",
-            "later": "Later",
-            "select": {
-                "description": "Choose a VRCX database file to import (usually the original VRCX's VRCX.sqlite3). The current database will be replaced after an automatic backup.",
-                "path_placeholder": "Pick a sqlite3 database file",
-                "choose": "Choose File",
-                "validating": "Validating database...",
-                "valid": "Valid VRCX database",
-                "invalid": "The selected file is not a valid VRCX database"
-            },
-            "stats": {
-                "rows": "{count} game records",
-                "friends": "{count} friends",
-                "size": "File size"
-            },
-            "confirm": {
-                "current_label": "Current Database",
-                "source_label": "Database to Import",
-                "warning": {
-                    "title": "Please confirm before importing",
-                    "backup": "The current database will be backed up automatically before importing, so you can restore it at any time.",
-                    "restart": "A restart is required for the import to take effect."
-                }
-            },
-            "done": {
-                "message": "Database imported successfully",
-                "backup_path": "Backup saved to: {path}"
-            },
-            "error": {
-                "title": "Cannot import",
-                "empty_path": "No database file selected",
-                "same_path": "The selected file is identical to the current database, no import needed",
-                "not_found": "File not found",
-                "not_vrcx_db": "The selected file is not a valid VRCX database (missing gamelog_join_leave table)",
-                "invalid_sqlite": "Could not read the database file",
-                "invalid": "Database validation failed",
-                "failed": "Import failed, please try again"
-            }
-        },
-        "import_db_prompt": {
-            "title": "Original VRCX database detected",
-            "description": "Found the original VRCX database with {rows} game records and {friends} friends. Import it into VRCX-Jirai? The current database will be backed up automatically before importing.",
-            "confirm": "Import",
-            "cancel": "Later"
         },
         "file": {
             "not_image": "File isn't an image",
