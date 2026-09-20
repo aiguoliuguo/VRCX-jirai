@@ -106,6 +106,14 @@
                         @click="openExternalLink('https://vrchat.com/register')"
                         >{{ t('view.login.register') }}</Button
                     >
+                    <span class="mt-2.5 block text-center">
+                        <button
+                            type="button"
+                            class="cursor-pointer text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                            @click="isImportDbOpen = true">
+                            {{ t('view.login.import_database') }}
+                        </button>
+                    </span>
                 </div>
 
                 <hr v-if="Object.keys(savedCredentials).length !== 0" class="x-vertical-divider" />
@@ -121,14 +129,31 @@
                                 :key="user.user.id"
                                 class="cursor-pointer hover:bg-muted p-2 border-0"
                                 @click="clickSavedLogin(user)">
-                                <ItemMedia class="relative size-10">
-                                    <Avatar class="size-full rounded-full">
-                                        <AvatarImage :src="userImage(user.user)" />
-                                        <AvatarFallback>
-                                            <User class="size-5 text-muted-foreground" />
-                                        </AvatarFallback>
-                                    </Avatar>
-                                    <IconFrame :icon-frame="user.user.iconFrame" />
+                                <ItemMedia class="relative" @click.stop>
+                                    <div class="flex items-center cursor-pointer" @click.stop>
+                                        <button
+                                            class="relative flex items-center justify-center size-5 mr-2 rounded-full border text-[10px] font-bold transition-all shrink-0"
+                                            :class="
+                                                getAccountOrderIndex(user.user.id) >= 0
+                                                    ? 'border-transparent text-white'
+                                                    : 'border-muted-foreground/40 text-muted-foreground hover:border-foreground'
+                                            "
+                                            :style="
+                                                getAccountOrderIndex(user.user.id) >= 0
+                                                    ? { background: getAccountBadgeColor(user.user.id) }
+                                                    : {}
+                                            "
+                                            @click="toggleAccountSelection(user.user.id)">
+                                            {{ getAccountBadgeLabel(user.user.id) }}
+                                        </button>
+                                        <Avatar class="rounded-full size-10">
+                                            <AvatarImage :src="userImage(user.user)" />
+                                            <AvatarFallback>
+                                                <User class="size-5 text-muted-foreground" />
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </div>
+                                <IconFrame :icon-frame="user.user.iconFrame" />
                                 </ItemMedia>
                                 <ItemContent class="min-w-0">
                                     <ItemTitle class="truncate max-w-full">{{ user.user.displayName }}</ItemTitle>
@@ -151,6 +176,15 @@
                             </Item>
                         </div>
                     </div>
+                    <Button
+                        v-if="selectedAccountOrder.length >= 2"
+                        variant="outline"
+                        size="sm"
+                        class="w-full mt-2"
+                        :disabled="multiLoginLoading"
+                        @click="clickMultiLogin">
+                        {{ t('view.login.loginSelected', { count: selectedAccountOrder.length }) }}
+                    </Button>
                 </div>
             </div>
 
@@ -176,6 +210,8 @@
                     <p>{{ t('view.settings.general.legal_notice.disclaimer2') }}</p>
                 </div>
             </div>
+
+            <ImportDatabaseDialog v-model:open="isImportDbOpen" />
         </div>
     </div>
 </template>
@@ -189,7 +225,7 @@
         DropdownMenuContent,
         DropdownMenuTrigger
     } from '@/components/ui/dropdown-menu';
-    import { onBeforeMount, onBeforeUnmount, ref, watch } from 'vue';
+    import { onBeforeMount, onBeforeUnmount, reactive, ref, watch } from 'vue';
     import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
     import IconFrame from '@/components/IconFrame.vue';
     import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item';
@@ -218,8 +254,10 @@
     import configRepository from '../../services/config';
     import { useUserDisplay } from '../../composables/useUserDisplay';
     import { watchState } from '../../services/watchState';
+    import { accountHub } from '../../services/accountHub.js';
 
     import LoginSettingsDialog from './Dialog/LoginSettingsDialog.vue';
+    import ImportDatabaseDialog from '../../components/dialogs/ImportDatabaseDialog.vue';
 
     const { userImage } = useUserDisplay();
     const { showVRCXUpdateDialog } = useVRCXUpdaterStore();
@@ -239,7 +277,11 @@
     const { t } = useI18n();
 
     const savedCredentials = ref({});
+    const isImportDbOpen = ref(false);
     const requiredMessage = 'Required';
+    /** Ordered list of selected account user IDs. Index 0 = primary. */
+    const selectedAccountOrder = ref([]);
+    const multiLoginLoading = ref(false);
 
     const formSchema = toTypedSchema(
         z.object({
@@ -274,6 +316,76 @@
             // relogin already handles user-facing error display (toast)
         }
         await updateSavedCredentials();
+    }
+
+    // ── Multi-account ordered selection ──────────────────────────────────────────
+
+    const BADGE_COLOURS = ['#4ade80', '#60a5fa', '#fb923c', '#f472b6', '#a78bfa', '#34d399', '#fbbf24', '#f87171'];
+
+    /**
+     * Toggle selection of an account for multi-login.
+     * Maintains insertion order — first selected = primary.
+     * @param {string} userId
+     */
+    function toggleAccountSelection(userId) {
+        const idx = selectedAccountOrder.value.indexOf(userId);
+        if (idx >= 0) {
+            selectedAccountOrder.value = selectedAccountOrder.value.filter((id) => id !== userId);
+        } else {
+            selectedAccountOrder.value = [...selectedAccountOrder.value, userId];
+        }
+    }
+
+    function getAccountOrderIndex(userId) {
+        return selectedAccountOrder.value.indexOf(userId);
+    }
+
+    function getAccountBadgeLabel(userId) {
+        const idx = getAccountOrderIndex(userId);
+        if (idx < 0) return '';
+        if (idx === 0) return '主';
+        return String(idx);
+    }
+
+    function getAccountBadgeColor(userId) {
+        const idx = getAccountOrderIndex(userId);
+        if (idx < 0) return '#888';
+        return BADGE_COLOURS[idx % BADGE_COLOURS.length];
+    }
+
+    /**
+     * Log in the first selected account normally, then add the rest as secondary sessions.
+     */
+    async function clickMultiLogin() {
+        if (selectedAccountOrder.value.length < 2) return;
+        multiLoginLoading.value = true;
+        try {
+            const creds = Object.values(savedCredentials.value);
+            const [primaryId, ...secondaryIds] = selectedAccountOrder.value;
+            const primaryEntry = creds.find((c) => c.user.id === primaryId);
+            if (!primaryEntry) return;
+
+            // Login primary account the normal way
+            await relogin(primaryEntry);
+
+            // Login secondary accounts via accountHub
+            for (const secId of secondaryIds) {
+                const secEntry = creds.find((c) => c.user.id === secId);
+                if (secEntry) {
+                    try {
+                        await accountHub.addSession(secEntry);
+                    } catch (e) {
+                        console.warn('[MultiLogin] Failed to add secondary session:', secId, e);
+                    }
+                }
+            }
+
+            if (accountHub.hasSecondarySessions) {
+                accountHub.switchToMerged();
+            }
+        } finally {
+            multiLoginLoading.value = false;
+        }
     }
 
     const onSubmit = handleSubmit(async (formValues) => {

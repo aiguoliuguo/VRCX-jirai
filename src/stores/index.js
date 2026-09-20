@@ -41,6 +41,9 @@ import { useVrcStatusStore } from './vrcStatus';
 import { useVrcxStore } from './vrcx';
 import { useWorldStore } from './world';
 import { useWristOverlaySettingsStore } from './settings/wristOverlay';
+import { useAutoFollowStore } from './autoFollow';
+import { useManualRelationsStore } from './manualRelations';
+import { useTrackedNonFriendsStore } from './trackedNonFriends';
 
 export const pinia = createPinia();
 
@@ -159,7 +162,10 @@ export function createGlobalStores() {
         charts: useChartsStore(),
         dashboard: useDashboardStore(),
         modal: useModalStore(),
-        quickSearch: useQuickSearchStore()
+        quickSearch: useQuickSearchStore(),
+        autoFollow: useAutoFollowStore(),
+        trackedNonFriends: useTrackedNonFriendsStore(),
+        manualRelations: useManualRelationsStore()
     };
 }
 
@@ -203,5 +209,8 @@ export {
     useUpdateLoopStore,
     useVrcStatusStore,
     useModalStore,
-    useQuickSearchStore
+    useQuickSearchStore,
+    useAutoFollowStore,
+    useTrackedNonFriendsStore,
+    useManualRelationsStore
 };

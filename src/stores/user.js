@@ -25,6 +25,7 @@ import { useModalStore } from './modal';
 import { syncFriendSearchIndex } from '../coordinators/searchIndexCoordinator';
 import { useUiStore } from './ui';
 import { watchState } from '../services/watchState';
+import { accountHub } from '../services/accountHub';
 
 import * as workerTimers from 'worker-timers';
 
@@ -418,9 +419,20 @@ export const useUserStore = defineStore('User', () => {
                 state.notes.clear();
                 subsetOfLanguages.value = [];
                 uiStore.clearDialogCrumbs();
+                clearCachedUsers();
             }
         },
         { flush: 'sync' }
+    );
+
+    watch(
+        () => accountHub.viewMode,
+        () => {
+            if (watchState.isLoggedIn) {
+                clearCachedUsers();
+                initUserNotes();
+            }
+        }
     );
 
     watch(

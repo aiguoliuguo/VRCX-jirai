@@ -43,7 +43,7 @@ function dotnetSetup() {
 }
 dotnetSetup();
 
-const VRCX_URI_PREFIX = 'vrcx';
+const VRCX_URI_PREFIX = 'vrcx-jirai';
 let isOverlayActive = false;
 let appIsQuitting = false;
 const rootDir = app.getAppPath();
@@ -100,7 +100,7 @@ const OVERLAY_HMD_FRAME_HEIGHT = 1024;
 const OVERLAY_SHARED_HEIGHT = OVERLAY_WRIST_FRAME_HEIGHT + OVERLAY_HMD_FRAME_HEIGHT;
 const OVERLAY_SHARED_WIDTH = Math.max(OVERLAY_WRIST_FRAME_WIDTH, OVERLAY_HMD_FRAME_WIDTH);
 const OVERLAY_FRAME_SIZE = OVERLAY_SHARED_WIDTH * OVERLAY_SHARED_HEIGHT * 4;
-const OVERLAY_SHM_PATH = '/dev/shm/vrcx_overlay';
+const OVERLAY_SHM_PATH = '/dev/shm/vrcx_jirai_overlay';
 const overlayFrameBuffer = Buffer.alloc(OVERLAY_FRAME_SIZE + 1);
 let activeNotification = null;
 
@@ -168,6 +168,19 @@ ipcMain.handle('dialog:openFile', async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openFile'],
         filters: [{ name: 'Images', extensions: ['png'] }]
+    });
+
+    if (!result.canceled && result.filePaths.length > 0) {
+        return result.filePaths[0];
+    }
+    return null;
+});
+
+ipcMain.handle('dialog:openDatabase', async (event, defaultPath) => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+        properties: ['openFile'],
+        defaultPath: defaultPath || undefined,
+        filters: [{ name: 'VRCX Database', extensions: ['sqlite3', 'db'] }]
     });
 
     if (!result.canceled && result.filePaths.length > 0) {
@@ -406,7 +419,7 @@ function createOverlayWindowOffscreen() {
         frame: false,
         show: false,
         webPreferences: {
-            partition: 'vrcx-vr-overlay',
+            partition: 'vrcx-jirai-vr-overlay',
             offscreen: true,
             preload: path.join(__dirname, 'preload.js')
         }
@@ -485,7 +498,7 @@ function createTray() {
             }
         },
         {
-            label: 'Quit VRCX',
+            label: 'Quit VRCX-Jirai',
             type: 'normal',
             click: function () {
                 appIsQuitting = true;
@@ -493,7 +506,7 @@ function createTray() {
             }
         }
     ]);
-    tray.setToolTip('VRCX');
+    tray.setToolTip('VRCX-Jirai');
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
@@ -523,13 +536,13 @@ async function installVRCX() {
         return;
     }
 
-    // rename AppImage to VRCX.AppImage
+    // Keep the Jirai AppImage separate from the upstream installation.
     const currentName = path.basename(appImagePath);
-    const expectedName = 'VRCX.AppImage';
+    const expectedName = 'VRCX-Jirai.AppImage';
     if (currentName !== expectedName) {
         const newPath = path.join(path.dirname(appImagePath), expectedName);
         try {
-            // remove existing VRCX.AppImage
+            // remove existing VRCX-Jirai.AppImage
             if (fs.existsSync(newPath)) {
                 fs.unlinkSync(newPath);
             }
@@ -538,19 +551,22 @@ async function installVRCX() {
             appImagePath = newPath;
         } catch (err) {
             console.error(`Error renaming AppImage ${newPath}`, err);
-            dialog.showErrorBox('VRCX', `Failed to rename AppImage ${newPath}`);
+            dialog.showErrorBox(
+                'VRCX-Jirai',
+                `Failed to rename AppImage ${newPath}`
+            );
             return;
         }
     }
 
     // ask to move AppImage to ~/Applications
-    const appImageHomePath = `${homePath}/Applications/VRCX.AppImage`;
+    const appImageHomePath = `${homePath}/Applications/VRCX-Jirai.AppImage`;
     if (!hasAskedToMoveAppImage && appImagePath !== appImageHomePath) {
         const result = dialog.showMessageBoxSync(mainWindow, {
             type: 'question',
-            title: 'VRCX',
-            message: 'Do you want to install VRCX?',
-            detail: 'VRCX will be moved to your ~/Applications folder.',
+            title: 'VRCX-Jirai',
+            message: 'Do you want to install VRCX-Jirai?',
+            detail: 'VRCX-Jirai will be moved to your ~/Applications folder.',
             buttons: ['No', 'Yes']
         });
         if (result === 0) {
@@ -567,7 +583,7 @@ async function installVRCX() {
                 if (!fs.existsSync(applicationsPath)) {
                     fs.mkdirSync(applicationsPath);
                 }
-                // remove existing VRCX.AppImage
+                // remove existing VRCX-Jirai.AppImage
                 if (fs.existsSync(appImageHomePath)) {
                     fs.unlinkSync(appImageHomePath);
                 }
@@ -577,7 +593,7 @@ async function installVRCX() {
                 await updateDesktopFile();
             } catch (err) {
                 console.error(`Error moving AppImage ${appImageHomePath}`, err);
-                dialog.showErrorBox('VRCX', `Failed to move AppImage ${appImageHomePath}`);
+                dialog.showErrorBox('VRCX-Jirai', `Failed to move AppImage ${appImageHomePath}`);
                 return;
             }
         }
@@ -604,7 +620,7 @@ function updateDesktopFile() {
     }
 
     const applicationsDir = path.join(homePath, '.local/share/applications');
-    const existingDesktopFilePath = path.join(applicationsDir, 'VRCX.desktop');
+    const existingDesktopFilePath = path.join(applicationsDir, 'VRCX-Jirai.desktop');
 
     // note that when using spawnSync you DO NOT quote any paths as they are passed directly to the process
     try {
@@ -617,13 +633,13 @@ function updateDesktopFile() {
             ]);
 
             if (editResult.error) {
-                console.log('Error trying to update VRCX.desktop file: ', editResult.error.message);
+                console.log('Error trying to update VRCX-Jirai.desktop file: ', editResult.error.message);
             } else {
                 console.log(`Updated desktop file: ${existingDesktopFilePath} to exec ${appImagePath}`);
             }
         } else {
             const exeDir = path.dirname(app.getPath('exe'));
-            const packageAppImagePath = path.join(exeDir, 'VRCX.desktop');
+            const packageAppImagePath = path.join(exeDir, 'VRCX-Jirai.desktop');
 
             var installResult = spawnSync('desktop-file-install', [
                 '--set-key=Exec',
@@ -634,14 +650,14 @@ function updateDesktopFile() {
             ]);
 
             if (installResult.error) {
-                console.log('Error trying to install VRCX.desktop file: ', installResult.error.message);
+                console.log('Error trying to install VRCX-Jirai.desktop file: ', installResult.error.message);
             } else {
                 console.log(`Installed desktop file to: ${applicationsDir} using exec ${appImagePath}`);
             }
         }
     } catch (err) {
         console.error('Error creating desktop file:', err);
-        dialog.showErrorBox('VRCX', 'Failed to create desktop entry.');
+        dialog.showErrorBox('VRCX-Jirai', 'Failed to create desktop entry.');
         return;
     }
 }
@@ -652,28 +668,31 @@ function getElectronUserDataPath() {
         return path.join(getVRCXPath(), electronUserData);
     }
     if (process.platform === 'darwin') {
-        return path.join(process.env.HOME, 'Library/Caches/VRCX', electronUserData);
+        return path.join(process.env.HOME, 'Library/Caches/VRCX-Jirai', electronUserData);
     }
     // Linux or other
     let cacheHome = process.env.XDG_CACHE_HOME;
     if (!cacheHome) {
         cacheHome = path.join(process.env.HOME, '.cache');
     }
-    return path.join(cacheHome, 'VRCX', electronUserData);
+    return path.join(cacheHome, 'VRCX-Jirai', electronUserData);
 }
 
 function getVRCXPath() {
     if (process.platform === 'win32') {
-        return path.join(process.env.APPDATA, 'VRCX');
+        return path.join(process.env.APPDATA, 'VRCX-Jirai');
     } else if (process.platform === 'darwin') {
-        return path.join(process.env.HOME, 'Library/Application Support/VRCX');
+        return path.join(
+            process.env.HOME,
+            'Library/Application Support/VRCX-Jirai'
+        );
     }
     // Linux or other
     let configHome = process.env.XDG_CONFIG_HOME;
     if (!configHome) {
         configHome = path.join(process.env.HOME, '.config');
     }
-    return path.join(configHome, 'VRCX');
+    return path.join(configHome, 'VRCX-Jirai');
 }
 
 function getHomePath() {
@@ -695,13 +714,13 @@ function getVersion() {
         const version = versionFile.split('-');
         console.log('Version:', versionFile);
         if (version.length > 0 && version[version.length - 1].length == 7) {
-            return `VRCX (Linux) Nightly ${versionFile}`;
+            return `VRCX-Jirai Nightly ${versionFile}`;
         } else {
-            return `VRCX (Linux) ${versionFile}`;
+            return `VRCX-Jirai ${versionFile}`;
         }
     } catch (err) {
         console.error('Error reading Version:', err);
-        return 'VRCX (Linux) Nightly Build';
+        return 'VRCX-Jirai Nightly Build';
     }
 }
 

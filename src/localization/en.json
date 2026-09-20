@@ -85,7 +85,7 @@
         "resources": "RESOURCES",
         "wiki": "Wiki",
         "get_help": "GET HELP",
-        "github": "VRCX on GitHub",
+        "github": "VRCX-Jirai on GitHub",
         "discord": "Join our Discord",
         "changelog": "Changelog",
         "update_available": "Update available",
@@ -232,6 +232,20 @@
             "past_notifications": "Last 24 hours",
             "no_new_notifications": "No new notifications in the past 24 hours",
             "no_unseen_notifications": "No unread notifications"
+        },
+        "search_recently_met": "Recently Met",
+        "search_recently_joined": "Recently Joined Worlds",
+        "tracked_nonfriends": {
+            "tab_label": "Tracked",
+            "empty": "No tracked non-friends yet. Click \"+\" to add one by user ID, or use the \"⋯\" menu in any user's profile.",
+            "remove_tooltip": "Remove from tracking",
+            "add_button": "Add +",
+            "add_dialog_title": "Track a User",
+            "add_dialog_hint": "Enter the user ID manually (usr_xxx...), or open any user's profile in VRCX-jirai and use the \"⋯\" → \"Track\" option.",
+            "add_input_placeholder": "usr_xxx...",
+            "add_verify_error": "Could not retrieve user data. Please check the ID and try again.",
+            "add_confirm_question": "Is this user \"{name}\"?",
+            "add_back": "Back"
         }
     },
     "view": {
@@ -255,7 +269,9 @@
             "language_detect": {
                 "title": "Language Detected",
                 "description": "Your system language appears to be {language}. Would you like to switch to it?"
-            }
+            },
+            "import_database": "Import Existing Database",
+            "loginSelected": "Login {count} selected accounts"
         },
         "feed": {
             "favorites_only_tooltip": "Filter favorites only",
@@ -313,7 +329,7 @@
                 "search_placeholder": "Search",
                 "filter_placeholder": "Filter",
                 "chatbox_blacklist": "Chatbox Blacklist",
-                "status_tooltip": "VRCX Companion Status"
+                "status_tooltip": "VRCX-Jirai Companion Status"
             }
         },
         "my_avatars": {
@@ -538,7 +554,7 @@
                 "next_day": "Next Day",
                 "refresh": "Refresh",
                 "tips": {
-                    "online_time": "Online time refers to the game time recorded by VRCX for the current day.",
+                    "online_time": "Online time refers to the game time recorded by VRCX-Jirai for the current day.",
                     "click_Y_axis": "Click Y-axis label to navigate to the instance details or open User dialog.",
                     "click_instance_name": "Click instance name to open Previous Instance Info dialog."
                 },
@@ -613,6 +629,40 @@
                     "user_opted_out": "This user has disabled mutual friends sharing. Existing data has been preserved.",
                     "refresh_error": "Failed to refresh mutual friends data",
                     "last_fetched": "Last fetched"
+                },
+                "tracked_nonfriend": {
+                    "track_tooltip": "Track this non-friend",
+                    "untrack_tooltip": "Stop tracking this non-friend",
+                    "track_hint": "Right-click a node in the graph to select it",
+                    "added": "Now tracking {name}",
+                    "removed": "Stopped tracking {name}",
+                    "show_tooltip": "Show tracked non-friends in graph",
+                    "hide_tooltip": "Hide tracked non-friends in graph"
+                },
+                "manual_relations": {
+                    "button_tooltip": "Manual friendship relations",
+                    "dialog_title": "Manual Friend Relations",
+                    "tab_list": "Relations",
+                    "tab_add": "Add",
+                    "tab_suggest": "Suggestions",
+                    "list_empty": "No manual relations added yet.",
+                    "user_a": "Person A",
+                    "user_b": "Person B",
+                    "user_placeholder": "Select a person...",
+                    "user_search": "Search friends...",
+                    "add_button": "Add Connection",
+                    "already_exists": "This relation already exists.",
+                    "suggest_description": "Based on mutual friend data, these pairs may have a friendship relationship that is not yet captured.",
+                    "suggest_button": "Run Analysis",
+                    "suggest_score": "Score: {score}",
+                    "suggest_confirm": "Add",
+                    "suggest_dismiss": "Skip",
+                    "suggest_none": "No suggestions found. Try fetching mutual friend data first."
+                },
+                "legend": {
+                    "mutual": "Mutual Relationship",
+                    "manual": "Manual Relation",
+                    "non_friend": "Includes Non-friend"
                 }
             },
             "playtime_trend": {
@@ -655,6 +705,87 @@
                 },
                 "no_friend_data": "No friend visit data",
                 "friend_visits": "{count} visits"
+            },
+            "two_person_relationship": {
+                "header": "Duo Relationship",
+                "tips": {
+                    "description": "Analyzes your game log database to find instances where two friends were present in the same room. Even if you weren't there, it reconstructs their shared moments from their individual join/leave records."
+                },
+                "select_friend_a": "Select Friend A",
+                "select_friend_b": "Select Friend B",
+                "search_friend": "Search friends...",
+                "swap_friends": "Swap friends",
+                "total_coexistence_time": "Total co-presence time",
+                "shared_instances": "Shared instances",
+                "no_data": "No shared instance records found",
+                "no_friend_selected": "Select two friends to view their shared instances",
+                "coexistence_time": "Co-presence time",
+                "instance_count": "Shared instance count",
+                "meet_count": "{count} encounters",
+                "settings": "Settings",
+                "show_self_presence": "Show my presence indicator",
+                "self_present": "Present",
+                "self_not_present": "Absent",
+                "instance_creator": "Creator",
+                "max_player_count": "Peak players",
+                "initiator_leftPlayer": "Left Follow",
+                "initiator_rightPlayer": "Right Follow",
+                "initiator_mutual": "Mutual",
+                "initiator_unknown": "Unknown"
+            },
+            "relationship_timeline": {
+                "header": "Relationship Timeline",
+                "refresh": "Refresh",
+                "top_n_friends": "Top {n} friends",
+                "others": "Others",
+                "days_per_unit": "days/unit",
+                "tips": {
+                    "description": "Shows how your relationships with friends have evolved over time as a 100% stacked area chart. Each band represents a friend's share of your total social activity. Use the scale slider (bottom-right) to adjust time granularity, and drag the bottom bar to scroll through time."
+                },
+                "settings": {
+                    "header": "Settings",
+                    "top_friends": "Top friends",
+                    "show_others": "Show Others",
+                    "show_friends_only": "Friends Only"
+                }
+            },
+            "friend_affinity": {
+                "tab_label": "Affinity",
+                "header": "Affinity Ranking",
+                "tips": {
+                    "description": "Ranks your friends and tracked non-friends by an affinity score (0-100) computed from your game log: total co-presence time, number of shared instances and how recently you were together. Click any row (or chart bar) to switch the reference person and explore how close they are to your circle."
+                },
+                "select_center": "Reference person",
+                "search_user": "Search users...",
+                "me": "Me",
+                "center_group": "Reference",
+                "refresh": "Refresh",
+                "show_friends_only": "Friends only",
+                "period": {
+                    "all": "All",
+                    "days_30": "Last 30d",
+                    "days_90": "Last 90d"
+                },
+                "relative_to": "Relative to",
+                "stats": {
+                    "people": "people",
+                    "total_time": "Total co-presence"
+                },
+                "chart": {
+                    "title": "Affinity Top {n}",
+                    "score_label": "Affinity"
+                },
+                "table": {
+                    "title": "Full ranking",
+                    "click_hint": "Click a row to switch the reference person",
+                    "friend": "Friend",
+                    "non_friend": "Non-friend",
+                    "encounters": "{count} encounters",
+                    "days_ago": "{days}d ago",
+                    "today": "Today",
+                    "never": "Never"
+                },
+                "no_data": "No co-presence records yet"
             }
         },
         "tools": {
@@ -672,7 +803,7 @@
             "export": {
                 "header": "Export",
                 "export_notes": "Export User Memos",
-                "export_notes_description": "Export VRCX user memos to VRChat notes",
+                "export_notes_description": "Export VRCX-Jirai user memos to VRChat notes",
                 "discord_names": "Discord Names",
                 "export_friend_list": "Export Friends List",
                 "export_own_avatars": "Export Own Avatars"
@@ -693,8 +824,8 @@
             },
             "shortcuts": {
                 "header": "Shortcuts",
-                "vrcx_data": "VRCX Data",
-                "vrcx_data_description": "Open the VRCX data folder",
+                "vrcx_data": "VRCX-Jirai Data",
+                "vrcx_data_description": "Open the VRCX-Jirai data folder",
                 "vrchat_data": "VRChat Data",
                 "vrchat_data_description": "Open the VRChat data folder",
                 "crash_dumps": "Crash Dumps",
@@ -706,7 +837,19 @@
                 "vrchat_config_description": "Open VRChat config.json settings",
                 "launch_options_description": "Edit VRChat launch options",
                 "registry_backup": "VRChat Registry Backup",
-                "registry_backup_description": "Create or restore a VRChat registry backup"
+                "registry_backup_description": "Create or restore a VRChat registry backup",
+                "info_completion": "Profile Info Sync & Completion",
+                "info_completion_description": "Scan and fetch the latest profiles for all friends and tracked users, saving new or updated bios and status to the database.",
+                "info_completion_hint": "Ready to scan {count} targets.",
+                "info_completion_start": "Start Sync",
+                "info_completion_again": "Sync Again",
+                "info_completion_cancel": "Cancel",
+                "info_completion_close": "Close",
+                "info_completion_progress": "Scanning {current} / {total}...",
+                "info_completion_done": "Done — saved {updated} updates from {total} targets.",
+                "info_completion_tooltip_running": "Syncing Info {done}/{total} (Bio +{bio}, Status +{status})",
+                "info_completion_tooltip_done": "Sync Done: Updated {bio} bios, {status} statuses (Click to re-sync)",
+                "info_completion_tooltip_idle": "Profile Info Sync (Click to start)"
             },
             "other": {
                 "header": "Other",
@@ -810,7 +953,7 @@
                     "support": "Support"
                 },
                 "vrcx_updater": {
-                    "header": "VRCX Updater",
+                    "header": "VRCX-Jirai Updater",
                     "change_build": "Change Build",
                     "update_action": "Update Action",
                     "auto_update_off": "Off",
@@ -825,10 +968,10 @@
                     "minimized": "Start Minimized at System Startup",
                     "tray": "Minimize to Tray When Closing",
                     "disable_gpu_acceleration": "Disable GPU Acceleration",
-                    "disable_gpu_acceleration_tooltip": "Only change this option if you know what you're doing, may fix issues with UI, requires restarting VRCX",
+                    "disable_gpu_acceleration_tooltip": "Only change this option if you know what you're doing, may fix issues with UI, requires restarting VRCX-Jirai",
                     "disable_vr_overlay_gpu_acceleration": "Disable VR Overlay GPU Acceleration",
                     "proxy": "Proxy Settings",
-                    "startup_linux": "Add \"--startup\" arg to startup VRCX.desktop file to start VRCX minimized at system startup"
+                    "startup_linux": "Add \"--startup\" arg to startup VRCX-Jirai.desktop file to start VRCX-Jirai minimized at system startup"
                 },
                 "favorites": {
                     "header": "Favorite Groups Filter",
@@ -867,9 +1010,9 @@
                 },
                 "legal_notice": {
                     "header": "Legal Notice",
-                    "info": "VRCX is an assistant application for VRChat that provides information about and managing friendship. This application makes use of the unofficial VRChat API SDK.",
-                    "disclaimer1": "VRCX is not endorsed by VRChat and does not reflect the views or opinions of VRChat or anyone officially involved in producing or managing VRChat properties. VRChat and all associated properties are trademarks or registered trademarks of VRChat Inc. VRChat © VRChat Inc.",
-                    "disclaimer2": "pypy & Natsumi and all contributors are not responsible for any problems caused by VRCX. Use at your own risk!",
+                    "info": "VRCX-Jirai is an assistant application for VRChat that provides information about and managing friendship. This application makes use of the unofficial VRChat API SDK.",
+                    "disclaimer1": "VRCX-Jirai is not endorsed by VRChat and does not reflect the views or opinions of VRChat or anyone officially involved in producing or managing VRChat properties. VRChat and all associated properties are trademarks or registered trademarks of VRChat Inc. VRChat © VRChat Inc.",
+                    "disclaimer2": "pypy & Natsumi and all contributors are not responsible for any problems caused by VRCX-Jirai. Use at your own risk!",
                     "open_source_software_notice": "Open Source Software Notice"
                 },
                 "contributors": {
@@ -991,8 +1134,8 @@
                     "header": "User Dialog",
                     "vrchat_notes": "VRChat Notes",
                     "vrchat_notes_description": "Shows notes stored in VRChat",
-                    "vrcx_memos": "VRCX Memos",
-                    "vrcx_memos_description": "Shows notes saved locally in VRCX",
+                    "vrcx_memos": "VRCX-Jirai Memos",
+                    "vrcx_memos_description": "Shows notes saved locally in VRCX-Jirai",
                     "recent_action_cooldown": "Recent Action Icon",
                     "recent_action_cooldown_description": "Show a clock icon on recent invite and request actions.",
                     "recent_action_cooldown_minutes": "Cooldown (Minutes)"
@@ -1108,7 +1251,7 @@
                 "rpc": {
                     "vr": "VR",
                     "desktop": "Desktop",
-                    "powered_by_vrcx": "Powered by VRCX",
+                    "powered_by_vrcx": "Powered by VRCX-Jirai",
                     "private_world": "Private World"
                 }
             },
@@ -1126,7 +1269,7 @@
                         "header": "VRChat"
                     },
                     "vrcx_settings": {
-                        "header": "VRCX"
+                        "header": "VRCX-Jirai"
                     },
                     "primary_password": {
                         "header": "Primary Password",
@@ -1150,11 +1293,11 @@
                     },
                     "anonymous_error_reporting": {
                         "header": "Anonymous Error Reporting (Nightly Only)",
-                        "description": "Help improve VRCX by sending anonymous crash and error reports. No personal or VRChat data is collected.",
+                        "description": "Help improve VRCX-Jirai by sending anonymous crash and error reports. No personal or VRChat data is collected.",
                         "consent_title": "Anonymous Error Reporting",
-                        "consent_description": "Allow anonymous error reporting to help improve VRCX?\n\n• Crash and error data only\n• No personal or VRChat data\n• Nightly builds only\n• Can be disabled in Advanced Settings",
-                        "enabled_restart_description": "Error reporting enabled. Restart VRCX to apply changes?",
-                        "disabled_restart_description": "Error reporting disabled. Restart VRCX to apply changes?"
+                        "consent_description": "Allow anonymous error reporting to help improve VRCX-Jirai?\n\n• Crash and error data only\n• No personal or VRChat data\n• Nightly builds only\n• Can be disabled in Advanced Settings",
+                        "enabled_restart_description": "Error reporting enabled. Restart VRCX-Jirai to apply changes?",
+                        "disabled_restart_description": "Error reporting disabled. Restart VRCX-Jirai to apply changes?"
                     },
                     "save_instance_prints_to_file": {
                         "header": "Save Instance Prints to File",
@@ -1175,7 +1318,7 @@
                     },
                     "delete_all_screenshot_metadata": {
                         "button": "Remove Screenshot Metadata",
-                        "ask": "Are you sure you want to delete all VRC & VRCX screenshot metadata from your VRChat Pictures folder?",
+                        "ask": "Are you sure you want to delete all VRC & VRCX-Jirai screenshot metadata from your VRChat Pictures folder?",
                         "confirm": "Deleting all screenshot metadata is a very destructive action and cannot be undone! This includes all prints, sub folders and other unrelated images in your VRChat Pictures folder, if these photos are precious to you, please make a backup before proceeding.",
                         "confirm_yes": "Yes",
                         "confirm_no": "No"
@@ -1208,7 +1351,7 @@
                         "header": "Launch Commands (Deep Links)",
                         "docs": "Launch Command Docs",
                         "show_confirmation_on_switch_avatar_enable": "Confirm Before Switching Avatars",
-                        "show_confirmation_on_switch_avatar_tooltip": "When disabled, VRCX will not ask for confirmation before switching avatars.",
+                        "show_confirmation_on_switch_avatar_tooltip": "When disabled, VRCX-Jirai will not ask for confirmation before switching avatars.",
                         "website_userscript": "VRC Website Userscript"
                     },
                     "screenshot_helper": {
@@ -1228,7 +1371,7 @@
                         "run_process_once": "Open Single Instance of App"
                     },
                     "cache_debug": {
-                        "header": "VRCX Instance Cache/Debug",
+                        "header": "VRCX-Jirai Instance Cache/Debug",
                         "udon_exception_logging": "Udon Exception Logging",
                         "disable_gamelog": "Disable GameLog",
                         "disable_gamelog_notice": "(will likely break things)",
@@ -1278,7 +1421,7 @@
                         "purge_confirm_title": "Purge Avatar Feed Data",
                         "purge_confirm_description_1": "This will permanently delete avatar change records from the database and reclaim disk space.",
                         "purge_confirm_description_2": "This action cannot be undone!",
-                        "purge_confirm_description_3": "VRCX will restart after the operation completes.",
+                        "purge_confirm_description_3": "VRCX-Jirai will restart after the operation completes.",
                         "purge_confirm_alert": "It is strongly recommended to back up your database file before proceeding!",
                         "purge_confirm_button": "Purge & Restart",
                         "purge_in_progress": "Purging avatar data...",
@@ -1291,6 +1434,9 @@
                         "description": "Open or set the folder for VRChat content such as Prints and Stickers.",
                         "set_folder": "Set Folder",
                         "reset_override": "Reset"
+                    },
+                    "auto_join_group_certification": {
+                        "header": "Certification"
                     }
                 },
                 "photon": {
@@ -1392,7 +1538,9 @@
                 "logout": "Logout",
                 "edit_note_memo": "Edit Note and Memo",
                 "reset_home": "Reset Home",
-                "edit_profile": "Edit Profile"
+                "edit_profile": "Edit Profile",
+                "track_stranger": "Track This User",
+                "untrack_stranger": "Stop Tracking This User"
             },
             "info": {
                 "header": "Info",
@@ -1453,7 +1601,8 @@
                 "instance_minimum_avatar_performance": "Minimum Avatar Performance",
                 "current_instance": "Current Instance",
                 "economy_creator": "Economy Creator",
-                "instance_announcement_tooltip": "Send Instance Announcement"
+                "instance_announcement_tooltip": "Send Instance Announcement",
+                "bio_diff_toggle": "Toggle bio diff"
             },
             "groups": {
                 "header": "Groups",
@@ -1571,6 +1720,18 @@
                 "header": "Edit Note And Memo",
                 "cancel": "Cancel",
                 "confirm": "Confirm"
+            },
+            "status_distribution": {
+                "header": "Status Distribution",
+                "refresh_hint": "Refresh status distribution data",
+                "loading": "Loading status data...",
+                "days_per_unit": "days/unit",
+                "status": {
+                    "active": "Online",
+                    "join_me": "Join Me",
+                    "ask_me": "Ask Me",
+                    "busy": "Do Not Disturb"
+                }
             }
         },
         "world": {
@@ -2250,14 +2411,14 @@
         },
         "note_export": {
             "header": "Note Export",
-            "description1": "This process will export all of your VRCX memos and import them into VRChat notes.",
+            "description1": "This process will export all of your VRCX-Jirai memos and import them into VRChat notes.",
             "description2": "Be warned of the following limitations:",
             "description3": "- API endpoint has a rate limit that requires a large delay between requests.",
             "description4": "- Character limit of 256 per note.",
             "description5": "- Swear words filter (no fun allowed).",
             "description6": "- No new lines (they will replaced with a space).",
             "description7": "- This will overwrite any existing VRChat notes for these users.",
-            "description8": "- Any edits made here wont affect VRCX memos but will affect VRChat notes once exported.",
+            "description8": "- Any edits made here wont affect VRCX-Jirai memos but will affect VRChat notes once exported.",
             "refresh": "Refresh",
             "export": "Export",
             "cancel": "Cancel",
@@ -2292,7 +2453,10 @@
             "emoji": "Emoji",
             "redeem": "Redeem",
             "create_animated_emoji": "Animated Emoji Generator",
-            "crop_image": "Confirm Upload"
+            "crop_image": "Confirm Upload",
+            "drop_to_add": "Release to add",
+            "drop_to_upload": "Drop to upload",
+            "drop_to_upload_hint": "Drag and drop an image into this panel to upload"
         },
         "image_crop": {
             "rotate_left": "Rotate Left",
@@ -2584,9 +2748,9 @@
             "add_item": "Add Item"
         },
         "vrcx_updater": {
-            "header": "VRCX Updater",
-            "latest_version": "VRCX is up to date.",
-            "ready_for_update": "Ready for install, restart VRCX to apply.",
+            "header": "VRCX-Jirai Updater",
+            "latest_version": "VRCX-Jirai is up to date.",
+            "ready_for_update": "Ready for install, restart VRCX-Jirai to apply.",
             "branch_stable": "Stable",
             "branch_nightly": "Nightly",
             "nightly_title": "Nightly builds",
@@ -2598,14 +2762,14 @@
         },
         "change_log": {
             "header": "Change Log",
-            "description": "Consider donating to support future development of VRCX",
+            "description": "Consider donating to support future development of VRCX-Jirai",
             "close": "Close",
             "donate": "Donate",
             "github": "GitHub"
         },
         "open_source": {
             "header": "Open Source Software Notice",
-            "description": "VRCX is based on open source software. It was possible because of their contribution.",
+            "description": "VRCX-Jirai is based on open source software. It was possible because of their contribution.",
             "loading": "Loading generated third-party notices...",
             "unavailable": "No generated third-party notice manifest is available in this build. Run a production build to regenerate it.",
             "search_placeholder": "Search packages, versions, or licenses",
@@ -2637,7 +2801,7 @@
             "action": "Action",
             "auto_backup": "Auto backup every 3 days (deletes after 2 weeks)",
             "ask_to_restore": "Ask to restore when no VRC registry settings are present",
-            "restore_prompt": "VRCX has noticed auto backup of VRChat registry settings is enabled but this computer doesn't have any, if you'd like to restore from backup you can do so from here."
+            "restore_prompt": "VRCX-Jirai has noticed auto backup of VRChat registry settings is enabled but this computer doesn't have any, if you'd like to restore from backup you can do so from here."
         },
         "avatar_database_provider": {
             "header": "Avatar Database Provider",
@@ -2651,7 +2815,59 @@
             "select_image": "Select Image",
             "sending": "Sending...",
             "send": "Send Announcement"
-        }
+        },
+        "import_database": {
+            "header": "Import Database",
+            "cancel": "Cancel",
+            "next": "Next",
+            "import": "Start Import",
+            "restart": "Restart App",
+            "later": "Later",
+            "select": {
+                "description": "Choose a VRCX database file to import (usually the original VRCX's VRCX.sqlite3). The current database will be replaced after an automatic backup.",
+                "path_placeholder": "Pick a sqlite3 database file",
+                "choose": "Choose File",
+                "validating": "Validating database...",
+                "valid": "Valid VRCX database",
+                "invalid": "The selected file is not a valid VRCX database"
+            },
+            "stats": {
+                "rows": "{count} game records",
+                "friends": "{count} friends",
+                "size": "File size"
+            },
+            "confirm": {
+                "current_label": "Current Database",
+                "source_label": "Database to Import",
+                "warning": {
+                    "title": "Please confirm before importing",
+                    "backup": "The current database will be backed up automatically before importing (the backup location is shown on the completion page).",
+                    "restart": "A restart is required for the import to take effect."
+                }
+            },
+            "done": {
+                "message": "Database imported successfully",
+                "backup_path": "Backup saved to: {path}"
+            },
+            "error": {
+                "title": "Cannot import",
+                "empty_path": "No database file selected",
+                "same_path": "The selected file is identical to the current database, no import needed",
+                "not_found": "File not found",
+                "not_vrcx_db": "The selected file is not a valid VRCX database (missing gamelog_join_leave table)",
+                "invalid_sqlite": "Could not read the database file",
+                "invalid": "Database validation failed",
+                "failed": "Import failed, please try again"
+            }
+        },
+        "import_db_prompt": {
+            "title": "Original VRCX database detected",
+            "description": "Found the original VRCX database with {rows} game records and {friends} friends. Import it into VRCX-Jirai? The current database will be backed up automatically before importing.",
+            "confirm": "Import",
+            "cancel": "Later"
+        },
+        "close": "Close",
+        "refresh": "Refresh"
     },
     "confirm": {
         "title": "Confirm",
@@ -2828,7 +3044,7 @@
             "input_error": "Valid number is required"
         },
         "auto_clear_cache": {
-            "header": "Clear VRCX Cache Timer",
+            "header": "Clear VRCX-Jirai Cache Timer",
             "description": "Enter amount of hours, larger values may impact RAM usage and performance (default: 24, disabled: 0)",
             "cancel": "Cancel",
             "ok": "OK",
@@ -2874,7 +3090,7 @@
         },
         "table_entries_settings": {
             "header": "Table Entries Settings",
-            "description": "Limit the number of entries the VRCX logs from the database to the UI. A large number may impact RAM usage and performance",
+            "description": "Limit the number of entries the VRCX-Jirai logs from the database to the UI. A large number may impact RAM usage and performance",
             "table_max_entries": "Table Max Entries",
             "table_max_entries_error": "Enter a number between {min} and {max}.",
             "table_max_entries_hint": "Valid range: {min} – {max}.",
@@ -2942,8 +3158,8 @@
         "database": {
             "upgrade_complete": "Database upgrade complete",
             "upgrade_in_progress_title": "Database upgrade in progress",
-            "upgrade_in_progress_description": "Updating database from version {from} to {to}. Please do not close VRCX.",
-            "upgrade_in_progress_initializing": "Initializing database upgrade. Please do not close VRCX.",
+            "upgrade_in_progress_description": "Updating database from version {from} to {to}. Please do not close VRCX-Jirai.",
+            "upgrade_in_progress_initializing": "Initializing database upgrade. Please do not close VRCX-Jirai.",
             "upgrade_in_progress_wait": "User actions are temporarily blocked until the upgrade finishes.",
             "upgrade_failed_title": "Database upgrade failed",
             "upgrade_failed_description": "Database upgrade failed. Check the console for details.",
@@ -3020,7 +3236,7 @@
             "delete_failed": "Failed to delete screenshot metadata"
         },
         "crash": {
-            "vrcx_reload": "VRCX was reloaded for stability"
+            "vrcx_reload": "VRCX-Jirai was reloaded for stability"
         },
         "image": {
             "downloading": "Downloading image...",
@@ -3038,7 +3254,8 @@
             "invalid_config": "Invalid JSON in config.json"
         },
         "gamelog": {
-            "vrchat_must_be_closed": "VRChat needs to be closed before this option can be changed"
+            "vrchat_must_be_closed": "VRChat needs to be closed before this option can be changed",
+            "recommended_pair": "💡 {nameA} and {nameB} may be friends (Score: {score})."
         },
         "copy_failed": "Copy failed",
         "error": "Error"
@@ -3306,7 +3523,7 @@
     },
     "onboarding": {
         "welcome": {
-            "title": "Welcome to VRCX",
+            "title": "Welcome to VRCX-Jirai",
             "subtitle": "Here are a few things you might not discover on your own.",
             "features": {
                 "user_profiles": {
@@ -3329,13 +3546,13 @@
             "cta": "Get Started"
         },
         "whatsnew": {
-            "title": "What's New in VRCX",
+            "title": "What's New in VRCX-Jirai",
             "subtitle": "Here's what changed in this update.",
             "cta": "Got It",
             "common": {
                 "got_it": "Got It",
                 "view_changelog": "View All Changes",
-                "support": "Support VRCX"
+                "support": "Support VRCX-Jirai"
             },
             "releases": {
                 "2026_05_03": {
@@ -3357,6 +3574,28 @@
                         "right_click_menus": {
                             "title": "Context Menus",
                             "description": "Right-click on friends, tables, and headers for quick actions."
+                        }
+                    }
+                },
+                "2026_07_18": {
+                    "title": "VRCX-Jirai 2026.07.18",
+                    "subtitle": "Friend Affinity, multi-account v4, database import and more",
+                    "items": {
+                        "friend_affinity": {
+                            "title": "Friend Affinity",
+                            "description": "Visualize affinity scores based on co-presence data, centered on any user."
+                        },
+                        "db_import": {
+                            "title": "Database Import",
+                            "description": "Import another VRCX database file with guided validation."
+                        },
+                        "multi_account": {
+                            "title": "Multi-Account v4",
+                            "description": "Revamped account hub and aggregated view; friends, favorites and feeds across accounts."
+                        },
+                        "relation_recommendation": {
+                            "title": "Better Recommendations",
+                            "description": "Real-time relation scores, filter by threshold, and inject mock records for testing."
                         }
                     }
                 }
@@ -3390,6 +3629,10 @@
         "clocks_label": "Clocks",
         "clocks_none": "None",
         "timezone": "Timezone",
-        "now_playing": "Now Playing"
+        "now_playing": "Now Playing",
+        "info_sync": "Sync",
+        "view_mode": "View Mode",
+        "view_merged": "Merged View",
+        "view_primary": "Primary Account"
     }
 }

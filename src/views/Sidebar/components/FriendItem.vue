@@ -11,6 +11,14 @@
                     </AvatarFallback>
                 </Avatar>
                 <IconFrame :enabled="sidebarCosmetics" :icon-frame="friend.ref.iconFrame" />
+                <!-- Account badges: shown in multi-account merged view -->
+                <div v-if="hasAccountBadge" class="absolute -top-1 -left-1 flex gap-px">
+                    <span
+                        v-for="accountId in friend.$accountIds"
+                        :key="accountId"
+                        class="inline-block size-2 rounded-full border border-background"
+                        :style="{ background: getAccountColor(accountId) }" />
+                </div>
             </div>
             <div class="flex-1 overflow-hidden h-9 flex flex-col justify-between">
                 <span
@@ -83,6 +91,7 @@
 
     import { useAppearanceSettingsStore, useFriendStore } from '../../../stores';
     import { useUserDisplay } from '../../../composables/useUserDisplay';
+    import { accountHub } from '../../../services/accountHub.js';
 
     import '@/styles/status-icon.css';
     import { showUserDialog } from '../../../coordinators/userCoordinator';
@@ -98,6 +107,17 @@
     const { userImage, userStatusClass } = useUserDisplay();
 
     const { t } = useI18n();
+
+    const hasAccountBadge = computed(
+        () =>
+            accountHub.hasSecondarySessions &&
+            Array.isArray(props.friend.$accountIds) &&
+            props.friend.$accountIds.length > 0
+    );
+
+    function getAccountColor(userId) {
+        return accountHub.getAccountColor(userId);
+    }
 
     const isFriendTraveling = computed(() => props.friend.ref?.location === 'traveling');
     const isFriendActiveOrOffline = computed(() => props.friend.state === 'active' || props.friend.state === 'offline');

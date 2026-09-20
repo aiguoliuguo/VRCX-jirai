@@ -9,6 +9,7 @@ import { database } from '../services/database';
 import { processBulk } from '../services/request';
 import { useAppearanceSettingsStore } from './settings/appearance';
 import { watchState } from '../services/watchState';
+import { accountHub } from '../services/accountHub';
 import { onLoginStateChanged } from '../coordinators/favoriteCoordinator';
 
 export const useFavoriteStore = defineStore('Favorite', () => {
@@ -236,6 +237,15 @@ export const useFavoriteStore = defineStore('Favorite', () => {
             onLoginStateChanged(isLoggedIn);
         },
         { flush: 'sync' }
+    );
+
+    watch(
+        () => accountHub.viewMode,
+        () => {
+            if (watchState.isLoggedIn) {
+                onLoginStateChanged(true);
+            }
+        }
     );
 
     /**

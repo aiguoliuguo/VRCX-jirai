@@ -152,6 +152,15 @@
                                 <Languages v-else class="h-3 w-3" :style="{ color: userDialog.theme.iconColor }" />
                             </Button>
                             <Button
+                                v-if="currentUser.id !== userDialog.id"
+                                class="h-5 w-5"
+                                size="icon-sm"
+                                :variant="bioDiffEnabled ? 'secondary' : 'ghost'"
+                                :aria-label="t('dialog.user.info.bio_diff_toggle')"
+                                @click="toggleBioDiff">
+                                <History class="h-3 w-3" :style="{ color: userDialog.theme.iconColor }" />
+                            </Button>
+                            <Button
                                 v-if="userDialog.id === currentUser.id"
                                 class="h-5 w-5"
                                 size="icon-sm"
@@ -162,6 +171,12 @@
                         </div>
                     </div>
                     <pre
+                        v-if="bioDiffEnabled && bioDiffHtml"
+                        class="text-xs leading-5.5 font-[inherit]"
+                        style="white-space: pre-wrap; max-height: 210px; overflow-y: auto"
+                        v-html="bioDiffHtml"></pre>
+                    <pre
+                        v-else
                         class="text-xs font-[inherit]"
                         style="white-space: pre-wrap; max-height: 210px; overflow-y: auto"
                         >{{ bioCache.translated || userDialog.publicProfileRef?.bio || '—' }}</pre>
@@ -182,7 +197,7 @@
                 </div>
 
                 <div
-                    v-if="!hideUserNotes"
+                    v-if="userDialog.note && !hideUserNotes"
                     class="rounded-xl bg-(--profile-card) p-3 cursor-pointer"
                     @click="isEditNoteAndMemoDialogVisible = true">
                     <div class="flex items-center justify-between mb-2 pb-2 border-b border-muted-foreground/20">
@@ -196,15 +211,13 @@
                         </Button>
                     </div>
                     <pre
-                        v-if="userDialog.note"
                         class="text-xs font-[inherit]"
                         style="white-space: pre-wrap; max-height: 210px; overflow-y: auto"
                         >{{ userDialog.note }}</pre>
-                    <pre class="text-xs font-[inherit] text-muted-foreground" v-else>—</pre>
                 </div>
 
                 <div
-                    v-if="!hideUserMemos"
+                    v-if="userDialog.memo && !hideUserMemos"
                     class="rounded-xl bg-(--profile-card) p-3 cursor-pointer"
                     @click="isEditNoteAndMemoDialogVisible = true">
                     <div class="flex items-center justify-between mb-2 pb-2 border-b border-muted-foreground/20">
@@ -218,11 +231,9 @@
                         </Button>
                     </div>
                     <pre
-                        v-if="userDialog.memo"
                         class="text-xs font-[inherit]"
                         style="white-space: pre-wrap; max-height: 210px; overflow-y: auto"
                         >{{ userDialog.memo }}</pre>
-                    <pre class="text-xs font-[inherit] text-muted-foreground" v-else>—</pre>
                 </div>
             </div>
 
@@ -445,7 +456,9 @@
 </template>
 
 <script setup>
-    import { Info, Languages, Pencil, Trash2, User } from 'lucide-vue-next';
+    import { History, Info, Languages, Pencil, Trash2, User } from 'lucide-vue-next';
+    import { database } from '../../../services/database';
+    import { formatDifference } from '../../../views/Feed/columns.jsx';
     import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
     import IconFrame from '@/components/IconFrame.vue';
     import { ref, watch } from 'vue';

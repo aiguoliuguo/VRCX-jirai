@@ -125,7 +125,7 @@ namespace VRCX
                 throw new Exception($"Failed to download the file. Status code: {response.StatusCode}");
 
             var fileName = GetFileNameFromContentDisposition(response);
-            var tempPath = Path.Join(Path.GetTempPath(), "VRCX");
+            var tempPath = Path.Join(Path.GetTempPath(), "VRCX-Jirai");
             Directory.CreateDirectory(tempPath);
             var filePath = Path.Join(tempPath, fileName);
             await using var fileStream = File.Create(filePath);

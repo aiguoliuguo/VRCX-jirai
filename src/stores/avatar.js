@@ -6,6 +6,7 @@ import { queryRequest } from '../api';
 import { getAvatarHistory, preloadOwnAvatars } from '../coordinators/avatarCoordinator';
 import { database } from '../services/database';
 import { watchState } from '../services/watchState';
+import { accountHub } from '../services/accountHub';
 
 export const useAvatarStore = defineStore('Avatar', () => {
     let cachedAvatarModerations = new Map();
@@ -55,6 +56,20 @@ export const useAvatarStore = defineStore('Avatar', () => {
             }
         },
         { flush: 'sync' }
+    );
+
+    watch(
+        () => accountHub.viewMode,
+        () => {
+            if (watchState.isLoggedIn) {
+                cachedAvatars.clear();
+                cachedAvatarNames.clear();
+                cachedAvatarModerations.clear();
+                avatarHistory.value = [];
+                getAvatarHistory();
+                preloadOwnAvatars();
+            }
+        }
     );
 
     /**

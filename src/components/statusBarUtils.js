@@ -8,6 +8,7 @@ export const defaultVisibility = {
     steamvr: true,
     proxy: true,
     ws: true,
+    profileInfoSync: true,
     nowPlaying: true,
     uptime: true,
     clocks: true,

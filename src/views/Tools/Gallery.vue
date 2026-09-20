@@ -1,5 +1,18 @@
 <template>
-    <div class="gallery-page x-container">
+    <div
+        class="gallery-page x-container"
+        @dragenter.prevent="onDragEnter"
+        @dragover.prevent="onDragOver"
+        @dragleave="onDragLeave"
+        @drop.prevent="onDrop">
+        <div
+            v-if="isDraggingOver && currentTab in tabUploadHandlers"
+            class="absolute inset-0 z-50 flex items-center justify-center rounded-[var(--radius)] border-2 border-dashed border-primary bg-background/80 backdrop-blur-sm pointer-events-none">
+            <div class="flex flex-col items-center gap-3 text-primary">
+                <Upload class="size-12" />
+                <span class="text-lg font-semibold">{{ t('dialog.gallery_icons.drop_to_add') }}</span>
+            </div>
+        </div>
         <div class="flex items-center gap-2 ml-2">
             <Button variant="ghost" size="sm" class="mr-3" @click="goBack">
                 <ArrowLeft />
@@ -7,7 +20,7 @@
             </Button>
             <span class="header">{{ t('dialog.gallery_icons.header') }}</span>
         </div>
-        <TabsUnderline default-value="gallery" :items="galleryTabs" :unmount-on-hide="false">
+        <TabsUnderline v-model="currentTab" default-value="gallery" :items="galleryTabs" :unmount-on-hide="false">
             <template #label-gallery>
                 <span>
                     {{ t('dialog.gallery_icons.gallery') }}
@@ -56,28 +69,33 @@
                         accept="image/*"
                         @change="onFileChangeGallery"
                         style="display: none" />
-                    <ButtonGroup>
-                        <Button variant="outline" size="sm" @click="refreshGalleryTable">
-                            <RefreshCw />
-                            {{ t('dialog.gallery_icons.refresh') }}
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            :disabled="!isLocalUserVrcPlusSupporter || isUploading"
-                            @click="displayGalleryUpload">
-                            <Upload />
-                            {{ t('dialog.gallery_icons.upload') }}
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            :disabled="!currentUser.profilePicOverride"
-                            @click="setProfilePicOverride('')">
-                            <X />
-                            {{ t('dialog.gallery_icons.clear') }}
-                        </Button>
-                    </ButtonGroup>
+                    <div class="flex items-center w-full">
+                        <ButtonGroup>
+                            <Button variant="outline" size="sm" @click="refreshGalleryTable">
+                                <RefreshCw />
+                                {{ t('dialog.gallery_icons.refresh') }}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                :disabled="!isLocalUserVrcPlusSupporter || isUploading"
+                                @click="displayGalleryUpload">
+                                <Upload />
+                                {{ t('dialog.gallery_icons.upload') }}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                :disabled="!currentUser.profilePicOverride"
+                                @click="setProfilePicOverride('')">
+                                <X />
+                                {{ t('dialog.gallery_icons.clear') }}
+                            </Button>
+                        </ButtonGroup>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
+                    </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
                         style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))">
@@ -136,28 +154,33 @@
                         accept="image/*"
                         @change="onFileChangeVRCPlusIcon"
                         style="display: none" />
-                    <ButtonGroup>
-                        <Button variant="outline" size="sm" @click="refreshVRCPlusIconsTable">
-                            <RefreshCw />
-                            {{ t('dialog.gallery_icons.refresh') }}
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            :disabled="!isLocalUserVrcPlusSupporter || isUploading"
-                            @click="displayVRCPlusIconUpload">
-                            <Upload />
-                            {{ t('dialog.gallery_icons.upload') }}
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            :disabled="!currentUser.userIcon"
-                            @click="setVRCPlusIcon('')">
-                            <X />
-                            {{ t('dialog.gallery_icons.clear') }}
-                        </Button>
-                    </ButtonGroup>
+                    <div class="flex items-center w-full">
+                        <ButtonGroup>
+                            <Button variant="outline" size="sm" @click="refreshVRCPlusIconsTable">
+                                <RefreshCw />
+                                {{ t('dialog.gallery_icons.refresh') }}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                :disabled="!isLocalUserVrcPlusSupporter || isUploading"
+                                @click="displayVRCPlusIconUpload">
+                                <Upload />
+                                {{ t('dialog.gallery_icons.upload') }}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                :disabled="!currentUser.userIcon"
+                                @click="setVRCPlusIcon('')">
+                                <X />
+                                {{ t('dialog.gallery_icons.clear') }}
+                            </Button>
+                        </ButtonGroup>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
+                    </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
                         style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))">
@@ -258,6 +281,9 @@
                                 <Checkbox v-model="emojiAnimType" />
                                 <span>{{ t('dialog.gallery_icons.emoji_animation_type') }}</span>
                             </label>
+                            <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                                t('dialog.gallery_icons.drop_to_upload_hint')
+                            }}</span>
                         </div>
                         <div v-if="emojiAnimType" class="flex items-center gap-2">
                             <Button size="sm" variant="outline" @click="openExternalLink('https://vrcemoji.com')">
@@ -362,20 +388,25 @@
                         accept="image/*"
                         @change="onFileChangeSticker"
                         style="display: none" />
-                    <ButtonGroup>
-                        <Button variant="outline" size="sm" @click="refreshStickerTable">
-                            <RefreshCw />
-                            {{ t('dialog.gallery_icons.refresh') }}
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            :disabled="!isLocalUserVrcPlusSupporter || isUploading"
-                            @click="displayStickerUpload">
-                            <Upload />
-                            {{ t('dialog.gallery_icons.upload') }}
-                        </Button>
-                    </ButtonGroup>
+                    <div class="flex items-center w-full">
+                        <ButtonGroup>
+                            <Button variant="outline" size="sm" @click="refreshStickerTable">
+                                <RefreshCw />
+                                {{ t('dialog.gallery_icons.refresh') }}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                :disabled="!isLocalUserVrcPlusSupporter || isUploading"
+                                @click="displayStickerUpload">
+                                <Upload />
+                                {{ t('dialog.gallery_icons.upload') }}
+                            </Button>
+                        </ButtonGroup>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
+                    </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
                         style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))">
@@ -452,6 +483,9 @@
                             <Checkbox v-model="printCropBorder" />
                             <span>{{ t('dialog.gallery_icons.crop_print_border') }}</span>
                         </label>
+                        <span class="text-xs text-muted-foreground ml-auto whitespace-nowrap">{{
+                            t('dialog.gallery_icons.drop_to_upload_hint')
+                        }}</span>
                     </div>
                     <ItemGroup
                         class="grid gap-3 mt-3"
@@ -610,7 +644,7 @@
         NumberFieldIncrement,
         NumberFieldInput
     } from '@/components/ui/number-field';
-    import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+    import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
     import { Button } from '@/components/ui/button';
     import { ButtonGroup } from '@/components/ui/button-group';
     import { Checkbox } from '@/components/ui/checkbox';
@@ -664,7 +698,8 @@
         printTable,
         favoritePrintIds,
         emojiTable,
-        inventoryTable
+        inventoryTable,
+        pendingDrop
     } = storeToRefs(useGalleryStore());
     const {
         loadGalleryData,
@@ -737,6 +772,9 @@
 
         return inventoryTable.value.filter((item) => item.itemTypeLabel === selectedType);
     });
+    const currentTab = ref('gallery');
+    const isDraggingOver = ref(false);
+    let dragEnterCount = 0;
 
     const cropDialogOpen = ref(false);
     const cropDialogTitle = ref('');
@@ -748,6 +786,28 @@
         galleryDialogVisible.value = true;
         loadGalleryData();
     });
+
+    // Process pending drop from Feed page drag-and-drop
+    // Using watch instead of onMounted so it also works when already on the Gallery page
+    watch(
+        pendingDrop,
+        (drop) => {
+            if (!drop) return;
+            const { file, tab } = drop;
+            pendingDrop.value = null;
+            currentTab.value = tab;
+            nextTick(() => {
+                const handler = tabUploadHandlers[tab];
+                if (handler) {
+                    const syntheticEvent = {
+                        dataTransfer: { files: [file] }
+                    };
+                    handler(syntheticEvent);
+                }
+            });
+        },
+        { immediate: true }
+    );
 
     onBeforeUnmount(() => {
         galleryDialogVisible.value = false;
@@ -1291,5 +1351,53 @@
                 }
             })
             .catch(() => {});
+    }
+
+    const tabUploadHandlers = {
+        gallery: onFileChangeGallery,
+        icons: onFileChangeVRCPlusIcon,
+        emojis: onFileChangeEmoji,
+        stickers: onFileChangeSticker,
+        prints: onFileChangePrint
+    };
+
+    /**
+     * @param {DragEvent} e
+     */
+    function onDragEnter(e) {
+        if (!e.dataTransfer?.types?.includes('Files')) return;
+        dragEnterCount++;
+        isDraggingOver.value = true;
+    }
+
+    /**
+     * @param {DragEvent} e
+     */
+    function onDragOver(e) {
+        if (!e.dataTransfer?.types?.includes('Files')) return;
+        e.dataTransfer.dropEffect = 'copy';
+    }
+
+    /**
+     * Decrements the drag enter counter; hides the overlay when the drag leaves the container.
+     */
+    function onDragLeave() {
+        dragEnterCount--;
+        if (dragEnterCount <= 0) {
+            dragEnterCount = 0;
+            isDraggingOver.value = false;
+        }
+    }
+
+    /**
+     * @param {DragEvent} e
+     */
+    function onDrop(e) {
+        dragEnterCount = 0;
+        isDraggingOver.value = false;
+        const handler = tabUploadHandlers[currentTab.value];
+        if (!handler) return;
+        if (!e.dataTransfer?.files?.length) return;
+        handler(e);
     }
 </script>

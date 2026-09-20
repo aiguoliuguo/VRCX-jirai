@@ -18,6 +18,26 @@ const whatsNewReleases = Object.freeze({
                 icon: 'mouse-pointer-click'
             }
         ]
+    },
+    '2026.07.18': {
+        items: [
+            {
+                key: 'friend_affinity',
+                icon: 'bar-chart'
+            },
+            {
+                key: 'db_import',
+                icon: 'database'
+            },
+            {
+                key: 'multi_account',
+                icon: 'users'
+            },
+            {
+                key: 'relation_recommendation',
+                icon: 'sparkles'
+            }
+        ]
     }
 });
 
@@ -27,7 +47,7 @@ const whatsNewReleases = Object.freeze({
  */
 function normalizeReleaseVersion(version) {
     const normalizedVersion = String(version || '')
-        .replace(/^VRCX\s+/, '')
+        .replace(/^VRCX(?:-Jirai)?\s+/, '')
         .trim();
     return /^\d{4}\.\d{2}\.\d{2}$/.test(normalizedVersion) ? normalizedVersion : '';
 }

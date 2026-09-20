@@ -60,10 +60,10 @@
         "friends_locations": "好友位置",
         "feed": "好友动态",
         "game_log": "游戏日志",
-        "player_list": "房内玩家",
+        "player_list": "房间玩家列表",
         "search": "搜索",
-        "favorites": "收藏&分组",
-        "favorite_friends": "好友分组",
+        "favorites": "收藏&星标",
+        "favorite_friends": "星标好友",
         "favorite_worlds": "世界收藏",
         "favorite_avatars": "模型收藏",
         "my_avatars": "我的模型",
@@ -100,10 +100,10 @@
             "folder_name_placeholder": "输入文件夹名称",
             "folder_icon_placeholder": "文件夹图标（例如“ri-menu-fold-line”）",
             "edit_folder": "编辑文件夹",
-            "delete_folder": "删除文件夹",
+            "delete_folder": "删除此文件夹",
             "edit_dashboard": "编辑仪表板",
             "delete_dashboard": "删除仪表板",
-            "folder_empty": "文件夹为空",
+            "folder_empty": "此文件夹为空",
             "folder_drop_here": "将项目拖拽至此处",
             "hide": "隐藏",
             "show": "显示",
@@ -115,7 +115,14 @@
             "confirm": "确认",
             "cancel": "取消",
             "restore_default": "恢复默认",
-            "restore_default_confirm": "确定要恢复默认吗？所有的自定义设置都将被删除"
+            "restore_default_confirm": "确定要恢复默认吗？所有的自定义设置都将被删除",
+            "add_folder": "添加文件夹",
+            "folder_available": "可用项目",
+            "folder_selected": "已选项目",
+            "folder_selected_empty": "未选择任何项目",
+            "remove_from_folder": "移除",
+            "invalid_folder": "文件夹要有名称，且其内应至少有两个项目",
+            "save": "保存"
         }
     },
     "dashboard": {
@@ -194,12 +201,12 @@
         "search_joined_groups": "我加入的群组",
         "search_result_active": "活跃",
         "search_result_offline": "离线",
-        "search_result_more": "更多：",
+        "search_result_more": "搜索更多：",
         "refresh_tooltip": "刷新好友列表",
         "groups": "群组房间",
         "friends": "好友",
         "me": "我",
-        "favorite": "已分组的好友",
+        "favorite": "星标好友",
         "same_instance": "同一房间",
         "online": "在线",
         "active": "活跃中（仅登录网页端）",
@@ -232,6 +239,20 @@
             "past_notifications": "最近 24 小时内的通知",
             "no_new_notifications": "最近 24 小时内没有新通知",
             "no_unseen_notifications": "没有未读通知"
+        },
+        "search_recently_met": "最近遇到的人",
+        "search_recently_joined": "最近加入的世界",
+        "tracked_nonfriends": {
+            "tab_label": "追踪非好友",
+            "empty": "还没有追踪任何非好友。点击「+」可通过用户ID添加，或在任意玩家的个人资料中使用「⋯」菜单开启追踪。",
+            "remove_tooltip": "取消追踪",
+            "add_button": "添加 +",
+            "add_dialog_title": "追踪玩家",
+            "add_dialog_hint": "手动输入用户ID（usr_xxx...），或在VRCX-jirai中点击任意玩家，通过右侧「⋯」按钮选择「追踪」。",
+            "add_input_placeholder": "usr_xxx...",
+            "add_verify_error": "无法获取该用户数据，请检查ID后重试。",
+            "add_confirm_question": "是否为用户「{name}」？",
+            "add_back": "返回"
         }
     },
     "view": {
@@ -253,12 +274,13 @@
                 "websocket": "WebSocket"
             },
             "language_detect": {
-                "title": "界面语言",
-                "description": "你的系统语言似乎是 {language}。是否切换到该语言？"
-            }
+                "title": "检测到语言",
+                "description": "您的系统语言似乎是 {language}。是否切换到该语言？"
+            },
+            "import_database": "导入已有数据库"
         },
         "feed": {
-            "favorites_only_tooltip": "仅显示被分组的好友",
+            "favorites_only_tooltip": "仅显示星标好友",
             "search_placeholder": "搜索",
             "filters": {
                 "GPS": "位置变动",
@@ -272,7 +294,7 @@
         },
         "friends_locations": {
             "online": "在线",
-            "favorite": "具有分组的好友",
+            "favorite": "星标好友",
             "same_instance": "同一房间",
             "active": "活跃中（仅登录网页端）",
             "offline": "离线",
@@ -313,7 +335,7 @@
                 "search_placeholder": "搜索",
                 "filter_placeholder": "筛选",
                 "chatbox_blacklist": "聊天框黑名单",
-                "status_tooltip": "VRCX Companion 状态"
+                "status_tooltip": "VRCX-Jirai Companion 状态"
             }
         },
         "my_avatars": {
@@ -363,15 +385,15 @@
                 "search_by_tag": "按标签搜索",
                 "search_mode_name": "名称",
                 "search_mode_tag": "标签",
-                "vrchat_favorites": "在线收藏夹",
-                "local_favorites": "本地收藏夹",
+                "vrchat_favorites": "VRChat 上的收藏",
+                "local_favorites": "本地收藏",
                 "new_group": "创建新的收藏夹",
                 "cancel_refresh": "清除缓存"
             },
             "avatars": {
                 "search": "搜索",
-                "vrchat_favorites": "在线收藏夹",
-                "local_favorites": "本地收藏夹（需要 VRC+）",
+                "vrchat_favorites": "VRChat 上的收藏",
+                "local_favorites": "本地收藏（需要 VRC+）",
                 "new_group": "创建新的收藏夹",
                 "cancel_refresh": "清除缓存",
                 "check_invalid": "检测这个分组的失效模型",
@@ -399,7 +421,7 @@
             "select_all": "全选",
             "deselect_all": "取消全选",
             "bulk_unfavorite": "批量取消收藏",
-            "refresh_favorites_tooltip": "刷新所有收藏夹/分组",
+            "refresh_favorites_tooltip": "刷新所有收藏",
             "export": "导出",
             "import": "导入",
             "move_tooltip": "移动",
@@ -482,7 +504,7 @@
                     "transfer": "转让",
                     "queueReady": "队列准备就绪",
                     "event": {
-                        "created": "群组活动创建",
+                        "created": "群组活动已创建",
                         "starting": "群组活动开始"
                     }
                 },
@@ -525,7 +547,7 @@
             "load_dialog_message": "正在获取好友的缺失资料字段。",
             "load_cancel": "取消",
             "load_complete": "缺失条目已加载",
-            "favorites_only_tooltip": "仅显示具有分组的好友",
+            "favorites_only_tooltip": "仅显示星标好友",
             "search_placeholder": "搜索好友",
             "filter_placeholder": "筛选好友",
             "load_mutual_friends": "查看关系网",
@@ -539,7 +561,7 @@
                 "next_day": "后一天",
                 "refresh": "刷新",
                 "tips": {
-                    "online_time": "在线时长是指 VRCX 记录的，在当天的游戏时长",
+                    "online_time": "在线时长是指 VRCX-Jirai 记录的，在当天的游戏时长",
                     "click_Y_axis": "点击Y轴标签可以查看其对应内容的详细信息",
                     "click_instance_name": "点击房间名称可以查看对应房间的记录"
                 },
@@ -558,7 +580,7 @@
                     "fetch_again": "再次拉取",
                     "stop": "停止",
                     "stop_fetching": "停止拉取",
-                    "go_to_friend": "选择好友"
+                    "go_to_friend": "前往该玩家"
                 },
                 "status": {
                     "no_friends_to_process": "目前没有好友需要处理",
@@ -597,23 +619,57 @@
                     "layout_spacing_help": "好友节点的分布范围。数值越高，关系网内的节点距离越远。",
                     "edge_curvature": "连接线曲率",
                     "edge_curvature_help": "连接线的弯曲程度。数值越高，密集区域的线条越平滑。",
-                    "community_separation": "圈子间间距",
-                    "community_separation_help": "不同圈子间的间隔。数值越高，由圈子形成的集群就越清晰与独立",
-                    "reset_defaults": "重置为默认值",
+                    "community_separation": "社群间距",
+                    "community_separation_help": "不同社交圈子之间的距离。数值越高，圈子之间的划分越明显。",
+                    "reset_defaults": "恢复默认设置",
                     "exclude_friends": "排除好友",
-                    "exclude_friends_placeholder": "选择好友",
-                    "exclude_friends_help": "选中的好友将从关系网中隐藏。"
+                    "exclude_friends_placeholder": "选择要排除的好友...",
+                    "exclude_friends_help": "所选好友将不会显示在关系网中。"
                 },
                 "context_menu": {
                     "view_details": "查看详情",
                     "hide_friend": "从关系网中隐藏",
-                    "refresh_mutuals": "刷新共同好友数据",
-                    "confirm_non_friend_title": "这个人不是你的好友",
-                    "confirm_non_friend_message": "这个玩家不再是你的好友。是否仍然要获取他们的共同好友数据？",
-                    "refresh_success": "{name} 的共同好友数据已更新",
-                    "user_opted_out": "这个玩家已关闭共同好友功能。现有的数据已被保留。",
+                    "refresh_mutuals": "刷新共同好友",
+                    "confirm_non_friend_title": "非好友用户",
+                    "confirm_non_friend_message": "此用户已不再是你的好友，仍要拉取其共同好友数据吗？",
+                    "refresh_success": "已更新 {name} 的共同好友数据",
+                    "user_opted_out": "此用户已关闭共同好友功能，现有数据已保留",
                     "refresh_error": "刷新共同好友数据失败",
-                    "last_fetched": "最后获取时间"
+                    "last_fetched": "上次拉取时间"
+                },
+                "tracked_nonfriend": {
+                    "track_tooltip": "追踪此非好友",
+                    "untrack_tooltip": "取消追踪此非好友",
+                    "track_hint": "请先在关系网中右键点击一个节点",
+                    "added": "已追踪 {name}",
+                    "removed": "已取消追踪 {name}",
+                    "show_tooltip": "在关系网中显示非好友",
+                    "hide_tooltip": "在关系网中隐藏非好友"
+                },
+                "manual_relations": {
+                    "button_tooltip": "手动判定好友关系",
+                    "dialog_title": "手动好友关系管理",
+                    "tab_list": "已添加关系",
+                    "tab_add": "添加关系",
+                    "tab_suggest": "推荐配对",
+                    "list_empty": "还没有手动添加任何好友关系。",
+                    "user_a": "用户 A",
+                    "user_b": "用户 B",
+                    "user_placeholder": "选择一个用户...",
+                    "user_search": "搜索好友...",
+                    "add_button": "添加联系",
+                    "already_exists": "该关系已存在。",
+                    "suggest_description": "根据共同好友数据，以下配对可能存在尚未记录的好友关系。",
+                    "suggest_button": "开始分析",
+                    "suggest_score": "评分: {score}",
+                    "suggest_confirm": "添加",
+                    "suggest_dismiss": "跳过",
+                    "suggest_none": "没有找到推荐配对，请先抓取共同好友数据。"
+                },
+                "legend": {
+                    "mutual": "好友/共同好友",
+                    "manual": "手动添加关系",
+                    "non_friend": "包含非好友"
                 }
             },
             "playtime_trend": {
@@ -625,17 +681,17 @@
                 "no_data": "暂无游戏时间数据"
             },
             "hot_worlds": {
-                "tab_label": "热门世界",
-                "header": "热门世界",
+                "tab_label": "最常去世界",
+                "header": "最常去世界",
                 "refresh": "刷新",
-                "sorted_by": "按唯一好友数排序",
+                "sorted_by": "按独立访客数排序",
                 "tips": {
-                    "description": "显示你的好友访问最多的世界。按访问过该世界的不同好友人数排序。趋势比较所选周期的前半段与后半段。"
+                    "description": "显示你的好友最近访问最多的世界。按访问过该世界的独立好友数排名。趋势图对比了所选时段的前半段与后半段。"
                 },
                 "period": {
-                    "days_7": "最近7天",
-                    "days_30": "最近30天",
-                    "days_90": "最近90天"
+                    "days_7": "最近 7天",
+                    "days_30": "最近 30天",
+                    "days_90": "最近 90天"
                 },
                 "trend": {
                     "rising": "上升",
@@ -646,7 +702,7 @@
                     "visits": "{count} 次访问"
                 },
                 "stats": {
-                    "top_friends": "访问最多的好友",
+                    "top_friends": "位好友访问过",
                     "total_visits": "总访问次数",
                     "rising": "上升",
                     "cooling": "下降"
@@ -656,6 +712,87 @@
                 },
                 "no_friend_data": "没有好友访问数据",
                 "friend_visits": "{count} 次访问"
+            },
+            "two_person_relationship": {
+                "header": "双人关系",
+                "tips": {
+                    "description": "通过分析你的记录数据库，找出两位好友曾经共处一室的记录。即使你当时并不在场，它也会基于他们各自的游戏记录片段拼凑出完整的相遇时刻。"
+                },
+                "select_friend_a": "选择好友 A",
+                "select_friend_b": "选择好友 B",
+                "search_friend": "搜索好友...",
+                "swap_friends": "交换好友",
+                "total_coexistence_time": "共存总时长",
+                "shared_instances": "共同在场的房间",
+                "no_data": "没有共同在场的记录",
+                "no_friend_selected": "请选择两位好友以查看共同在场记录",
+                "coexistence_time": "共存时长",
+                "instance_count": "共同在场次数",
+                "meet_count": "{count} 次共存",
+                "settings": "设置",
+                "show_self_presence": "显示自己是否在场",
+                "self_present": "在场",
+                "self_not_present": "缺席",
+                "instance_creator": "房间创建者",
+                "max_player_count": "最高同时在场人数",
+                "initiator_leftPlayer": "左侧跟随",
+                "initiator_rightPlayer": "右侧跟随",
+                "initiator_mutual": "双向奔赴",
+                "initiator_unknown": "未知"
+            },
+            "relationship_timeline": {
+                "header": "关系时间轴",
+                "refresh": "刷新",
+                "top_n_friends": "显示前 {n} 位好友",
+                "others": "其他",
+                "days_per_unit": "天/单位",
+                "tips": {
+                    "description": "以百分比堆叠面积图的形式展示你与好友的关系随时间的变化。每个色带代表一位好友在你整体社交活动中的占比。使用右下角的尺度滑块调整时间颗粒度，拖动底部滑条可在时间轴上左右滚动。"
+                },
+                "settings": {
+                    "header": "设置",
+                    "top_friends": "显示好友数",
+                    "show_others": "显示其他",
+                    "show_friends_only": "仅显示好友"
+                }
+            },
+            "friend_affinity": {
+                "tab_label": "亲密度",
+                "header": "亲密度排行",
+                "tips": {
+                    "description": "根据你的 VRCX-Jirai 游戏记录，为你与好友及被跟踪的非好友计算亲密度评分（0-100）：综合共处总时长、共处次数与最近一次共处的间隔。点击任意一行（或图表柱子）即可切换参考对象，查看 TA 与你圈子的亲密度排行。"
+                },
+                "select_center": "选择参考用户",
+                "search_user": "搜索用户...",
+                "me": "我自己",
+                "center_group": "参考对象",
+                "refresh": "刷新",
+                "show_friends_only": "仅显示好友",
+                "period": {
+                    "all": "全部",
+                    "days_30": "近 30 天",
+                    "days_90": "近 90 天"
+                },
+                "relative_to": "参照",
+                "stats": {
+                    "people": "人",
+                    "total_time": "共处总时长"
+                },
+                "chart": {
+                    "title": "亲密度 Top {n}",
+                    "score_label": "亲密度"
+                },
+                "table": {
+                    "title": "完整排行",
+                    "click_hint": "点击任意行即可切换参考对象",
+                    "friend": "好友",
+                    "non_friend": "非好友",
+                    "encounters": "{count} 次共处",
+                    "days_ago": "{days} 天前",
+                    "today": "今天",
+                    "never": "从未"
+                },
+                "no_data": "暂无共处记录"
             }
         },
         "tools": {
@@ -690,12 +827,14 @@
                 "screenshot": "截图管理",
                 "screenshot_description": "管理截图或查看截图元数据",
                 "gallery": "图片&库存管理",
-                "gallery_description": "管理图片和库存"
+                "gallery_description": "管理图片和库存",
+                "inventory": "相册 & 库存管理",
+                "inventory_description": "管理相册与库存物品"
             },
             "shortcuts": {
                 "header": "文件直通车",
-                "vrcx_data": "VRCX 数据",
-                "vrcx_data_description": "打开 VRCX 的数据文件夹",
+                "vrcx_data": "VRCX-Jirai 数据",
+                "vrcx_data_description": "打开 VRCX-Jirai 的数据文件夹",
                 "vrchat_data": "VRChat 数据",
                 "vrchat_data_description": "打开 VRChat 的数据文件夹",
                 "crash_dumps": "崩溃转储",
@@ -707,7 +846,19 @@
                 "vrchat_config_description": "打开 VRChat 的 config.json 设置",
                 "launch_options_description": "编辑 VRChat 的启动选项",
                 "registry_backup": "VRChat 设置数据备份工具",
-                "registry_backup_description": "创建或恢复 VRChat 的设置备份"
+                "registry_backup_description": "创建或恢复 VRChat 的设置备份",
+                "info_completion": "信息抓取补全",
+                "info_completion_description": "扫描所有好友与追踪非好友的资料，将新增或变更的简介及状态保存到数据库",
+                "info_completion_hint": "准备好扫描 {count} 个目标。",
+                "info_completion_start": "开始抓取",
+                "info_completion_again": "再次抓取",
+                "info_completion_cancel": "取消",
+                "info_completion_close": "关闭",
+                "info_completion_progress": "正在扫描 {current} / {total}...",
+                "info_completion_done": "完成 — 共保存了 {total} 个目标中 {updated} 条新增/变更的信息。",
+                "info_completion_tooltip_running": "信息同步中 {done}/{total} (Bio +{bio}, Status +{status})",
+                "info_completion_tooltip_done": "同步完成：Bio 更新 {bio} 条, Status 更新 {status} 条 (点击重新同步)",
+                "info_completion_tooltip_idle": "信息同步 (点击开始)"
             },
             "other": {
                 "header": "其它",
@@ -808,14 +959,14 @@
                     "support": "获取帮助支持"
                 },
                 "vrcx_updater": {
-                    "header": "VRCX 更新设置",
+                    "header": "VRCX-Jirai 更新设置",
                     "change_build": "更改版本",
                     "update_action": "自动更新",
                     "auto_update_off": "关闭",
                     "auto_update_notify": "显示通知",
                     "auto_update_download": "自动下载",
                     "change_log": "更新日志",
-                    "updater_disabled": "自带的更新检查已被禁用，因为 VRCX 的更新现在由你的系统包管理器处理。"
+                    "updater_disabled": "自带的更新检查已被禁用，因为 VRCX-Jirai 的更新现在由你的系统包管理器处理。"
                 },
                 "application": {
                     "header": "首选项",
@@ -823,13 +974,13 @@
                     "minimized": "以最小化的形式启动",
                     "tray": "最小化到系统托盘",
                     "disable_gpu_acceleration": "禁用 GPU 加速",
-                    "disable_gpu_acceleration_tooltip": "仅在你“知道自己在做什么”时才应更改此选项，这可能会导致 SteamVR 叠加界面出现问题。但如果你遇到 UI 显示问题，那么可以尝试关闭此选项，重启 VRCX 生效",
+                    "disable_gpu_acceleration_tooltip": "仅在你“知道自己在做什么”时才应更改此选项，这可能会导致 SteamVR 叠加界面出现问题。但如果你遇到 UI 显示问题，那么可以尝试关闭此选项，重启 VRCX-Jirai 生效",
                     "disable_vr_overlay_gpu_acceleration": "禁用 VR 叠加界面的GPU加速",
                     "proxy": "代理服务器设置",
-                    "startup_linux": "向 VRCX.desktop 启动文件添加 “--startup” 参数，以便在系统启动时将 VRCX 以最小化窗口的方式启动。"
+                    "startup_linux": "向 VRCX-Jirai.desktop 启动文件添加 “--startup” 参数，以便在系统启动时将 VRCX-Jirai 以最小化窗口的方式启动。"
                 },
                 "favorites": {
-                    "header": "筛选好友分组",
+                    "header": "星标好友筛选",
                     "header_tooltip": "选择在各种功能（动态、游戏日志、通知和叠加界面）中显示的分组",
                     "group_placeholder": "选择分组"
                 },
@@ -848,27 +999,28 @@
                     "alone_condition": "判断为“独自一人”的条件",
                     "alone": "房间内只有自己时",
                     "no_friends": "房间内没有好友时",
-                    "alone_status": "“独自一人”时使用的社交状态",
+                    "alone_status": "“独自一人”时",
                     "company_status": "有其他符合条件的人时",
                     "allowed_instance_types": "允许生效的房间类型",
-                    "instance_type_placeholder": "所有类型都生效",
+                    "instance_type_placeholder": "所有类型的房间",
                     "auto_invite_request_accept": "自动同意加入申请",
-                    "auto_invite_request_accept_tooltip": "自动同意指定分组好友的加入申请",
-                    "auto_invite_request_accept_favs": "所有具有分组的好友",
+                    "auto_invite_request_accept_tooltip": "自动同意来自星标好友的加入申请",
+                    "auto_invite_request_accept_favs": "星标好友",
                     "auto_invite_request_accept_favs_hint": "仅指定分组的好友",
-                    "auto_invite_request_accept_selected_favs": "选择自定义分组",
+                    "auto_invite_request_accept_selected_favs": "选定的星标好友",
                     "change_status_description": "覆盖当前的状态描述",
                     "status_description_placeholder": "要使用的状态描述（最多 32 个字符）",
                     "auto_change_status_groups": "仅统计来自以下分组的好友",
                     "auto_change_status_groups_placeholder": "选择分组",
                     "auto_accept_invite_groups": "指定分组",
-                    "auto_accept_invite_groups_placeholder": "选择分组"
+                    "auto_accept_invite_groups_placeholder": "选择分组",
+                    "auto_invite_request_accept_off": "关闭"
                 },
                 "legal_notice": {
                     "header": "法律声明",
-                    "info": "VRCX 是一个提供VRChat好友管理的辅助应用。这个程序使用了非官方的 VRChat API (VRCSDK)。",
-                    "disclaimer1": "VRCX 不受 VRChat 的认可，也不反映 VRChat 或者任何正式参与制作或管理 VRChat 的人员/团体的观点或意见。VRChat 是 VRChat Inc. 的商标。 VRChat © VRChat Inc.",
-                    "disclaimer2": "pypy & Natsumi 及本项目的全体贡献者，均不对使用 VRCX 引起的任何问题负责。使用时请自负风险！",
+                    "info": "VRCX-Jirai 是一个提供VRChat好友管理的辅助应用。这个程序使用了非官方的 VRChat API (VRCSDK)。",
+                    "disclaimer1": "VRCX-Jirai 不受 VRChat 的认可，也不反映 VRChat 或者任何正式参与制作或管理 VRChat 的人员/团体的观点或意见。VRChat 是 VRChat Inc. 的商标。 VRChat © VRChat Inc.",
+                    "disclaimer2": "pypy & Natsumi 及本项目的全体贡献者，均不对使用 VRCX-Jirai 引起的任何问题负责。使用时请自负风险！",
                     "open_source_software_notice": "开放源代码软件许可"
                 },
                 "contributors": {
@@ -914,7 +1066,7 @@
                     "vrcplus_profile_icons": "VRC+ 个人资料图标",
                     "vrcplus_profile_icons_description": "当可用时显示 VRC+ 专属个人资料图标。",
                     "vrc_profile_themes": "VRChat 个人资料主题",
-                    "show_instance_id": "显示房间 ID",
+                    "show_instance_id": "显示房间 ID（及其自定义名称）",
                     "show_status_bar": "显示底部状态栏",
                     "age_gated_instances": "显示具有年龄限制的房间",
                     "age_gated_instances_description": "显示具有年龄限制的房间。禁用时，这些房间将在列表中被隐藏，以跳转方式打开则显示为受限。",
@@ -984,14 +1136,21 @@
                         "last_seen": "最后见面时间",
                         "time_in_instance": "在房间的时长",
                         "placeholder": "排序依据"
-                    }
+                    },
+                    "header": "侧边栏",
+                    "group_by_instance": "将好友按所在房间进行分类排序",
+                    "group_by_instance_tooltip": "如果启用，将会在有多名好友在同一房间时，按所在房间对好友进行分类排序。",
+                    "hide_friends_in_same_instance": "合并处于同一房间的好友",
+                    "hide_friends_in_same_instance_tooltip": "当多名好友处于同一房间时，在列表中合并他们以避免重复显示",
+                    "split_favorite_friends": "将星标好友按照分组显示",
+                    "split_favorite_friends_tooltip": "如果启用，将会显示星标好友时按照其所在的好友分组显示。"
                 },
                 "user_dialog": {
                     "header": "玩家信息",
                     "vrchat_notes": "显示线上备注",
                     "vrchat_notes_description": "显示 VRChat 服务器上保存的备注",
                     "vrcx_memos": "显示本地备注",
-                    "vrcx_memos_description": "显示在 VRCX 中本地保存的备注",
+                    "vrcx_memos_description": "显示在 VRCX-Jirai 中本地保存的备注",
                     "recent_action_cooldown": "显示“最近操作”图标",
                     "recent_action_cooldown_description": "在最近的邀请和加入申请操作上显示一个时钟图标。",
                     "recent_action_cooldown_minutes": "冷却时间（分钟）"
@@ -1107,7 +1266,7 @@
                 "rpc": {
                     "vr": "VR 模式",
                     "desktop": "桌面模式",
-                    "powered_by_vrcx": "由 VRCX 强力驱动",
+                    "powered_by_vrcx": "由 VRCX-Jirai 强力驱动",
                     "private_world": "私人世界"
                 }
             },
@@ -1125,11 +1284,11 @@
                         "header": "VRChat"
                     },
                     "vrcx_settings": {
-                        "header": "VRCX"
+                        "header": "VRCX-Jirai"
                     },
                     "primary_password": {
                         "header": "独立密码",
-                        "description": "使用独立密码加密 VRCX 数据（将停用自动登录）"
+                        "description": "使用独立密码加密 VRCX-Jirai 数据（将停用自动登录）"
                     },
                     "relaunch_vrchat": {
                         "header": "崩溃后重启",
@@ -1148,12 +1307,12 @@
                         "description": "直接给自己发送邀请，而不是在游戏中打开房间页面"
                     },
                     "anonymous_error_reporting": {
-                        "header": "匿名错误报告",
-                        "description": "通过发送匿名的崩溃和错误报告来帮助改进 VRCX。不会收集任何有关个人或 VRChat 的相关数据。",
+                        "header": "匿名错误报告（仅限测试版）",
+                        "description": "通过发送匿名的崩溃和错误报告来帮助改进 VRCX-Jirai。不会收集任何有关个人或 VRChat 的相关数据。",
                         "consent_title": "匿名错误报告",
-                        "consent_description": "要启用匿名错误报告以帮助改进 VRCX 吗？\n\n• 我们仅收集有关 VRCX 的崩溃和错误报告数据\n• 不会收集任何有关个人或 VRChat 的相关数据\n• 匿名错误报告仅限测试版可用\n• 并且可在高级设置中禁用",
-                        "enabled_restart_description": "错误报告目前已启用，要重启 VRCX 以便禁用它吗？",
-                        "disabled_restart_description": "错误报告目前已禁用，要重启 VRCX 以便启用它吗？"
+                        "consent_description": "启用匿名错误报告以帮助改进 VRCX-Jirai吗？\n\n• 我们仅收集有关 VRCX-Jirai 的崩溃和错误报告数据\n• 不会收集任何有关个人或 VRChat 的相关数据\n• 匿名错误报告仅限测试版可用\n• 并且可在高级设置中禁用",
+                        "enabled_restart_description": "错误报告目前已启用，要重启 VRCX-Jirai 以便禁用它吗？",
+                        "disabled_restart_description": "错误报告目前已禁用，要重启 VRCX-Jirai 以便启用它吗？"
                     },
                     "save_instance_prints_to_file": {
                         "header": "“拍立得”照片保存选项",
@@ -1174,7 +1333,7 @@
                     },
                     "delete_all_screenshot_metadata": {
                         "button": "删除截图元数据",
-                        "ask": "你确定要从 VRChat 图片文件夹中删除所有由 VRC 和 VRCX 添加的截图元数据吗？",
+                        "ask": "你确定要从 VRChat 图片文件夹中删除所有由 VRC 和 VRCX-Jirai 添加的截图元数据吗？",
                         "confirm": "删除截图元数据是一个非常破坏性的操作，无法撤销！这包括你的 VRChat 图片文件夹中的所有拍立得照片，如果这些照片的元数据信息对你很珍贵，请在继续操作之前进行备份。",
                         "confirm_yes": "是，确认删除",
                         "confirm_no": "否，我再想想"
@@ -1192,13 +1351,13 @@
                         "enable_tooltip": "获取视频标题以供日志记录使用，会一并获取进度条的时间"
                     },
                     "translation_api": {
-                        "header": "翻译 API",
+                        "header": "个人简介翻译 API",
                         "enable": "启用",
                         "translation_api_key": "输入 API 密钥",
                         "enable_tooltip": "用于翻译玩家的个人简介"
                     },
                     "video_progress_pie": {
-                        "header": "在叠加界面上显示圆饼样式的视频进度图",
+                        "header": "视频进度圆饼叠加界面",
                         "enable": "启用",
                         "enable_tooltip": "需要启用 SteamVR 叠加界面选项",
                         "dance_world_only": "仅在舞蹈类房间显示"
@@ -1207,7 +1366,7 @@
                         "header": "启动命令 / 客户端连接",
                         "docs": "文档",
                         "show_confirmation_on_switch_avatar_enable": "切换模型前显示确认对话框",
-                        "show_confirmation_on_switch_avatar_tooltip": "禁用后，切换模型时 VRCX 将不会弹至前台要求确认",
+                        "show_confirmation_on_switch_avatar_tooltip": "禁用后，切换模型时 VRCX-Jirai 将不会弹至前台要求确认",
                         "website_userscript": "相关脚本"
                     },
                     "screenshot_helper": {
@@ -1227,7 +1386,7 @@
                         "run_process_once": "仅允许启动应用的单个实例（禁止多开）"
                     },
                     "cache_debug": {
-                        "header": "VRCX 缓存/调试选项",
+                        "header": "VRCX-Jirai 缓存/调试选项",
                         "udon_exception_logging": "显示 Udon 错误日志",
                         "disable_gamelog": "关闭游戏日志",
                         "disable_gamelog_notice": "（可能会弄坏很多东西！）",
@@ -1277,7 +1436,7 @@
                         "purge_confirm_title": "清理模型变动记录",
                         "purge_confirm_description_1": "这将永久删除数据库中的模型变动记录并回收磁盘空间。",
                         "purge_confirm_description_2": "此操作无法撤销！",
-                        "purge_confirm_description_3": "VRCX 将在操作完成后重启。",
+                        "purge_confirm_description_3": "VRCX-Jirai 将在操作完成后重启。",
                         "purge_confirm_alert": "强烈建议在继续之前备份你的数据库文件！",
                         "purge_confirm_button": "清理 & 重启",
                         "purge_in_progress": "正在清理模型变动的相关数据...",
@@ -1290,6 +1449,9 @@
                         "description": "设置“拍立得”和“贴纸”等内容保存的位置",
                         "set_folder": "设置保存文件夹",
                         "reset_override": "重置为默认"
+                    },
+                    "auto_join_group_certification": {
+                        "header": "认证"
                     }
                 },
                 "photon": {
@@ -1391,7 +1553,11 @@
                 "logout": "退出登录",
                 "edit_note_memo": "编辑备注",
                 "reset_home": "重置出生点",
-                "edit_profile": "编辑个人主页"
+                "edit_profile": "编辑个人主页",
+                "favorite_tooltip": "星标此好友",
+                "unfavorite_tooltip": "取消星标此好友",
+                "track_stranger": "开启陌生人追踪",
+                "untrack_stranger": "关闭陌生人追踪"
             },
             "info": {
                 "header": "信息",
@@ -1452,7 +1618,8 @@
                 "show_discord_connections": "是否允许查看绑定的 Discord 账号信息",
                 "instance_minimum_avatar_performance": "模型性能评级限制",
                 "current_instance": "当前房间",
-                "economy_creator": "商业创作者"
+                "economy_creator": "商业创作者",
+                "bio_diff_toggle": "切换简介对比"
             },
             "groups": {
                 "header": "群组",
@@ -1570,6 +1737,18 @@
                 "header": "编辑线上备注和本地备注",
                 "cancel": "取消",
                 "confirm": "确定"
+            },
+            "status_distribution": {
+                "header": "灯色分布",
+                "refresh_hint": "刷新灯色分布数据",
+                "loading": "正在加载状态数据…",
+                "days_per_unit": "天/格",
+                "status": {
+                    "active": "在线",
+                    "join_me": "加入我",
+                    "ask_me": "询问我",
+                    "busy": "请勿打扰"
+                }
             }
         },
         "world": {
@@ -1720,7 +1899,7 @@
                 "pc_performance": "PC 性能评级",
                 "android_performance": "Android 性能评级",
                 "ios_performance": "iOS 性能评级",
-                "time_spent": "使用时长",
+                "time_spent": "模型使用时长",
                 "visibility": "模型可见性",
                 "tags": "标签",
                 "memo": "备注",
@@ -1769,7 +1948,7 @@
                 "invite": "仅允许邀请加入",
                 "closed": "不允许任何人加入",
                 "joined": "已加入",
-                "banned": "被屏蔽/封禁",
+                "banned": "你已被群组封禁",
                 "everyone": "可见性：所有人",
                 "visible": "可见性：所有人",
                 "friends": "可见性：好友",
@@ -1892,10 +2071,10 @@
             }
         },
         "favorite": {
-            "header": "选择收藏夹（分组）",
-            "vrchat_favorites": "在线收藏夹",
-            "local_favorites": "本地收藏夹",
-            "local_avatar_favorites": "模型收藏夹（本地，需要 VRC+）"
+            "header": "选择收藏夹",
+            "vrchat_favorites": "VRChat 上的收藏",
+            "local_favorites": "本地收藏",
+            "local_avatar_favorites": "模型收藏（需要 VRC+）"
         },
         "social_status": {
             "header": "社交状态",
@@ -2128,7 +2307,7 @@
             "clear_errors": "清除错误信息"
         },
         "friend_export": {
-            "header": "导出好友分组"
+            "header": "导出收藏（星标）好友"
         },
         "friend_import": {
             "header": "导入好友",
@@ -2164,7 +2343,7 @@
             "description5": "- 有脏话过滤器（对中文没什么用，但还是扫兴）。",
             "description6": "- 不能换行（换行符将会被替换成空格）。",
             "description7": "- 这将会覆盖这些玩家现有的任何 VRChat 线上备注。",
-            "description8": "- 在这里所做的任何编辑都不会影响 VRCX 在本地写入的备注，但会在导出后影响 VRChat 上显示的备注。",
+            "description8": "- 在这里所做的任何编辑都不会影响 VRCX-Jirai 在本地写入的备注，但会在导出后影响 VRChat 上显示的备注。",
             "refresh": "刷新",
             "export": "导出",
             "cancel": "取消",
@@ -2199,7 +2378,10 @@
             "emoji": "Emoji（表情）",
             "redeem": "兑换码兑换",
             "create_animated_emoji": "动画表情生成器",
-            "crop_image": "确认上传"
+            "crop_image": "确认上传",
+            "drop_to_add": "松手以添加",
+            "drop_to_upload": "松手以上传",
+            "drop_to_upload_hint": "拖入图片至当前面板 即可上传"
         },
         "image_crop": {
             "rotate_left": "向左旋转",
@@ -2265,7 +2447,7 @@
             "avatar_scaling_disabled": "关闭模型缩放功能",
             "focus_view_disabled": "禁用焦点视图",
             "enable_debugging": "为其他人启用世界调试菜单",
-            "author_tags": "自定义标签（以逗号分隔）",
+            "author_tags": "作者添加的标签（以逗号分隔）",
             "content_tags": "内容警告标签（以逗号分隔）",
             "content_horror": "恐怖",
             "content_gore": "血腥",
@@ -2336,7 +2518,7 @@
             "save": "保存"
         },
         "translation_api": {
-            "header": "翻译 API",
+            "header": "个人简介翻译 API",
             "description": "输入你的 Google 翻译 API 密钥",
             "guide": "查看教程（英语）",
             "mode": "提供商",
@@ -2417,7 +2599,7 @@
             "data": "数据",
             "note": "备注",
             "roles": "身份组",
-            "user_id": "用户名 / 玩家 ID",
+            "user_id": "输入用户名 / 玩家 ID",
             "user_id_placeholder": "用户名 / 玩家 ID",
             "select_user": "选择玩家",
             "selected_users": "已选择的玩家",
@@ -2491,9 +2673,9 @@
             "add_item": "新增项目"
         },
         "vrcx_updater": {
-            "header": "VRCX 更新",
-            "latest_version": "VRCX 已是最新版本",
-            "ready_for_update": "现已准备好安装更新，重启 VRCX 以开始安装",
+            "header": "VRCX-Jirai 更新",
+            "latest_version": "VRCX-Jirai 已是最新版本",
+            "ready_for_update": "现已准备好安装更新，重启 VRCX-Jirai 以开始安装",
             "branch_stable": "稳定版",
             "branch_nightly": "测试版",
             "nightly_title": "测试版构建",
@@ -2505,14 +2687,14 @@
         },
         "change_log": {
             "header": "更新日志",
-            "description": "考虑捐赠一下，以支持 VRCX 的未来发展",
+            "description": "考虑捐赠一下，以支持 VRCX-Jirai 的未来发展",
             "close": "关闭",
             "donate": "捐赠支持",
             "github": "在 GitHub 上查看"
         },
         "open_source": {
             "header": "开放源代码许可条款",
-            "description": "VRCX 是基于开放源代码软件开发的。没有他们的贡献，这个程序不可能开发出来。",
+            "description": "VRCX-Jirai 是基于开放源代码软件开发的。没有他们的贡献，这个程序不可能开发出来。",
             "loading": "正在加载生成的第三方声明...",
             "unavailable": "此构建中没有可用的生成的第三方声明清单。请进行生产构建以重新生成。",
             "search_placeholder": "搜索软件包、版本或许可证",
@@ -2549,7 +2731,59 @@
         "avatar_database_provider": {
             "header": "模型数据库提供方",
             "add_provider": "新增"
-        }
+        },
+        "import_database": {
+            "header": "导入数据库",
+            "cancel": "取消",
+            "next": "下一步",
+            "import": "开始导入",
+            "restart": "重启应用",
+            "later": "稍后",
+            "select": {
+                "description": "选择要导入的 VRCX 数据库文件（通常是原版 VRCX 的 VRCX.sqlite3）。导入前会自动备份当前数据库，然后替换。",
+                "path_placeholder": "选择 sqlite3 数据库文件",
+                "choose": "选择文件",
+                "validating": "正在校验数据库...",
+                "valid": "有效的 VRCX 数据库",
+                "invalid": "所选文件不是有效的 VRCX 数据库"
+            },
+            "stats": {
+                "rows": "{count} 条游戏记录",
+                "friends": "{count} 位好友",
+                "size": "文件大小"
+            },
+            "confirm": {
+                "current_label": "当前数据库",
+                "source_label": "将导入的数据库",
+                "warning": {
+                    "title": "导入前请确认",
+                    "backup": "导入前会自动备份当前数据库（备份位置见完成页面）。",
+                    "restart": "导入完成后需要重启应用才能生效。"
+                }
+            },
+            "done": {
+                "message": "数据库导入完成",
+                "backup_path": "备份位置：{path}"
+            },
+            "error": {
+                "title": "无法导入",
+                "empty_path": "未选择数据库文件",
+                "same_path": "所选文件与当前数据库相同，无需导入",
+                "not_found": "文件不存在",
+                "not_vrcx_db": "所选文件不是有效的 VRCX 数据库（缺少 gamelog_join_leave 表）",
+                "invalid_sqlite": "无法读取该数据库文件",
+                "invalid": "数据库校验未通过",
+                "failed": "导入失败，请重试"
+            }
+        },
+        "import_db_prompt": {
+            "title": "检测到原版 VRCX 数据库",
+            "description": "发现原版 VRCX 数据库（{rows} 条游戏记录、{friends} 位好友）。是否导入到 VRCX-Jirai？导入前会自动备份当前数据库。",
+            "confirm": "导入",
+            "cancel": "稍后再说"
+        },
+        "close": "关闭",
+        "refresh": "刷新"
     },
     "confirm": {
         "title": "确认操作",
@@ -2726,7 +2960,7 @@
             "input_error": "请输入有效的秒数"
         },
         "auto_clear_cache": {
-            "header": "VRCX 缓存自动清理间隔",
+            "header": "VRCX-Jirai 缓存自动清理间隔",
             "description": "以小时为单位，较大的数值可能会影响性能（默认值：24，为 0 时关闭）",
             "cancel": "取消",
             "ok": "确定",
@@ -2839,8 +3073,8 @@
         "database": {
             "upgrade_complete": "数据库升级完成",
             "upgrade_in_progress_title": "数据库升级进行中",
-            "upgrade_in_progress_description": "正在将数据库从版本 {from} 更新到 {to}，请不要关闭 VRCX。",
-            "upgrade_in_progress_initializing": "正在初始化数据库升级流程，请不要关闭 VRCX。",
+            "upgrade_in_progress_description": "正在将数据库从版本 {from} 更新到 {to}，请不要关闭 VRCX-Jirai。",
+            "upgrade_in_progress_initializing": "正在初始化数据库升级流程，请不要关闭 VRCX-Jirai。",
             "upgrade_in_progress_wait": "在升级完成前，交互操作将被暂时禁止。",
             "upgrade_failed_title": "数据库升级失败",
             "upgrade_failed_description": "数据库升级失败，请查看调试控制台以获取详细信息。",
@@ -2854,7 +3088,7 @@
             "folder_missing": "文件夹不存在"
         },
         "group": {
-            "load_failed": "加载群组信息失败",
+            "load_failed": "加载群组失败",
             "joined": "加入群组成功",
             "join_request_sent": "已发送加入申请",
             "visibility_updated": "群组可见性已更新",
@@ -2898,7 +3132,7 @@
         },
         "user": {
             "moderated": "已更新玩家状态",
-            "load_failed": "加载玩家信息失败",
+            "load_failed": "加载用户信息失败",
             "id_copied": "用户 ID 已复制到剪贴板",
             "url_copied": "用户链接已复制到剪贴板",
             "display_name_copied": "用户昵称已复制到剪贴板",
@@ -2917,7 +3151,7 @@
             "delete_failed": "删除图片元数据失败"
         },
         "crash": {
-            "vrcx_reload": "为保证稳定性，VRCX 已重新加载"
+            "vrcx_reload": "为保证稳定性，VRCX-Jirai 已重新加载"
         },
         "image": {
             "downloading": "正在下载图片...",
@@ -2935,7 +3169,8 @@
             "invalid_config": "config.json 中包含无效的 JSON 数据"
         },
         "gamelog": {
-            "vrchat_must_be_closed": "必须关闭 VRChat 客户端后才能修改日志设置"
+            "vrchat_must_be_closed": "必须关闭 VRChat 客户端后才能修改日志设置",
+            "recommended_pair": "💡 {nameA} 和 {nameB} 可能是好友（判定得分: {score}）。"
         },
         "copy_failed": "复制失败",
         "error": "错误"
@@ -3186,7 +3421,7 @@
             "message": {
                 "error_message": "错误信息",
                 "endpoint": "接口",
-                "missing_credentials": "缺少访问凭据，这可能是因为 IP 地址发生了变化导致登录状态过期。",
+                "missing_credentials": "缺少访问凭据",
                 "vpn_in_use": "VRChat 目前限制了大多数的 VPN 服务。请断开所有已连接的 VPN 后重试。",
                 "login_error": "登录失败",
                 "invalid_json_response": "无效的 JSON 响应",
@@ -3203,7 +3438,7 @@
     },
     "onboarding": {
         "welcome": {
-            "title": "欢迎使用 VRCX",
+            "title": "欢迎使用 VRCX-Jirai",
             "subtitle": "这里有一些你可能没注意到的奇妙功能",
             "features": {
                 "user_profiles": {
@@ -3226,13 +3461,13 @@
             "cta": "开始使用"
         },
         "whatsnew": {
-            "title": "VRCX 更新内容",
+            "title": "VRCX-Jirai 更新内容",
             "subtitle": "本次更新的变更如下。",
             "cta": "知道了",
             "common": {
                 "got_it": "知道了",
                 "view_changelog": "查看全部更改",
-                "support": "支持 VRCX"
+                "support": "支持 VRCX-Jirai"
             },
             "releases": {
                 "2026_05_03": {
@@ -3254,6 +3489,28 @@
                         "right_click_menus": {
                             "title": "右键菜单",
                             "description": "在好友、表格头以及标题上右键可以执行快速操作。"
+                        }
+                    }
+                },
+                "2026_07_18": {
+                    "title": "VRCX-Jirai 2026.07.18",
+                    "subtitle": "好友亲和度、多账号 v4、数据库导入等多项新功能",
+                    "items": {
+                        "friend_affinity": {
+                            "title": "好友亲和度图表",
+                            "description": "以任意用户为中心，基于共处实例数据计算亲和度评分并以柱状图可视化。"
+                        },
+                        "db_import": {
+                            "title": "数据库导入",
+                            "description": "选择并导入其他 VRCX 数据库文件，引导式校验与导入。"
+                        },
+                        "multi_account": {
+                            "title": "多账号 v4",
+                            "description": "重构账号中心与聚合视图，好友、收藏、动态等均支持账号维度切换。"
+                        },
+                        "relation_recommendation": {
+                            "title": "关系推荐优化",
+                            "description": "移除共处时间去抖、按评分过滤推荐，并支持注入模拟记录进行测试。"
                         }
                     }
                 }
@@ -3287,6 +3544,7 @@
         "clocks_label": "时钟",
         "clocks_none": "无",
         "timezone": "时区",
-        "now_playing": "正在游玩"
+        "now_playing": "正在游玩",
+        "info_sync": "同步"
     }
 }

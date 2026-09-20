@@ -54,6 +54,8 @@ import { removeAvatarFromCache } from './avatarCoordinator';
 import { useSharedFeedStore } from '../stores/sharedFeed';
 import { useUiStore } from '../stores/ui';
 import { useUserStore } from '../stores/user';
+import { useManualRelationsStore } from '../stores/manualRelations';
+import Noty from 'noty';
 
 const getRobotUrl = () => `${AppDebug.endpointDomain}/file/file_0e8c4e32-7444-44ea-ade4-313c010d4bae/1/file`;
 
@@ -92,6 +94,40 @@ export function applyUser(json) {
             const player = locationStore.lastLocation.playerList.get(json.id);
             ref.$location_at = player.joinTime;
             ref.$online_for = player.joinTime;
+        } else if (
+            ref.isFriend &&
+            ref.location &&
+            ref.location !== ':' && // ':' is the empty/invalid location sentinel
+            !ref.location.startsWith('offline') &&
+            !ref.location.startsWith('traveling')
+        ) {
+            // Restore $location_at from DB so the "time in instance" timer
+            // doesn't reset to zero after VRCX restarts.
+            // Primary source: _feed_gps (covers both real and private instances).
+            // Fallback: gamelog_join_leave (only available when sharing an instance).
+            const _ref = ref;
+            database
+                .getLastGPSArrivalTimeForUser(_ref.id, _ref.location)
+                .then(async (arrivalTime) => {
+                    if (arrivalTime !== null && arrivalTime < Date.now()) {
+                        _ref.$location_at = arrivalTime;
+                        return;
+                    }
+                    if (isRealInstance(_ref.location)) {
+                        const joinTime =
+                            await database.getLastJoinTimeForUserAtLocation(
+                                {
+                                    id: _ref.id,
+                                    displayName: _ref.displayName
+                                },
+                                _ref.location
+                            );
+                        if (joinTime !== null && joinTime < Date.now()) {
+                            _ref.$location_at = joinTime;
+                        }
+                    }
+                })
+                .catch(() => {});
         }
         if (ref.isFriend || ref.id === currentUser.id) {
             let newCount = state.instancePlayerCount.get(ref.location);
@@ -245,6 +281,30 @@ export function applyUser(json) {
                 ref.$location_at = ts;
             }
         }
+        if (changedProps.state && ref.id === userStore.currentUser.id) {
+            const newState = changedProps.state[1];
+            const oldState = changedProps.state[0];
+            if (
+                (newState === 'online' &&
+                    (oldState === 'offline' || oldState === 'active')) ||
+                ((newState === 'offline' || newState === 'active') &&
+                    oldState === 'online')
+            ) {
+                database.addOnlineOfflineToDatabase({
+                    created_at: new Date().toJSON(),
+                    type: newState === 'online' ? 'Online' : 'Offline',
+                    userId: ref.id,
+                    displayName: ref.displayName,
+                    location: ref.location,
+                    worldName: '', // Will be resolved if needed
+                    groupName: '',
+                    time:
+                        newState === 'offline'
+                            ? Date.now() - ref.$location_at
+                            : ''
+                });
+            }
+        }
         handleUserUpdate(ref, changedProps);
         if (AppDebug.debugUserDiff) {
             delete changedProps.last_login;
@@ -363,6 +423,11 @@ export function showUserDialog(userId) {
     }
     updateUserDialogProfile();
     AppApi.SendIpc('ShowUserDialog', userId);
+    // Capture cached bio and status before the API fetch so we can detect whether
+    // applyUser (called inside the fetch) already triggered
+    // runHandleUserUpdateFlow to record the same change.
+    const bioBefore = userStore.cachedUsers.get(userId)?.bio;
+    const statusBefore = userStore.cachedUsers.get(userId)?.status;
     queryRequest
         .fetch('user', {
             userId
@@ -380,7 +445,103 @@ export function showUserDialog(userId) {
                 D.loading = false;
 
                 D.ref = args.ref;
-                uiStore.setDialogCrumbLabel('user', D.id, D.ref?.displayName || D.id);
+                uiStore.setDialogCrumbLabel(
+                    'user',
+                    D.id,
+                    D.ref?.displayName || D.id
+                );
+
+                // Record bio snapshot for any user (friend or stranger) when
+                // their profile is viewed, skipping if bio hasn't changed.
+                // Also skip when runHandleUserUpdateFlow already recorded this
+                // exact bio change: that path fires for friends whenever bio
+                // transitions from one non-empty value to another non-empty
+                // value. Racing with it would insert a duplicate record.
+                if (userId !== currentUser.id && D.ref.bio !== undefined) {
+                    const currentBio = D.ref.bio || '';
+                    const isFriend = friendStore.friends.has(userId);
+                    const eventFlowWillRecord =
+                        isFriend &&
+                        bioBefore !== undefined &&
+                        Boolean(bioBefore) &&
+                        Boolean(currentBio) &&
+                        bioBefore !== currentBio;
+                    if (!eventFlowWillRecord) {
+                        database
+                            .getLastBioChangeForUser(userId)
+                            .then((last) => {
+                                if (!last || last.bio !== currentBio) {
+                                    database.addBioToDatabase({
+                                        created_at: new Date().toJSON(),
+                                        userId,
+                                        displayName: D.ref.displayName,
+                                        bio: currentBio,
+                                        previousBio: last ? last.bio : ''
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.error(
+                                    'Failed to record bio snapshot:',
+                                    err
+                                );
+                            });
+                    }
+                }
+
+                // Record status snapshot for any user (friend or stranger) when
+                // their profile is viewed, skipping if status hasn't changed.
+                // Also skip when runHandleUserUpdateFlow already recorded this
+                // exact status change: that path fires for friends whenever
+                // status transitions between two non-offline values.
+                if (userId !== currentUser.id && D.ref.status !== undefined) {
+                    const currentStatus = D.ref.status || '';
+                    const currentStatusDesc = D.ref.statusDescription || '';
+                    const isFriend = friendStore.friends.has(userId);
+                    const validStatuses = [
+                        'join me',
+                        'active',
+                        'ask me',
+                        'busy'
+                    ];
+                    // runHandleUserUpdateFlow records the status change for
+                    // friends when both old and new status are non-offline.
+                    const eventFlowWillRecordStatus =
+                        isFriend &&
+                        statusBefore !== undefined &&
+                        statusBefore !== currentStatus &&
+                        currentStatus !== 'offline' &&
+                        (statusBefore || '') !== 'offline';
+                    if (
+                        !eventFlowWillRecordStatus &&
+                        validStatuses.includes(currentStatus)
+                    ) {
+                        database
+                            .getLastStatusChangeForUser(userId)
+                            .then((last) => {
+                                if (!last || last.status !== currentStatus) {
+                                    database.addStatusToDatabase({
+                                        created_at: new Date().toJSON(),
+                                        userId,
+                                        displayName: D.ref.displayName,
+                                        status: currentStatus,
+                                        statusDescription: currentStatusDesc,
+                                        previousStatus: last ? last.status : '',
+                                        previousStatusDescription: last
+                                            ? last.statusDescription
+                                            : ''
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.error(
+                                    'Failed to record status snapshot:',
+                                    err
+                                );
+                            });
+                    }
+                }
+
                 D.friend = friendStore.friends.get(D.id);
                 D.isFriend = Boolean(D.friend);
                 D.note = String(D.ref.note || '');
@@ -490,6 +651,106 @@ export function showUserDialog(userId) {
                 });
                 D.visible = true;
                 userStore.applyUserDialogLocation(true);
+
+                const manualRelationsStore = useManualRelationsStore();
+                const suggestions =
+                    manualRelationsStore.cachedSuggestions || [];
+                const ignoredKeys =
+                    manualRelationsStore.ignoredSuggestionKeys || new Set();
+
+                const suggestionForThisUser = suggestions.find(
+                    (s) =>
+                        (s.userIdA === userId || s.userIdB === userId) &&
+                        !ignoredKeys.has(s.key) &&
+                        !manualRelationsStore.isManualRelation(
+                            s.userIdA,
+                            s.userIdB
+                        )
+                );
+
+                if (suggestionForThisUser) {
+                    const otherUserName =
+                        suggestionForThisUser.userIdA === userId
+                            ? suggestionForThisUser.nameB
+                            : suggestionForThisUser.nameA;
+                    const n = new Noty({
+                        type: 'alert',
+                        timeout: 6000,
+                        progressBar: true,
+                        text: `
+                            <div class="noty-rel-popup">
+                                <div class="mb-2">【推测关联】你觉得本玩家和 <strong>${otherUserName}</strong> 是好友吗？</div>
+                                <div class="flex gap-3 justify-end mt-3">
+                                    <button class="noty-btn-yes px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded shadow-md transition-all active:scale-95">是好友</button>
+                                    <button class="noty-btn-no px-4 py-1.5 bg-transparent border border-zinc-500/50 hover:bg-zinc-700/50 text-zinc-400 hover:text-zinc-200 rounded text-xs transition-all active:scale-95">忽略</button>
+                                </div>
+                            </div>
+                        `,
+                        callbacks: {
+                            onShow: function () {
+                                if (this.barDom) {
+                                    this.barDom.style.setProperty(
+                                        'z-index',
+                                        '2147483647',
+                                        'important'
+                                    );
+                                    this.barDom.style.setProperty(
+                                        'pointer-events',
+                                        'auto',
+                                        'important'
+                                    );
+                                    if (this.barDom.parentElement) {
+                                        this.barDom.parentElement.style.setProperty(
+                                            'z-index',
+                                            '2147483647',
+                                            'important'
+                                        );
+                                        this.barDom.parentElement.style.setProperty(
+                                            'pointer-events',
+                                            'auto',
+                                            'important'
+                                        );
+                                    }
+                                }
+                                const pb =
+                                    this.barDom.querySelector(
+                                        '.noty_progressbar'
+                                    );
+                                if (pb) {
+                                    pb.style.backgroundColor = '#9ca3af';
+                                    pb.style.opacity = '0.8';
+                                }
+
+                                const yesBtn =
+                                    this.barDom.querySelector('.noty-btn-yes');
+                                if (yesBtn) {
+                                    yesBtn.addEventListener('click', () => {
+                                        manualRelationsStore.addManualRelation(
+                                            suggestionForThisUser.userIdA,
+                                            suggestionForThisUser.userIdB,
+                                            'friend'
+                                        );
+                                        manualRelationsStore.ignoreSuggestion(
+                                            suggestionForThisUser.key
+                                        );
+                                        n.close();
+                                    });
+                                }
+                                const noBtn =
+                                    this.barDom.querySelector('.noty-btn-no');
+                                if (noBtn) {
+                                    noBtn.addEventListener('click', () => {
+                                        manualRelationsStore.ignoreSuggestion(
+                                            suggestionForThisUser.key
+                                        );
+                                        n.close();
+                                    });
+                                }
+                            }
+                        }
+                    });
+                    n.show();
+                }
             }
         });
     showUserDialogHistory.delete(userId);

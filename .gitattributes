@@ -13,7 +13,6 @@
 *.nsi                       text eol=crlf
 *.nsh                       text eol=crlf
 *.json                      text eol=crlf
-
 # dotnet files
 *.cs                        text eol=crlf
 *.sln                       text eol=crlf

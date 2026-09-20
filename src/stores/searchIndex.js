@@ -27,6 +27,7 @@ export const useSearchIndexStore = defineStore('SearchIndex', () => {
             name: ctx.name || '',
             memo: ctx.memo || '',
             note: ctx.ref?.note || '',
+            bio: ctx.ref?.bio || '',
             imageUrl: ctx.ref?.currentAvatarThumbnailImageUrl || ''
         };
         const existing = friends.get(ctx.id);
@@ -35,6 +36,7 @@ export const useSearchIndexStore = defineStore('SearchIndex', () => {
             existing.name === entry.name &&
             existing.memo === entry.memo &&
             existing.note === entry.note &&
+            existing.bio === entry.bio &&
             existing.imageUrl === entry.imageUrl
         ) {
             return;

@@ -16,3 +16,5 @@ AGENTS.md
 AI_GUIDE.md
 CLAUDE.md
 coverage/
+.memory
+.spec-workflow

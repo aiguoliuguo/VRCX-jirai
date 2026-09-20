@@ -132,7 +132,9 @@ describe('ChangelogDialog.vue', () => {
             expect(githubBtn).toBeTruthy();
 
             await githubBtn.trigger('click');
-            expect(openExternalLinkFn).toHaveBeenCalledWith('https://github.com/vrcx-team/VRCX/releases');
+            expect(openExternalLinkFn).toHaveBeenCalledWith(
+                'https://github.com/aiguoliuguo/VRCX-jirai/releases'
+            );
         });
 
         test('clicking Ko-fi link opens external link', async () => {

@@ -1,5 +1,32 @@
 <template>
-    <div class="x-container feed x-container--auto-height" ref="feedRef">
+    <div
+        class="x-container feed x-container--auto-height"
+        ref="feedRef"
+        @dragenter.prevent="onDragEnter"
+        @dragover.prevent="onDragOver"
+        @dragleave="onDragLeave"
+        @drop.prevent="onDrop">
+        <div
+            v-show="isDraggingOver"
+            class="feed-drop-overlay absolute inset-0 z-50 flex items-center justify-center rounded-[var(--radius)] bg-background/80 backdrop-blur-sm pointer-events-none">
+            <div class="flex flex-wrap justify-center gap-6 p-8 w-full max-w-4xl pointer-events-none">
+                <div
+                    v-for="zone in dropZones"
+                    :key="zone.tab"
+                    :data-tab="zone.tab"
+                    class="feed-zone-element flex flex-col items-center justify-center p-6 w-[28%] aspect-square rounded-2xl border-2 border-dashed border-primary/40 bg-card/80 text-foreground transition-all duration-300 pointer-events-none"
+                    :class="{
+                        'border-primary border-solid bg-primary/20 text-primary scale-[1.05] shadow-[0_12px_30px_-10px_rgba(var(--primary-rgb),0.5)]':
+                            hoveredZone === zone.tab
+                    }">
+                    <Upload class="size-8 mb-2" />
+                    <span class="text-sm font-semibold text-center">{{ zone.label }}</span>
+                    <span class="text-xs opacity-70 mt-1 text-center">{{
+                        t('dialog.gallery_icons.drop_to_upload')
+                    }}</span>
+                </div>
+            </div>
+        </div>
         <DataTableLayout
             :table="table"
             :loading="feedTable.loading"
@@ -90,7 +117,7 @@
 
 <script setup>
     import { computed, ref } from 'vue';
-    import { ListFilter, Star } from 'lucide-vue-next';
+    import { ListFilter, Star, Upload } from 'lucide-vue-next';
     import { getLocalTimeZone, today } from '@internationalized/date';
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
@@ -98,7 +125,7 @@
     import dayjs from 'dayjs';
 
     import { Popover, PopoverContent, PopoverTrigger } from '../../components/ui/popover';
-    import { useAppearanceSettingsStore, useFeedStore, useVrcxStore } from '../../stores';
+    import { useAppearanceSettingsStore, useFeedStore, useGalleryStore, useVrcxStore } from '../../stores';
     import { ToggleGroup, ToggleGroupItem } from '../../components/ui/toggle-group';
     import { Badge } from '../../components/ui/badge';
     import { Button } from '../../components/ui/button';
@@ -106,6 +133,7 @@
     import { InputGroupField } from '../../components/ui/input-group';
     import { RangeCalendar } from '../../components/ui/range-calendar';
     import { Toggle } from '../../components/ui/toggle';
+    import { TooltipWrapper } from '../../components/ui/tooltip';
     import { columns as baseColumns } from './columns.jsx';
     import { useVrcxVueTable } from '../../lib/table/useVrcxVueTable';
 
@@ -114,6 +142,7 @@
     const appearanceSettingsStore = useAppearanceSettingsStore();
     const { weekStartsOn } = storeToRefs(appearanceSettingsStore);
     const vrcxStore = useVrcxStore();
+    const galleryStore = useGalleryStore();
 
     const { t, locale } = useI18n();
     const feedFilterTypes = ['GPS', 'Online', 'Offline', 'Status', 'Avatar', 'Bio'];
@@ -124,6 +153,86 @@
     const hasDateFilter = computed(() => !!(feedTable.value.dateFrom || feedTable.value.dateTo));
     const activeFilterCount = computed(() => (hasDateFilter.value ? 1 : 0));
 
+    // Drag-and-drop state
+    const isDraggingOver = ref(false);
+    const hoveredZone = ref('');
+    let dragEnterCount = 0;
+
+    const dropZones = computed(() => [
+        { tab: 'gallery', label: t('dialog.gallery_icons.gallery') },
+        { tab: 'icons', label: t('dialog.gallery_icons.icons') },
+        { tab: 'emojis', label: t('dialog.gallery_icons.emojis') },
+        { tab: 'stickers', label: t('dialog.gallery_icons.stickers') },
+        { tab: 'prints', label: t('dialog.gallery_icons.prints') }
+    ]);
+
+    /**
+     * @param {DragEvent} e
+     */
+    function onDragEnter(e) {
+        if (!e.dataTransfer?.types?.includes('Files')) return;
+        dragEnterCount++;
+        isDraggingOver.value = true;
+    }
+
+    /**
+     * @param {DragEvent} e
+     */
+    function onDragOver(e) {
+        if (!e.dataTransfer?.types?.includes('Files')) return;
+        e.dataTransfer.dropEffect = 'copy';
+
+        // Hit-test to see which zone we are hovering over
+        const elements = document.querySelectorAll('.feed-zone-element');
+        let found = '';
+        for (const el of elements) {
+            const rect = el.getBoundingClientRect();
+            if (
+                e.clientX >= rect.left &&
+                e.clientX <= rect.right &&
+                e.clientY >= rect.top &&
+                e.clientY <= rect.bottom
+            ) {
+                found = el.getAttribute('data-tab');
+                break;
+            }
+        }
+        hoveredZone.value = found;
+    }
+
+    /**
+     * Decrements the drag enter counter; hides the overlay when the drag leaves the container.
+     */
+    function onDragLeave() {
+        dragEnterCount--;
+        if (dragEnterCount <= 0) {
+            dragEnterCount = 0;
+            isDraggingOver.value = false;
+            hoveredZone.value = '';
+        }
+    }
+
+    /**
+     * Handles drop on the container. Stores file in gallery store and navigates to Gallery.
+     * @param {DragEvent} e
+     */
+    function onDrop(e) {
+        const tab = hoveredZone.value;
+
+        dragEnterCount = 0;
+        isDraggingOver.value = false;
+        hoveredZone.value = '';
+
+        if (!tab || !e.dataTransfer?.files?.length) return;
+
+        const file = e.dataTransfer.files[0];
+        galleryStore.pendingDrop = { file, tab };
+        galleryStore.showGalleryPage();
+    }
+
+    /**
+     *
+     */
     function applyDateFilter() {
         if (dateRange.value?.start) {
             const s = dateRange.value.start;
@@ -246,5 +355,9 @@
         background-color: rgba(76, 255, 80, 0.2);
         padding: 2px 2px;
         border-radius: 4px;
+    }
+
+    .feed-drop-overlay {
+        pointer-events: none;
     }
 </style>

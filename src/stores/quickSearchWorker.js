@@ -171,16 +171,23 @@ function updateIndex(payload) {
 
 function searchFriends(query, cleanQuery, comparer, limit = 10) {
     const results = [];
+    const trimmedQuery = query.trim();
+    const canSearchExtraFields = trimmedQuery.length >= 2;
+
     for (const ctx of indexedFriends) {
         let match = matchName(ctx.name, cleanQuery, comparer, ctx._normalized);
         let matchedField = match ? 'name' : null;
-        if (!match && ctx.memo && query.length >= 2) {
+        if (!match && canSearchExtraFields && ctx.memo) {
             match = localeIncludes(ctx.memo, query, comparer);
             if (match) matchedField = 'memo';
         }
-        if (!match && ctx.note && query.length >= 2) {
+        if (!match && canSearchExtraFields && ctx.note) {
             match = localeIncludes(ctx.note, query, comparer);
             if (match) matchedField = 'note';
+        }
+        if (!match && canSearchExtraFields && ctx.bio) {
+            match = localeIncludes(ctx.bio, query, comparer);
+            if (match) matchedField = 'bio';
         }
         if (match) {
             results.push({
@@ -190,6 +197,7 @@ function searchFriends(query, cleanQuery, comparer, limit = 10) {
                 imageUrl: ctx.imageUrl,
                 memo: ctx.memo || '',
                 note: ctx.note || '',
+                bio: ctx.bio || '',
                 matchedField
             });
         }
@@ -245,7 +253,7 @@ function searchItems(cleanQuery, items, type, comparer, ownerKey, ownerId, limit
 function handleSearch(payload) {
     const { seq, query, currentUserId, language } = payload;
 
-    if (!query || query.length < 1) {
+    if (!query || query.trim().length === 0) {
         self.postMessage({
             type: 'searchResult',
             payload: {
@@ -269,6 +277,76 @@ function handleSearch(payload) {
 
     // Pre-compute cleaned query once for all name searches
     const cleanQuery = removeWhitespace(query);
+
+    // Shortcut handling
+    if (query.startsWith('!')) {
+        const q = query.slice(1);
+        const cq = removeWhitespace(q);
+        const friends =
+            !q && !cq
+                ? Array.from(indexedFriends)
+                : searchFriends(q, cq, comparer);
+        self.postMessage({
+            type: 'searchResult',
+            payload: {
+                seq,
+                friends,
+                ownAvatars: [],
+                favAvatars: [],
+                ownWorlds: [],
+                favWorlds: [],
+                ownGroups: [],
+                joinedGroups: []
+            }
+        });
+        return;
+    }
+
+    if (query.startsWith('@')) {
+        const q = query.slice(1);
+        const cq = removeWhitespace(q);
+        const worlds =
+            !q && !cq
+                ? Array.from(indexedWorlds)
+                : searchItems(cq, indexedWorlds, 'world', comparer);
+        self.postMessage({
+            type: 'searchResult',
+            payload: {
+                seq,
+                friends: [],
+                ownAvatars: [],
+                favAvatars: [],
+                ownWorlds: worlds,
+                favWorlds: [],
+                ownGroups: [],
+                joinedGroups: []
+            }
+        });
+        return;
+    }
+
+    if (query.startsWith('#')) {
+        const q = query.slice(1);
+        const cq = removeWhitespace(q);
+        const users =
+            !q && !cq
+                ? Array.from(indexedGroups)
+                : searchItems(cq, indexedGroups, 'group', comparer);
+        self.postMessage({
+            type: 'searchResult',
+            payload: {
+                seq,
+                friends: [],
+                ownAvatars: [],
+                favAvatars: [],
+                ownWorlds: [],
+                favWorlds: [],
+                ownGroups: users,
+                joinedGroups: []
+            }
+        });
+        return;
+    }
 
     const friends = searchFriends(query, cleanQuery, comparer);
     const ownAvatars = searchItems(cleanQuery, indexedAvatars, 'avatar', comparer, 'authorId', currentUserId);

@@ -9,7 +9,7 @@
             <!-- Title -->
             <div class="pt-1 text-center">
                 <div class="mb-2 flex justify-center">
-                    <img :src="vrcxLogo" alt="VRCX" class="size-12 rounded-xl" />
+                    <img :src="vrcxLogo" alt="VRCX-Jirai" class="size-12 rounded-xl" />
                 </div>
 
                 <h2 class="m-0 text-[23px] font-bold tracking-tight">
@@ -92,7 +92,7 @@
 
 <script setup>
     import { markRaw } from 'vue';
-    import { Search, FolderHeart, RefreshCw, MousePointerClick } from 'lucide-vue-next';
+    import { Search, FolderHeart, RefreshCw, MousePointerClick, BarChart3, Database, Users, Sparkles } from 'lucide-vue-next';
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
 
@@ -109,15 +109,8 @@
 
     const supporters = [
         {
-            name: 'Map1en',
-            links: [
-                { label: 'Ko-fi', url: 'https://ko-fi.com/map1en_' },
-                { label: '爱发电', url: 'https://ifdian.net/a/map1en_' }
-            ]
-        },
-        {
-            name: 'Natsumi',
-            links: [{ label: 'Ko-fi', url: 'https://ko-fi.com/natsumi_sama' }]
+            name: 'aiguoliuguo',
+            links: [{ label: '爱发电', url: 'https://ifdian.net/a/svcfusion' }]
         }
     ];
 
@@ -125,14 +118,22 @@
         search: markRaw(Search),
         'folder-heart': markRaw(FolderHeart),
         'refresh-cw': markRaw(RefreshCw),
-        'mouse-pointer-click': markRaw(MousePointerClick)
+        'mouse-pointer-click': markRaw(MousePointerClick),
+        'bar-chart': markRaw(BarChart3),
+        database: markRaw(Database),
+        users: markRaw(Users),
+        sparkles: markRaw(Sparkles)
     };
 
     const hueMap = {
         search: '142',
         'folder-heart': '340',
         'refresh-cw': '200',
-        'mouse-pointer-click': '45'
+        'mouse-pointer-click': '45',
+        'bar-chart': '210',
+        database: '250',
+        users: '160',
+        sparkles: '45'
     };
 
     function resolveIcon(iconName) {

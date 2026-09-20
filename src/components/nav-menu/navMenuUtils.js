@@ -39,7 +39,14 @@ export function sanitizeLayout(layout, hiddenKeys, definitionMap, allDefinitions
     const normalizedHiddenKeys = normalizeHiddenKeys(hiddenKeys, definitionMap);
     const hiddenSet = new Set(normalizedHiddenKeys);
     const normalized = [];
-    const chartsKeys = ['charts-instance', 'charts-mutual', 'charts-hot-worlds'];
+    const chartsKeys = [
+        'charts-instance',
+        'charts-mutual',
+        'charts-hot-worlds',
+        'charts-two-person',
+        'charts-timeline',
+        'charts-affinity'
+    ];
 
     const appendItemEntry = (key, target = normalized) => {
         if (!key || usedKeys.has(key) || !definitionMap.has(key)) {

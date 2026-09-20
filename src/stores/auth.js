@@ -17,7 +17,9 @@ import { runHandleAutoLoginFlow } from '../coordinators/authAutoLoginCoordinator
 import { getCurrentUser } from '../coordinators/userCoordinator';
 import { useAdvancedSettingsStore } from './settings/advanced';
 import { useGeneralSettingsStore } from './settings/general';
+import { useManualRelationsStore } from './manualRelations';
 import { useModalStore } from './modal';
+import { useTrackedNonFriendsStore } from './trackedNonFriends';
 import { useUpdateLoopStore } from './updateLoop';
 import { useUserStore } from './user';
 import { useVrcxStore } from './vrcx';
@@ -33,6 +35,8 @@ import { useActivityStore } from './activity';
 export const useAuthStore = defineStore('Auth', () => {
     const advancedSettingsStore = useAdvancedSettingsStore();
     const generalSettingsStore = useGeneralSettingsStore();
+    const trackedNonFriendsStore = useTrackedNonFriendsStore();
+    const manualRelationsStore = useManualRelationsStore();
     const userStore = useUserStore();
     const updateLoopStore = useUpdateLoopStore();
     const modalStore = useModalStore();
@@ -83,17 +87,31 @@ export const useAuthStore = defineStore('Auth', () => {
 
     watch(
         [() => watchState.isLoggedIn, () => userStore.currentUser],
-        ([isLoggedIn, currentUser]) => {
+        ([isLoggedIn, currentUser], [oldIsLoggedIn, oldCurrentUser]) => {
             twoFactorAuthDialogVisible.value = false;
             if (isLoggedIn) {
+                // Ignore watcher if we are in a hot-swapped secondary account context.
+                const { accountHub } = require('../services/accountHub.js');
+                if (
+                    accountHub.primaryId &&
+                    currentUser.id &&
+                    currentUser.id !== accountHub.primaryId
+                ) {
+                    return;
+                }
+
                 resetLoginNetworkIssueHintState();
                 updateStoredUser(currentUser);
-                new Noty({
-                    type: 'success',
-                    text: t('message.auth.login_greeting', {
-                        name: `<strong>${escapeTag(currentUser.displayName)}</strong>`
-                    })
-                }).show();
+
+                // Only show greeting on actual login (transition from logged out, or initial hydration)
+                if (!oldIsLoggedIn || !oldCurrentUser || !oldCurrentUser.id) {
+                    new Noty({
+                        type: 'success',
+                        text: t('message.auth.login_greeting', {
+                            name: `<strong>${escapeTag(currentUser.displayName)}</strong>`
+                        })
+                    }).show();
+                }
             }
         },
         { flush: 'sync' }
@@ -463,10 +481,28 @@ export const useAuthStore = defineStore('Auth', () => {
     /**
      * @param user
      */
-    async function relogin(user, { shouldTrackLoginNetworkIssueHint = !attemptingAutoLogin.value } = {}) {
-        const { loginParams } = user;
+    async function relogin(
+        user,
+        { shouldTrackLoginNetworkIssueHint = !attemptingAutoLogin.value } = {}
+    ) {
+        await webApiService.clearCookies();        const { loginParams } = user;
         if (user.cookies) {
             await webApiService.setCookies(user.cookies);
+            try {
+                const checkUser = await request('auth/user');
+                if (
+                    checkUser &&
+                    !checkUser.error &&
+                    checkUser.id !== user.user.id
+                ) {
+                    console.warn(
+                        `[auth] Corrupted cookie for ${user.user.id}, clearing.`
+                    );
+                    await webApiService.clearCookies();
+                }
+            } catch (e) {
+                // Assume expired or network issue, authLogin will handle it
+            }
         }
         loginForm.value.lastUserLoggedIn = user.user.id; // for resend email 2fa
         if (loginParams.endpoint) {
@@ -830,6 +866,8 @@ export const useAuthStore = defineStore('Auth', () => {
         }
         await database.initUserTables(userStore.currentUser.id);
         advancedSettingsStore.runAvatarAutoCleanup(userStore.currentUser.id);
+        await trackedNonFriendsStore.loadTrackedNonFriends();
+        await manualRelationsStore.loadManualRelations();
         watchState.isLoggedIn = true;
         AppApi.CheckGameRunning(); // restore state from hot-reload
 

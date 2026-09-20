@@ -1,0 +1,11 @@
+.oxfmtrc.json
+.oxlintrc.json
+VRCX.sln
+eslint.config.mjs
+src-electron/download-dotnet-runtime.js
+src/components/PresetColorPicker.vue
+src/components/dialogs/UserDialog/BioDialog.vue
+src/components/dialogs/UserDialog/LanguageDialog.vue
+src/components/dialogs/UserDialog/PronounsDialog.vue
+src/components/dialogs/UserDialog/SocialStatusDialog.vue
+src/components/dialogs/WorldDialog/WorldDialogInfoTab.vue

@@ -4,8 +4,8 @@
  * @see https://www.electron.build/configuration/configuration
  */
 module.exports = {
-    appId: 'app.vrcx',
-    productName: 'VRCX',
+    appId: 'app.vrcx.jirai',
+    productName: 'VRCX-Jirai',
     icon: 'images/VRCX.png',
     files: [
         'build/html/**/*',
@@ -56,20 +56,20 @@ module.exports = {
         output: 'build'
     },
     linux: {
-        artifactName: 'VRCX_Version.${ext}',
+        artifactName: 'VRCX-Jirai_Version.${ext}',
         target: ['AppImage'],
         icon: 'images/VRCX.png',
-        executableName: 'VRCX',
+        executableName: 'vrcx-jirai',
         mimeTypes: ['x-scheme-handler/vrcx'],
         desktop: {
             entry: {
-                Name: 'VRCX',
+                Name: 'VRCX-Jirai',
                 Comment: 'Friendship management tool for VRChat',
-                Icon: 'VRCX',
+                Icon: 'VRCX-Jirai',
                 Terminal: 'false',
                 Type: 'Application',
                 Categories: 'Utility;Application;',
-                StartupWMClass: 'VRCX',
+                StartupWMClass: 'VRCX-Jirai',
                 MimeType: 'x-scheme-handler/vrcx;'
             }
         },
@@ -78,11 +78,11 @@ module.exports = {
         syncDesktopName: true
     },
     mac: {
-        artifactName: 'VRCX_Version.${ext}',
+        artifactName: 'VRCX-Jirai_Version.${ext}',
         target: ['dmg'],
         icon: 'images/VRCX.png',
         category: 'public.app-category.utilities',
-        executableName: 'VRCX'
+        executableName: 'VRCX-Jirai'
     },
     toolsets: {
         appimage: '1.0.3'

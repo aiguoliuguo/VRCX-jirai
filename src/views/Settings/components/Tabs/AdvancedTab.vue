@@ -36,6 +36,10 @@
                     :ariaLabel="t('view.settings.advanced.advanced.self_invite.header')"
                     @update:modelValue="setSelfInviteOverride" />
             </SettingsItem>
+
+            <SettingsItem :label="t('view.settings.advanced.advanced.auto_join_group_certification.header')">
+                <Switch :model-value="autoJoinGroupCertification" @update:modelValue="setAutoJoinGroupCertification" />
+            </SettingsItem>
         </SettingsGroup>
 
         <SettingsGroup :title="t('view.settings.advanced_groups.security.header')">
@@ -132,7 +136,9 @@
                 <Button
                     size="sm"
                     variant="outline"
-                    @click="openExternalLink('https://github.com/vrcx-team/VRCX/wiki/Launch-parameters-&-VRCX.json')"
+                    @click="
+                        openExternalLink('https://github.com/aiguoliuguo/VRCX-jirai/wiki/Launch-parameters-&-VRCX.json')
+                    "
                     >{{ t('view.settings.advanced.advanced.launch_commands.docs') }}</Button
                 >
                 <Button
@@ -483,7 +489,8 @@
         sqliteTableSizes,
         avatarAutoCleanup,
         purgeInProgress,
-        sentryErrorReporting
+        sentryErrorReporting,
+        autoJoinGroupCertification
     } = storeToRefs(advancedSettingsStore);
 
     const {
@@ -499,7 +506,8 @@
         setAvatarAutoCleanup,
         purgeAvatarFeedData,
         promptAutoClearVRCXCacheFrequency,
-        setSentryErrorReporting
+        setSentryErrorReporting,
+        setAutoJoinGroupCertification
     } = advancedSettingsStore;
 
     const configTreeData = ref({});
