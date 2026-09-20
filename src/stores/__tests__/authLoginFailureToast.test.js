@@ -96,7 +96,18 @@ vi.mock('noty', () => ({
 vi.mock('vue-i18n', () => ({
     useI18n: () => ({
         t: (key) => key
-    })
+    }),
+    createI18n: () => ({ global: { t: (key) => key } })
+}));
+
+vi.mock('../../stores/manualRelations', () => ({
+    useManualRelationsStore: () => ({ loadManualRelations: async () => {} })
+}));
+vi.mock('../../stores/trackedNonFriends', () => ({
+    useTrackedNonFriendsStore: () => ({ loadTrackedNonFriends: async () => {} })
+}));
+vi.mock('../../stores/activity', () => ({
+    useActivityStore: () => ({ startFullCacheBuild: async () => {} })
 }));
 
 vi.mock('../../services/request', () => ({
