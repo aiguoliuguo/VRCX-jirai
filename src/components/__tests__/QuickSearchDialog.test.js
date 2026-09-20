@@ -13,6 +13,8 @@ const mocks = vi.hoisted(() => ({
     favoriteWorldResults: { value: [] },
     ownGroupResults: { value: [] },
     joinedGroupResults: { value: [] },
+    recentlyMetResults: { value: [] },
+    recentBeenResults: { value: [] },
     hasResults: { value: false }
 }));
 

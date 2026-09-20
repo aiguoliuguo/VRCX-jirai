@@ -75,7 +75,9 @@
                 v-model:sendInviteRequestDialogVisible="sendInviteRequestDialogVisible"
                 v-model:sendInviteDialog="sendInviteDialog"
                 @closeInviteDialog="closeInviteDialog" />
-            <ModerateGroupDialog />    </div>
+            <ModerateGroupDialog />
+        </div>
+    </div>
 </template>
 
 <script setup>

@@ -147,20 +147,7 @@
                         </CommandGroup>
 
                         <CommandGroup
-                            v-if="recentlyMetResults.length > 0"
-                            :heading="t('side_panel.search_recently_met')">
-                            <CommandItem
-                                v-for="user in recentlyMetResults"
-                                :key="user.userId"
-                                :value="'recently-met-' + user.userId"
-                                class="gap-3"
-                                @select="handleSelect({ id: user.userId, type: 'recentlyMet' })">
-                                <Clock class="size-4 text-muted-foreground" />
-                                <span class="truncate">{{ user.displayName }}</span>
-                            </CommandItem>
-                        </CommandGroup>
-
-                        <CommandGroup
+                                                    <CommandGroup
                             v-if="favoriteWorldResults.length > 0"
                             :heading="t('side_panel.search_fav_worlds')">
                             <CommandItem
@@ -180,20 +167,7 @@
                         </CommandGroup>
 
                         <CommandGroup
-                            v-if="recentBeenResults.length > 0"
-                            :heading="t('side_panel.search_recently_joined')">
-                            <CommandItem
-                                v-for="loc in recentBeenResults"
-                                :key="loc.worldId"
-                                :value="'recently-joined-' + loc.worldId"
-                                class="gap-3"
-                                @select="handleSelect({ id: loc.worldId, type: 'recentlyJoined' })">
-                                <History class="size-4 text-muted-foreground" />
-                                <span class="truncate">{{ loc.worldName }}</span>
-                            </CommandItem>
-                        </CommandGroup>
-
-                        <CommandGroup v-if="ownAvatarResults.length > 0" :heading="t('side_panel.search_own_avatars')">
+                                                    <CommandGroup v-if="ownAvatarResults.length > 0" :heading="t('side_panel.search_own_avatars')">
                             <CommandItem
                                 v-for="item in ownAvatarResults"
                                 :key="item.id"
