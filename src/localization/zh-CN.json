@@ -3518,6 +3518,32 @@
                             "description": "移除共处时间去抖、按评分过滤推荐，并支持注入模拟记录进行测试。"
                         }
                     }
+                },
+                "2026_09_16": {
+                    "title": "VRCX-Jirai 2026.09.16",
+                    "subtitle": "同步官方 2026.09.16：全新资料编辑、个人装扮、群组管理与活动等多项功能",
+                    "items": {
+                        "edit_profile": {
+                            "title": "编辑资料",
+                            "description": "全新资料编辑窗口：横幅、头像框、资料背景、铭牌特效与资料主题一站修改。"
+                        },
+                        "cosmetics": {
+                            "title": "个人装扮",
+                            "description": "侧边栏与好友位置支持显示装扮，可按区域开关。"
+                        },
+                        "group_events": {
+                            "title": "群组活动",
+                            "description": "创建与编辑群组活动，活动开始前接收通知，群组实例可发公告。"
+                        },
+                        "group_management": {
+                            "title": "群组管理",
+                            "description": "在 VRCX 内直接创建、编辑、转让群组，查看加入人数。"
+                        },
+                        "prints_and_inventory": {
+                            "title": "Prints 收藏与库存筛选",
+                            "description": "打印照片支持收藏，物品栏按类型筛选，管制记录批量删除。"
+                        }
+                    }
                 }
             }
         }

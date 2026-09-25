@@ -38,6 +38,30 @@ const whatsNewReleases = Object.freeze({
                 icon: 'sparkles'
             }
         ]
+    },
+    '2026.09.16': {
+        items: [
+            {
+                key: 'edit_profile',
+                icon: 'sparkles'
+            },
+            {
+                key: 'cosmetics',
+                icon: 'users'
+            },
+            {
+                key: 'group_events',
+                icon: 'mouse-pointer-click'
+            },
+            {
+                key: 'group_management',
+                icon: 'database'
+            },
+            {
+                key: 'prints_and_inventory',
+                icon: 'folder-heart'
+            }
+        ]
     }
 });
 

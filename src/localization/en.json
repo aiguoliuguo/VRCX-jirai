@@ -3603,6 +3603,32 @@
                             "description": "Real-time relation scores, filter by threshold, and inject mock records for testing."
                         }
                     }
+                },
+                "2026_09_16": {
+                    "title": "VRCX-Jirai 2026.09.16",
+                    "subtitle": "Synced with official 2026.09.16: new profile editing, cosmetics, group management and events",
+                    "items": {
+                        "edit_profile": {
+                            "title": "Edit Profile",
+                            "description": "New profile editor: banner, icon frame, background, nameplate effect and themes in one place."
+                        },
+                        "cosmetics": {
+                            "title": "Cosmetics",
+                            "description": "Show cosmetics in the sidebar and friend locations, toggleable per area."
+                        },
+                        "group_events": {
+                            "title": "Group Events",
+                            "description": "Create and edit group events, get notified before they start, announce in group instances."
+                        },
+                        "group_management": {
+                            "title": "Group Management",
+                            "description": "Create, edit and transfer groups directly in VRCX, with member counts."
+                        },
+                        "prints_and_inventory": {
+                            "title": "Prints & Inventory",
+                            "description": "Favorite prints, filter inventory by type, bulk-delete moderations."
+                        }
+                    }
                 }
             }
         }

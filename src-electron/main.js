@@ -36,7 +36,7 @@ function dotnetSetup() {
 
     if (!isDotNetInstalled()) {
         app.whenReady().then(() => {
-            dialog.showErrorBox('VRCX', 'Please install .NET 10.0 Runtime "dotnet-runtime-10.0" to run VRCX.');
+            dialog.showErrorBox('VRCX-Jirai', 'Please install .NET 10.0 Runtime "dotnet-runtime-10.0" to run VRCX.');
             app.quit();
         });
     }
@@ -773,7 +773,7 @@ function tryCopyFromWinePrefix() {
         }
     } catch (err) {
         console.error('Error copying from wine prefix:', err);
-        dialog.showErrorBox('VRCX', 'Failed to copy database from wine prefix.');
+        dialog.showErrorBox('VRCX-Jirai', 'Failed to copy database from wine prefix.');
     }
 }
 
