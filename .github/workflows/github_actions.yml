@@ -400,7 +400,7 @@ jobs:
       - name: Move artifacts for release
         run: |
           mkdir release_assets
-          find artifacts -type f \( -name "*.exe" -o -name "*.zip" -o -name "*.AppImage" -o -name "*.dmg" \) -exec mv {} release_assets/ \;
+          find artifacts -type f \( -name "VRCX-Jirai_*_Setup.exe" -o -name "VRCX-Jirai_*.zip" -o -name "*.AppImage" -o -name "*.dmg" \) -exec mv {} release_assets/ \;
           ls -R release_assets
 
       - name: Create Release
