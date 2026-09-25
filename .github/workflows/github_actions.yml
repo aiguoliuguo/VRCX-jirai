@@ -114,7 +114,7 @@ jobs:
         run: |
           file_name="VRCX-Jirai_${{ needs.set_version.outputs.version }}_Setup.exe"
           echo "Setup FileName: ${file_name}"
-          mv Installer/VRCX_Setup.exe $file_name
+          mv Installer/VRCX-Jirai_Setup.exe $file_name
       - name: Sign Cef setup
         uses: azure/trusted-signing-action@v1
         if: steps.check_sign.outputs.sign == 'true'
