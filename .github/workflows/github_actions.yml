@@ -245,7 +245,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Restore dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts=false --min-release-age=0
       - name: Build html
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SentryAuthToken }}
@@ -307,7 +307,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Restore dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts=false --min-release-age=0
       - name: Build html x64
         run: npm run prod --arch=x64
 
