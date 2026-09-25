@@ -30,6 +30,16 @@
             </SettingsItem>
         </SettingsGroup>
 
+        <SettingsGroup :title="t('view.settings.social.rel_suggestion.header')">
+            <SettingsItem
+                :label="t('view.settings.social.rel_suggestion.label')"
+                :description="t('view.settings.social.rel_suggestion.description')">
+                <Switch
+                    :model-value="manualRelationsStore.suggestionPopupEnabled"
+                    :ariaLabel="t('view.settings.social.rel_suggestion.label')"
+                    @update:modelValue="manualRelationsStore.setSuggestionPopupEnabled" />
+            </SettingsItem>
+        </SettingsGroup>
         <SettingsGroup :title="t('view.settings.social.friend_requests.header')">
             <SettingsItem
                 :label="t('view.settings.general.friend_requests.header')"
@@ -98,7 +108,7 @@
     import { storeToRefs } from 'pinia';
     import { useI18n } from 'vue-i18n';
 
-    import { useFavoriteStore, useGeneralSettingsStore } from '@/stores';
+    import { useFavoriteStore, useGeneralSettingsStore, useManualRelationsStore } from '@/stores';
 
     import SettingsGroup from '../SettingsGroup.vue';
     import SettingsItem from '../SettingsItem.vue';
@@ -106,6 +116,7 @@
     const { t } = useI18n();
 
     const generalSettingsStore = useGeneralSettingsStore();
+    const manualRelationsStore = useManualRelationsStore();
     const favoriteStore = useFavoriteStore();
 
     const {

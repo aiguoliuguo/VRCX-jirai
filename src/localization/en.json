@@ -898,6 +898,11 @@
                 },
                 "friend_requests": {
                     "header": "Friend Reqeusts"
+                },
+                "rel_suggestion": {
+                    "header": "Inferred Relations",
+                    "label": "Show inferred relation confirmation popup",
+                    "description": "When opening a user dialog, asks whether to record a possibly hidden friend relation"
                 }
             },
             "vr": {

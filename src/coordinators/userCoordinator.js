@@ -668,7 +668,7 @@ export function showUserDialog(userId) {
                         )
                 );
 
-                if (suggestionForThisUser) {
+                if (suggestionForThisUser && manualRelationsStore.suggestionPopupEnabled) {
                     const otherUserName =
                         suggestionForThisUser.userIdA === userId
                             ? suggestionForThisUser.nameB

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import configRepository from '../services/config';
 import dayjs from 'dayjs';
 import { parseLocation } from '../shared/utils';
 import { database } from '../services/database';
@@ -19,6 +20,21 @@ export const useManualRelationsStore = defineStore('ManualRelations', () => {
     const ignoredSuggestionKeys = ref(new Set());
     const isComputingSuggestions = ref(false);
     const computingProgress = ref({ done: 0, total: 100, step: '' });
+
+    /** Whether the 'inferred relation' confirmation popup is shown when a user dialog opens. */
+    const suggestionPopupEnabled = ref(true);
+
+    Promise.resolve(configRepository.getBool('VRCX_rel_suggestion_popup', true)).then((v) => {
+        suggestionPopupEnabled.value = v;
+    });
+
+    /**
+     * @param {boolean} v
+     */
+    function setSuggestionPopupEnabled(v) {
+        suggestionPopupEnabled.value = v;
+        configRepository.setBool('VRCX_rel_suggestion_popup', v);
+    }
 
     /**
      * Build a canonical key for a pair of userIds.
@@ -475,6 +491,8 @@ export const useManualRelationsStore = defineStore('ManualRelations', () => {
         ignoredSuggestionKeys,
         isComputingSuggestions,
         computingProgress,
+        suggestionPopupEnabled,
+        setSuggestionPopupEnabled,
         loadManualRelations,
         addManualRelation,
         removeManualRelation,

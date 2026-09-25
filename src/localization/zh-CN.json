@@ -904,6 +904,11 @@
                 },
                 "favorites": {
                     "header": "收藏"
+                },
+                "rel_suggestion": {
+                    "header": "推测关联",
+                    "label": "显示“推测关联”确认弹窗",
+                    "description": "打开玩家资料时，若发现可能存在的隐藏好友关系，会弹窗询问是否记录"
                 }
             },
             "vr": {
